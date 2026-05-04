@@ -65,6 +65,7 @@
               <Events>
                 <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="jMenuItem_ajuste_inventarioActionPerformed"/>
               </Events>
+<<<<<<< HEAD
             </MenuItem>
           </SubComponents>
         </Menu>
@@ -96,6 +97,8 @@
               <Events>
                 <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="jMenuItem4ActionPerformed"/>
               </Events>
+=======
+>>>>>>> e43bb12af11029bcf8a1892f34ec27d4adb676b1
             </MenuItem>
           </SubComponents>
         </Menu>

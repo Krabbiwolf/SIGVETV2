@@ -46,6 +46,7 @@ public class MDI extends javax.swing.JFrame {
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
+    // Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
         jMenuItem1 = new javax.swing.JMenuItem();
@@ -79,6 +80,12 @@ public class MDI extends javax.swing.JFrame {
 
         jMenuItem_gestionar_proveedores.setText("Gestionar Proveedores");
         jMenuItem_gestionar_proveedores.addActionListener(this::jMenuItem_gestionar_proveedoresActionPerformed);
+        jMenu_proveedores.add(jMenuItem_gestionar_proveedores);
+
+        jMenuBar1.add(jMenu_proveedores);
+        jMenu_proveedores.add(jMenuItem_nuevo_proveedor);
+
+        jMenuItem_gestionar_proveedores.setText("Gestionar Proveedores");
         jMenu_proveedores.add(jMenuItem_gestionar_proveedores);
 
         jMenuBar1.add(jMenu_proveedores);
