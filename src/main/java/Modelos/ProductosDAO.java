@@ -54,7 +54,7 @@ public class ProductosDAO {
         ArrayList<Producto> lista = new ArrayList<>();
 
         String sql = "SELECT id_producto, codigo_barras, nombre, descripcion_tecnica, "
-                + "porcentaje_iva_detalle, imagen_url, estado, id_categoria "
+                + "porcentaje_iva_default, imagen_url, estado, id_categoria "
                 + "FROM PRODUCTOS ORDER BY id_producto DESC";
 
         try {
