@@ -63,6 +63,8 @@ public class MDI extends javax.swing.JFrame {
         jMenuItem2 = new javax.swing.JMenuItem();
         jMenuItem3 = new javax.swing.JMenuItem();
         jMenuItem4 = new javax.swing.JMenuItem();
+        jMenu3 = new javax.swing.JMenu();
+        nuevaCompra = new javax.swing.JMenuItem();
 
         jMenuItem1.setText("jMenuItem1");
 
@@ -116,6 +118,14 @@ public class MDI extends javax.swing.JFrame {
 
         jMenuBar1.add(jMenu2);
 
+        jMenu3.setText("Compras");
+
+        nuevaCompra.setText("Nueva Compra");
+        nuevaCompra.addActionListener(this::nuevaCompraActionPerformed);
+        jMenu3.add(nuevaCompra);
+
+        jMenuBar1.add(jMenu3);
+
         setJMenuBar(jMenuBar1);
 
         pack();
@@ -153,6 +163,16 @@ public class MDI extends javax.swing.JFrame {
         jDesktopPane_MDI.add(roles);
         roles.setVisible(true);
     }//GEN-LAST:event_jMenuItem4ActionPerformed
+
+    private void nuevaCompraActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_nuevaCompraActionPerformed
+        // TODO add your handling code here:
+        FrmRegistrarNuevaCompra nuevaCompra = new FrmRegistrarNuevaCompra();
+        Modelos.Compra compra = new Modelos.Compra();
+        Modelos.CompraDAO compraDAO = new Modelos.CompraDAO();
+        Controladores.CtrlCompra.CtrlNuevaCompra ctrlCompra = new Controladores.CtrlCompra.CtrlNuevaCompra(compra, nuevaCompra, compraDAO);
+        jDesktopPane_MDI.add(nuevaCompra);
+        nuevaCompra.setVisible(true);
+    }//GEN-LAST:event_nuevaCompraActionPerformed
 
     private void jMenuItem_nuevo_proveedorActionPerformed(java.awt.event.ActionEvent evt) {// GEN-FIRST:event_jMenuItem_nuevo_proveedorActionPerformed
         // TODO add your handling code here:
@@ -238,6 +258,7 @@ public class MDI extends javax.swing.JFrame {
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JMenu jMenu1;
     private javax.swing.JMenu jMenu2;
+    private javax.swing.JMenu jMenu3;
     private javax.swing.JMenuBar jMenuBar1;
     private javax.swing.JMenuItem jMenuItem1;
     private javax.swing.JMenuItem jMenuItem2;
@@ -250,5 +271,6 @@ public class MDI extends javax.swing.JFrame {
     private javax.swing.JMenuItem jMenuItem_nuevo_proveedor;
     private javax.swing.JMenu jMenu_producto;
     private javax.swing.JMenu jMenu_proveedores;
+    private javax.swing.JMenuItem nuevaCompra;
     // End of variables declaration//GEN-END:variables
 }
