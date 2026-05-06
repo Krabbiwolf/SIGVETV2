@@ -65,6 +65,9 @@ public class MDI extends javax.swing.JFrame {
         jMenuItem4 = new javax.swing.JMenuItem();
         jMenu3 = new javax.swing.JMenu();
         nuevaCompra = new javax.swing.JMenuItem();
+        jMenu_Factura = new javax.swing.JMenu();
+        jMenuItem_punto_venta = new javax.swing.JMenuItem();
+        jMenuItem_consultar_factura = new javax.swing.JMenuItem();
 
         jMenuItem1.setText("jMenuItem1");
 
@@ -126,6 +129,18 @@ public class MDI extends javax.swing.JFrame {
 
         jMenuBar1.add(jMenu3);
 
+        jMenu_Factura.setText("Factura");
+
+        jMenuItem_punto_venta.setText("Punto Venta");
+        jMenuItem_punto_venta.addActionListener(this::jMenuItem_punto_ventaActionPerformed);
+        jMenu_Factura.add(jMenuItem_punto_venta);
+
+        jMenuItem_consultar_factura.setText("Consultar Factura");
+        jMenuItem_consultar_factura.addActionListener(this::jMenuItem_consultar_facturaActionPerformed);
+        jMenu_Factura.add(jMenuItem_consultar_factura);
+
+        jMenuBar1.add(jMenu_Factura);
+
         setJMenuBar(jMenuBar1);
 
         pack();
@@ -173,6 +188,22 @@ public class MDI extends javax.swing.JFrame {
         jDesktopPane_MDI.add(nuevaCompra);
         nuevaCompra.setVisible(true);
     }//GEN-LAST:event_nuevaCompraActionPerformed
+
+    private void jMenuItem_punto_ventaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem_punto_ventaActionPerformed
+        // TODO add your handling code here:
+        FrmFacturaPuntoVenta puntoVenta = new FrmFacturaPuntoVenta();
+        jDesktopPane_MDI.add(puntoVenta);
+        Controladores.CtrlFactura.CtrlPuntoVenta pV = new Controladores.CtrlFactura.CtrlPuntoVenta();
+        puntoVenta.setVisible(true);
+    }//GEN-LAST:event_jMenuItem_punto_ventaActionPerformed
+
+    private void jMenuItem_consultar_facturaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem_consultar_facturaActionPerformed
+        // TODO add your handling code here:
+        FrmFacturaConsultar consultar = new FrmFacturaConsultar();
+        jDesktopPane_MDI.add(consultar);
+        Controladores.CtrlFactura.CtrlConsultarFactura Con = new Controladores.CtrlFactura.CtrlConsultarFactura();
+        consultar.setVisible(true);
+    }//GEN-LAST:event_jMenuItem_consultar_facturaActionPerformed
 
     private void jMenuItem_nuevo_proveedorActionPerformed(java.awt.event.ActionEvent evt) {// GEN-FIRST:event_jMenuItem_nuevo_proveedorActionPerformed
         // TODO add your handling code here:
@@ -265,10 +296,13 @@ public class MDI extends javax.swing.JFrame {
     private javax.swing.JMenuItem jMenuItem3;
     private javax.swing.JMenuItem jMenuItem4;
     private javax.swing.JMenuItem jMenuItem_ajuste_inventario;
+    private javax.swing.JMenuItem jMenuItem_consultar_factura;
     private javax.swing.JMenuItem jMenuItem_gestionar_producto;
     private javax.swing.JMenuItem jMenuItem_gestionar_proveedores;
     private javax.swing.JMenuItem jMenuItem_nuevo_producto;
     private javax.swing.JMenuItem jMenuItem_nuevo_proveedor;
+    private javax.swing.JMenuItem jMenuItem_punto_venta;
+    private javax.swing.JMenu jMenu_Factura;
     private javax.swing.JMenu jMenu_producto;
     private javax.swing.JMenu jMenu_proveedores;
     private javax.swing.JMenuItem nuevaCompra;

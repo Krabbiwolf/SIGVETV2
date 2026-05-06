@@ -114,6 +114,29 @@
             </MenuItem>
           </SubComponents>
         </Menu>
+        <Menu class="javax.swing.JMenu" name="jMenu_Factura">
+          <Properties>
+            <Property name="text" type="java.lang.String" value="Factura"/>
+          </Properties>
+          <SubComponents>
+            <MenuItem class="javax.swing.JMenuItem" name="jMenuItem_punto_venta">
+              <Properties>
+                <Property name="text" type="java.lang.String" value="Punto Venta"/>
+              </Properties>
+              <Events>
+                <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="jMenuItem_punto_ventaActionPerformed"/>
+              </Events>
+            </MenuItem>
+            <MenuItem class="javax.swing.JMenuItem" name="jMenuItem_consultar_factura">
+              <Properties>
+                <Property name="text" type="java.lang.String" value="Consultar Factura"/>
+              </Properties>
+              <Events>
+                <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="jMenuItem_consultar_facturaActionPerformed"/>
+              </Events>
+            </MenuItem>
+          </SubComponents>
+        </Menu>
       </SubComponents>
     </Menu>
   </NonVisualComponents>
