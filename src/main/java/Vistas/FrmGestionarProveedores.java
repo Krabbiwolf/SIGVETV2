@@ -1,253 +1,222 @@
 package Vistas;
 
-import java.awt.Color;
-import java.awt.Cursor;
-import java.awt.Dimension;
-import java.awt.Font;
-import java.awt.event.MouseAdapter;
-import java.awt.event.MouseEvent;
-import javax.swing.BorderFactory;
+import java.awt.*;
+import java.awt.event.*;
+import javax.swing.*;
 import javax.swing.border.EmptyBorder;
 import javax.swing.table.DefaultTableCellRenderer;
 
 public class FrmGestionarProveedores extends javax.swing.JInternalFrame {
 
+    private static final Color BG_MAIN   = Color.decode("#0A0C10");
+    private static final Color BG_CARD   = Color.decode("#111520");
+    private static final Color BG_TABLE  = Color.decode("#0E1219");
+    private static final Color BG_INPUT  = Color.decode("#181D2E");
+    private static final Color BORDER    = Color.decode("#2A3050");
+    private static final Color ACCENT    = Color.decode("#6C63FF");
+    private static final Color DANGER    = Color.decode("#FF5B7A");
+    private static final Color TEXT_PRI  = Color.decode("#F0F2FF");
+    private static final Color TEXT_MUT  = Color.decode("#9BA3C4");
+    private static final Color GRID      = Color.decode("#1A1F30");
+    private static final Color SEL_BG    = Color.decode("#6C63FF");
+
+    private static final int FIELD_H  = 36;
+    private static final int LABEL_H  = 16;
+    private static final int FIELD_W1 = 220; 
+    private static final int FIELD_W2 = 160; 
+    private static final int CMB_W    = 120; 
+    private static final int BTN_W    = 130;
+    private static final int BTN_H    = 36;
+
     public FrmGestionarProveedores() {
         initComponents();
-        this.setSize(new Dimension(870, 460));
+        this.setSize(new Dimension(880, 480)); // --- CORRECCIÓN DE TAMAÑO ---
         this.setTitle("Gestionar Proveedores");
-        aplicarEstiloMinimalistaPremium();
+        aplicarEstilo();
+        
+        // --- CORRECCIÓN DE ALIAS (EVITA NULL POINTER) ---
+        TableProveedores = tableProveedores;
     }
 
-    private void aplicarEstiloMinimalistaPremium() {
-        // === FONDO GENERAL ===
-        this.getContentPane().setBackground(Color.decode("#0A0C10"));
+    private void aplicarEstilo() {
+        getContentPane().setBackground(BG_MAIN);
 
-        // === TÍTULO ===
-        jLabel1.setForeground(Color.decode("#F0F2FF"));
-        jLabel1.setFont(new Font("Segoe UI", Font.BOLD, 16));
-        jLabel1.setText("✦  Gestionar Proveedores");
+        lblTitulo.setForeground(TEXT_PRI);
+        lblTitulo.setFont(new Font("Segoe UI", Font.BOLD, 16));
+        lblTitulo.setHorizontalAlignment(SwingConstants.CENTER);
 
-        // === LABELS CAMPO ===
-        javax.swing.JLabel[] labelsCampo = {jLabel2, jLabel3, jLabel4};
-        for (javax.swing.JLabel lbl : labelsCampo) {
-            lbl.setForeground(Color.decode("#9BA3C4"));
-            lbl.setFont(new Font("Segoe UI", Font.BOLD, 10));
-        }
-        jLabel2.setText("NOMBRE");
-        jLabel3.setText("TELÉFONO");
-        jLabel4.setText("ESTADO");
+        panelTabla.setBackground(BG_CARD);
+        panelTabla.setBorder(BorderFactory.createLineBorder(BORDER, 1));
 
-        // === PANELES ===
-        jPanel1.setBackground(Color.decode("#111520"));
-        jPanel1.setBorder(BorderFactory.createLineBorder(Color.decode("#2A3050"), 1));
+        tableProveedores.setBackground(BG_TABLE);
+        tableProveedores.setForeground(TEXT_PRI);
+        tableProveedores.setGridColor(GRID);
+        tableProveedores.setRowHeight(30);
+        tableProveedores.setSelectionBackground(SEL_BG);
+        tableProveedores.setSelectionForeground(Color.WHITE);
+        tableProveedores.setShowGrid(true);
+        tableProveedores.setFont(new Font("Segoe UI", Font.PLAIN, 12));
+        tableProveedores.setIntercellSpacing(new Dimension(0, 0));
+        tableProveedores.setFillsViewportHeight(true);
+        tableProveedores.setAutoResizeMode(JTable.AUTO_RESIZE_ALL_COLUMNS);
 
-        jPanel2.setBackground(Color.decode("#111520"));
-        jPanel2.setBorder(BorderFactory.createLineBorder(Color.decode("#2A3050"), 1));
+        DefaultTableCellRenderer centerRnd = new DefaultTableCellRenderer();
+        centerRnd.setHorizontalAlignment(JLabel.CENTER);
+        centerRnd.setBackground(BG_TABLE);
+        centerRnd.setForeground(TEXT_PRI);
+        for (int i = 0; i < tableProveedores.getColumnModel().getColumnCount(); i++)
+            tableProveedores.getColumnModel().getColumn(i).setCellRenderer(centerRnd);
+        if (tableProveedores.getColumnModel().getColumnCount() > 0)
+            tableProveedores.getColumnModel().getColumn(0).setMaxWidth(60);
 
-        // === TABLA ===
-        TableProveedores.setBackground(Color.decode("#111520"));
-        TableProveedores.setForeground(Color.decode("#F0F2FF"));
-        TableProveedores.setGridColor(Color.decode("#1F2640"));
-        TableProveedores.setRowHeight(30);
-        TableProveedores.setSelectionBackground(Color.decode("#6C63FF"));
-        TableProveedores.setSelectionForeground(Color.WHITE);
-        TableProveedores.setShowGrid(true);
-        TableProveedores.setFont(new Font("Segoe UI", Font.PLAIN, 12));
-        TableProveedores.setIntercellSpacing(new java.awt.Dimension(0, 0));
-        TableProveedores.setFillsViewportHeight(true);
+        tableProveedores.getTableHeader().setBackground(Color.decode("#181D2E"));
+        tableProveedores.getTableHeader().setForeground(TEXT_MUT);
+        tableProveedores.getTableHeader().setFont(new Font("Segoe UI", Font.BOLD, 11));
+        tableProveedores.getTableHeader().setReorderingAllowed(false);
+        tableProveedores.getTableHeader().setResizingAllowed(false);
+        tableProveedores.getTableHeader().setBorder(BorderFactory.createMatteBorder(0, 0, 1, 0, BORDER));
+        ((DefaultTableCellRenderer) tableProveedores.getTableHeader().getDefaultRenderer()).setHorizontalAlignment(JLabel.CENTER);
 
-        // Centrar contenido columnas
-        DefaultTableCellRenderer centerRenderer = new DefaultTableCellRenderer();
-        centerRenderer.setHorizontalAlignment(javax.swing.JLabel.CENTER);
-        centerRenderer.setBackground(Color.decode("#111520"));
-        centerRenderer.setForeground(Color.decode("#F0F2FF"));
-        for (int i = 0; i < TableProveedores.getColumnModel().getColumnCount(); i++) {
-            TableProveedores.getColumnModel().getColumn(i).setCellRenderer(centerRenderer);
-        }
+        scrollTabla.setBorder(BorderFactory.createLineBorder(BORDER, 1));
+        scrollTabla.getViewport().setBackground(BG_TABLE);
 
-        if (TableProveedores.getColumnModel().getColumnCount() > 0) {
-            TableProveedores.getColumnModel().getColumn(0).setMaxWidth(55);
-            TableProveedores.getColumnModel().getColumn(1).setPreferredWidth(210);
-            TableProveedores.getColumnModel().getColumn(2).setPreferredWidth(110);
-        }
+        panelBotones.setBackground(BG_CARD);
+        panelBotones.setBorder(BorderFactory.createLineBorder(BORDER, 1));
 
-        // Header tabla
-        TableProveedores.getTableHeader().setBackground(Color.decode("#181D2E"));
-        TableProveedores.getTableHeader().setForeground(Color.decode("#9BA3C4"));
-        TableProveedores.getTableHeader().setFont(new Font("Segoe UI", Font.BOLD, 11));
-        TableProveedores.getTableHeader().setReorderingAllowed(false);
-        TableProveedores.getTableHeader().setBorder(
-            BorderFactory.createMatteBorder(0, 0, 1, 0, Color.decode("#2A3050"))
-        );
-        ((DefaultTableCellRenderer) TableProveedores.getTableHeader().getDefaultRenderer())
-            .setHorizontalAlignment(javax.swing.JLabel.CENTER);
-
-        // ScrollPane
-        jScrollPane1.setBorder(BorderFactory.createLineBorder(Color.decode("#2A3050"), 1));
-        jScrollPane1.setBackground(Color.decode("#111520"));
-        jScrollPane1.getViewport().setBackground(Color.decode("#111520"));
-
-        // === INPUTS ===
-        javax.swing.JTextField[] campos = {txtNombre, txtTelefono};
-        for (javax.swing.JTextField c : campos) {
-            c.setBackground(Color.decode("#181D2E"));
-            c.setForeground(Color.decode("#F0F2FF"));
-            c.setCaretColor(Color.decode("#6C63FF"));
-            c.setFont(new Font("Segoe UI", Font.PLAIN, 13));
-            c.setBorder(BorderFactory.createCompoundBorder(
-                BorderFactory.createLineBorder(Color.decode("#2A3050"), 1),
-                BorderFactory.createEmptyBorder(6, 10, 6, 10)
-            ));
-            c.addFocusListener(new java.awt.event.FocusAdapter() {
-                public void focusGained(java.awt.event.FocusEvent e) {
-                    ((javax.swing.JTextField) e.getSource()).setBorder(BorderFactory.createCompoundBorder(
-                        BorderFactory.createLineBorder(Color.decode("#6C63FF"), 1),
-                        BorderFactory.createEmptyBorder(6, 10, 6, 10)
-                    ));
-                }
-                public void focusLost(java.awt.event.FocusEvent e) {
-                    ((javax.swing.JTextField) e.getSource()).setBorder(BorderFactory.createCompoundBorder(
-                        BorderFactory.createLineBorder(Color.decode("#2A3050"), 1),
-                        BorderFactory.createEmptyBorder(6, 10, 6, 10)
-                    ));
-                }
-            });
-        }
-
-        // === COMBOBOX ===
-        cmbEstado.setBackground(Color.decode("#181D2E"));
-        cmbEstado.setForeground(Color.decode("#F0F2FF"));
-        cmbEstado.setFont(new Font("Segoe UI", Font.PLAIN, 12));
-        cmbEstado.setBorder(BorderFactory.createLineBorder(Color.decode("#2A3050"), 1));
-
-        // === BOTÓN ACTUALIZAR ===
-        btnActualizar.setBackground(Color.decode("#6C63FF"));
+        btnActualizar.setBackground(ACCENT);
         btnActualizar.setForeground(Color.WHITE);
         btnActualizar.setFont(new Font("Segoe UI", Font.BOLD, 12));
         btnActualizar.setFocusPainted(false);
         btnActualizar.setBorderPainted(false);
         btnActualizar.setOpaque(true);
-        btnActualizar.setCursor(new Cursor(Cursor.HAND_CURSOR));
-        btnActualizar.setText("Actualizar");
+        btnActualizar.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
         btnActualizar.addMouseListener(new MouseAdapter() {
             public void mouseEntered(MouseEvent e) { btnActualizar.setBackground(Color.decode("#5850DC")); }
-            public void mouseExited(MouseEvent e)  { btnActualizar.setBackground(Color.decode("#6C63FF")); }
+            public void mouseExited(MouseEvent e)  { btnActualizar.setBackground(ACCENT); }
         });
 
-        // === BOTÓN ELIMINAR ===
-        btnEliminar.setBackground(Color.decode("#1E0F14"));
-        btnEliminar.setForeground(Color.decode("#FF5B7A"));
+        btnEliminar.setBackground(Color.decode("#1E0A10"));
+        btnEliminar.setForeground(DANGER);
         btnEliminar.setFont(new Font("Segoe UI", Font.BOLD, 12));
         btnEliminar.setFocusPainted(false);
         btnEliminar.setBorder(BorderFactory.createLineBorder(Color.decode("#3A1520"), 1));
-        btnEliminar.setCursor(new Cursor(Cursor.HAND_CURSOR));
-        btnEliminar.setText("Eliminar");
+        btnEliminar.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
         btnEliminar.addMouseListener(new MouseAdapter() {
-            public void mouseEntered(MouseEvent e) {
-                btnEliminar.setBackground(Color.decode("#FF5B7A"));
-                btnEliminar.setForeground(Color.WHITE);
-            }
-            public void mouseExited(MouseEvent e) {
-                btnEliminar.setBackground(Color.decode("#1E0F14"));
-                btnEliminar.setForeground(Color.decode("#FF5B7A"));
-            }
+            public void mouseEntered(MouseEvent e) { btnEliminar.setBackground(DANGER); btnEliminar.setForeground(Color.WHITE); }
+            public void mouseExited(MouseEvent e) { btnEliminar.setBackground(Color.decode("#1E0A10")); btnEliminar.setForeground(DANGER); }
+        });
+
+        panelEdicion.setBackground(BG_MAIN);
+
+        for (JLabel lbl : new JLabel[]{lblNombre, lblTelefono, lblEstado}) {
+            lbl.setForeground(TEXT_MUT);
+            lbl.setFont(new Font("Segoe UI", Font.BOLD, 10));
+        }
+
+        estilizarCampo(txtNombre);
+        estilizarCampo(txtTelefono);
+
+        cmbEstado.setBackground(BG_INPUT);
+        cmbEstado.setForeground(TEXT_PRI);
+        cmbEstado.setFont(new Font("Segoe UI", Font.PLAIN, 12));
+        cmbEstado.setBorder(BorderFactory.createLineBorder(BORDER, 1));
+    }
+
+    private void estilizarCampo(JTextField f) {
+        f.setBackground(BG_INPUT);
+        f.setForeground(TEXT_PRI);
+        f.setCaretColor(ACCENT);
+        f.setFont(new Font("Segoe UI", Font.PLAIN, 13));
+        f.setBorder(BorderFactory.createCompoundBorder(BorderFactory.createLineBorder(BORDER, 1), new EmptyBorder(6, 10, 6, 10)));
+        f.addFocusListener(new FocusAdapter() {
+            public void focusGained(FocusEvent e) { f.setBorder(BorderFactory.createCompoundBorder(BorderFactory.createLineBorder(ACCENT, 1), new EmptyBorder(6, 10, 6, 10))); }
+            public void focusLost(FocusEvent e) { f.setBorder(BorderFactory.createCompoundBorder(BorderFactory.createLineBorder(BORDER, 1), new EmptyBorder(6, 10, 6, 10))); }
         });
     }
 
     @SuppressWarnings("unchecked")
-    // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
-
-        jLabel1 = new javax.swing.JLabel();
-        jPanel1 = new javax.swing.JPanel();
-        jScrollPane1 = new javax.swing.JScrollPane();
-        TableProveedores = new javax.swing.JTable();
-        jPanel2 = new javax.swing.JPanel();
-        btnActualizar = new javax.swing.JButton();
-        btnEliminar = new javax.swing.JButton();
-        jLabel2 = new javax.swing.JLabel();
-        jLabel3 = new javax.swing.JLabel();
-        txtNombre = new javax.swing.JTextField();
-        txtTelefono = new javax.swing.JTextField();
-        cmbEstado = new javax.swing.JComboBox<>();
-        jLabel4 = new javax.swing.JLabel();
+        lblTitulo     = new JLabel();
+        panelTabla    = new JPanel();
+        scrollTabla   = new JScrollPane();
+        tableProveedores = new JTable();
+        panelBotones  = new JPanel();
+        btnActualizar = new JButton();
+        btnEliminar   = new JButton();
+        panelEdicion  = new JPanel();
+        lblNombre     = new JLabel();
+        lblTelefono   = new JLabel();
+        lblEstado     = new JLabel();
+        txtNombre     = new JTextField();
+        txtTelefono   = new JTextField();
+        cmbEstado     = new JComboBox<>();
 
         setClosable(true);
         setIconifiable(true);
+        setMaximizable(true);
         setResizable(true);
+        setTitle("Gestionar Proveedores");
+        setPreferredSize(new Dimension(880, 480));
+
         getContentPane().setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
 
-        jLabel1.setText("Gestionar Proveedores");
-        getContentPane().add(jLabel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(270, 20, -1, -1));
+        lblTitulo.setText("✦  Gestionar Proveedores");
+        getContentPane().add(lblTitulo, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 14, 880, 28));
 
-        jPanel1.setBorder(javax.swing.BorderFactory.createEtchedBorder());
-        jPanel1.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
-
-        TableProveedores.setModel(new javax.swing.table.DefaultTableModel(
-            new Object [][] {
-
-            },
-            new String [] {
-                "Id", "Nombre", "Telefono", "Estado"
-            }
+        panelTabla.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
+        tableProveedores.setModel(new javax.swing.table.DefaultTableModel(
+            new Object[][]{},
+            new String[]{"Id", "Nombre", "Teléfono", "Estado"}
         ));
-        jScrollPane1.setViewportView(TableProveedores);
+        scrollTabla.setViewportView(tableProveedores);
+        panelTabla.add(scrollTabla, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 10, 580, 210));
+        getContentPane().add(panelTabla, new org.netbeans.lib.awtextra.AbsoluteConstraints(12, 50, 600, 230));
 
-        jPanel1.add(jScrollPane1, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 10, 580, 200));
-
-        getContentPane().add(jPanel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 60, 600, 220));
-
-        jPanel2.setBorder(javax.swing.BorderFactory.createEtchedBorder());
-        jPanel2.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
-
+        panelBotones.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
         btnActualizar.setText("Actualizar");
-        btnActualizar.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                btnActualizarActionPerformed(evt);
-            }
-        });
-        jPanel2.add(btnActualizar, new org.netbeans.lib.awtextra.AbsoluteConstraints(30, 50, 120, 34));
-
+        btnActualizar.addActionListener(evt -> btnActualizarActionPerformed(evt));
+        panelBotones.add(btnActualizar, new org.netbeans.lib.awtextra.AbsoluteConstraints(18, 40, BTN_W, BTN_H));
         btnEliminar.setText("Eliminar");
-        jPanel2.add(btnEliminar, new org.netbeans.lib.awtextra.AbsoluteConstraints(30, 100, 120, 34));
+        panelBotones.add(btnEliminar, new org.netbeans.lib.awtextra.AbsoluteConstraints(18, 94, BTN_W, BTN_H));
+        getContentPane().add(panelBotones, new org.netbeans.lib.awtextra.AbsoluteConstraints(624, 50, 166, 230));
 
-        getContentPane().add(jPanel2, new org.netbeans.lib.awtextra.AbsoluteConstraints(620, 60, 180, 220));
+        panelEdicion.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
 
-        jLabel2.setText("Nombre:");
-        getContentPane().add(jLabel2, new org.netbeans.lib.awtextra.AbsoluteConstraints(40, 310, -1, -1));
+        lblNombre.setText("NOMBRE");
+        panelEdicion.add(lblNombre, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, FIELD_W1, LABEL_H));
+        panelEdicion.add(txtNombre, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 18, FIELD_W1, FIELD_H));
 
-        jLabel3.setText("Telefono:");
-        getContentPane().add(jLabel3, new org.netbeans.lib.awtextra.AbsoluteConstraints(40, 350, -1, -1));
-        getContentPane().add(txtNombre, new org.netbeans.lib.awtextra.AbsoluteConstraints(110, 308, 220, 28));
-        getContentPane().add(txtTelefono, new org.netbeans.lib.awtextra.AbsoluteConstraints(110, 348, 160, 28));
+        lblTelefono.setText("TELÉFONO");
+        panelEdicion.add(lblTelefono, new org.netbeans.lib.awtextra.AbsoluteConstraints(236, 0, FIELD_W2, LABEL_H));
+        panelEdicion.add(txtTelefono, new org.netbeans.lib.awtextra.AbsoluteConstraints(236, 18, FIELD_W2, FIELD_H));
 
-        cmbEstado.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "ACTIVO", "INACTIVO" }));
-        getContentPane().add(cmbEstado, new org.netbeans.lib.awtextra.AbsoluteConstraints(420, 308, 110, 28));
+        lblEstado.setText("ESTADO");
+        panelEdicion.add(lblEstado, new org.netbeans.lib.awtextra.AbsoluteConstraints(412, 0, CMB_W, LABEL_H));
+        cmbEstado.setModel(new javax.swing.DefaultComboBoxModel<>(new String[]{"ACTIVO", "INACTIVO"}));
+        panelEdicion.add(cmbEstado, new org.netbeans.lib.awtextra.AbsoluteConstraints(412, 18, CMB_W, FIELD_H));
 
-        jLabel4.setText("Estado:");
-        getContentPane().add(jLabel4, new org.netbeans.lib.awtextra.AbsoluteConstraints(360, 310, 50, -1));
+        getContentPane().add(panelEdicion, new org.netbeans.lib.awtextra.AbsoluteConstraints(24, 300, 550, 70));
 
         pack();
-    }// </editor-fold>//GEN-END:initComponents
+    }
 
-    private void btnActualizarActionPerformed(java.awt.event.ActionEvent evt) {                                              
-        // TODO add your handling code here:
-    }                                             
+    private void btnActualizarActionPerformed(java.awt.event.ActionEvent evt) {
+        // TODO
+    }
 
-    // Variables declaration - do not modify//GEN-BEGIN:variables
-    public static javax.swing.JTable TableProveedores;
-    public javax.swing.JButton btnActualizar;
-    public javax.swing.JButton btnEliminar;
-    public javax.swing.JComboBox<String> cmbEstado;
-    private javax.swing.JLabel jLabel1;
-    private javax.swing.JLabel jLabel2;
-    private javax.swing.JLabel jLabel3;
-    private javax.swing.JLabel jLabel4;
-    public javax.swing.JPanel jPanel1;
-    public static javax.swing.JPanel jPanel2;
-    private javax.swing.JScrollPane jScrollPane1;
-    public javax.swing.JTextField txtNombre;
-    public javax.swing.JTextField txtTelefono;
-    // End of variables declaration//GEN-END:variables
+    public static javax.swing.JTable    TableProveedores; 
+    public        javax.swing.JButton   btnActualizar;
+    public        javax.swing.JButton   btnEliminar;
+    public        javax.swing.JComboBox<String> cmbEstado;
+    private       javax.swing.JLabel    lblEstado;
+    private       javax.swing.JLabel    lblNombre;
+    private       javax.swing.JLabel    lblTelefono;
+    private       javax.swing.JLabel    lblTitulo;
+    private       javax.swing.JPanel    panelBotones;
+    private       javax.swing.JPanel    panelEdicion;
+    private       javax.swing.JPanel    panelTabla;
+    private       javax.swing.JScrollPane scrollTabla;
+    public static javax.swing.JTable    tableProveedores;
+    public        javax.swing.JTextField txtNombre;
+    public        javax.swing.JTextField txtTelefono;
 }
