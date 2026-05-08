@@ -125,4 +125,29 @@ public class UsuarioDAO {
         return false;
     }
 
+public Usuario login(String user, String pass) {
+    String sql = "SELECT u.*, r.nombre_cargo FROM USUARIOS u "
+               + "INNER JOIN ROLES r ON u.id_rol = r.id_rol "
+               + "WHERE u.username = ? AND u.password = ? AND u.estado = 'ACTIVO'";
+    Connection conexion = con.conectar();
+    try {
+        PreparedStatement ps = conexion.prepareStatement(sql);
+        ps.setString(1, user);
+        ps.setString(2, pass);
+        ResultSet rs = ps.executeQuery();
+        if (rs.next()) {
+            Usuario u = new Usuario();
+            u.setIdUsuario(rs.getInt("id_usuario"));
+            u.setNombre(rs.getString("nombre"));
+            u.setApellido(rs.getString("apellido"));
+            u.setUsuario(rs.getString("username"));
+            u.setRolCargo(rs.getString("nombre_cargo"));
+            return u;
+        }
+    } catch (SQLException e) {
+        System.out.println("Error en login: " + e.getMessage());
+    }
+    return null;
+}
+
 }
