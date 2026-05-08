@@ -175,6 +175,10 @@ public class MDI extends javax.swing.JFrame {
     private void jMenuItem4ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem4ActionPerformed
         // TODO add your handling code here:
         FrmRolesPermisos roles = new FrmRolesPermisos();
+        Vistas.FrmNuevoUsuario form2 = new Vistas.FrmNuevoUsuario();
+        Modelos.Roles modeloRoles = new Modelos.Roles();
+        Modelos.RolesDAO rolesDAO = new Modelos.RolesDAO();
+        Controladores.CtrlRoles.CtrlGestionarRoles ctrlRoles = new Controladores.CtrlRoles.CtrlGestionarRoles(modeloRoles, roles, form2, rolesDAO);
         jDesktopPane_MDI.add(roles);
         roles.setVisible(true);
     }//GEN-LAST:event_jMenuItem4ActionPerformed
