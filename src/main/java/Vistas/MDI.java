@@ -232,7 +232,12 @@ public class MDI extends javax.swing.JFrame {
             ctrl.cargarTabla();
             abrirVentana(vista, "Usuarios", "Control de accesos");
         }));
-        itemsWrap.add(crearSidebarItem("🛡️", "Roles y Permisos", null, () -> abrirVentana(new FrmRolesPermisos(), "Usuarios", "Roles y permisos")));
+        itemsWrap.add(crearSidebarItem("🛡️", "Roles y Permisos", null, () ->{
+            FrmRolesPermisos vista = new FrmRolesPermisos();
+            FrmNuevoUsuario vistaUsuario = new FrmNuevoUsuario();           
+            new CtrlGestionarRoles(new Roles(), vista,vistaUsuario, new RolesDAO());
+            abrirVentana(vista, "Usuarios", "Roles y permisos");
+        }));
 
         itemsWrap.add(crearSectionLabel("COMPRAS"));
         itemsWrap.add(crearSidebarItem("🛒", "Nueva Compra", null, () -> {
