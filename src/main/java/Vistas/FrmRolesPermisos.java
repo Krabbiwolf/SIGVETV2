@@ -30,11 +30,16 @@ public class FrmRolesPermisos extends javax.swing.JInternalFrame {
         jLabel2 = new javax.swing.JLabel();
         jLabel3 = new javax.swing.JLabel();
         txtRol = new javax.swing.JTextField();
-        comboPermiso = new javax.swing.JComboBox<>();
         jLabel4 = new javax.swing.JLabel();
         jScrollPane1 = new javax.swing.JScrollPane();
         txtDescripcion = new javax.swing.JTextArea();
         btnGuardarRol = new javax.swing.JButton();
+        checkGestionProductoProveedor = new javax.swing.JCheckBox();
+        checkRegistroCompraVenta = new javax.swing.JCheckBox();
+        checkGestionUsuarios = new javax.swing.JCheckBox();
+        checkVerProductoProveedor = new javax.swing.JCheckBox();
+        checkVerCompraVenta = new javax.swing.JCheckBox();
+        checkVerUsuarios = new javax.swing.JCheckBox();
 
         setClosable(true);
         setMaximizable(true);
@@ -46,9 +51,7 @@ public class FrmRolesPermisos extends javax.swing.JInternalFrame {
         jLabel2.setText("Nombre:");
 
         jLabel3.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
-        jLabel3.setText("Permiso:");
-
-        comboPermiso.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
+        jLabel3.setText("Permisos:");
 
         jLabel4.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
         jLabel4.setText("Descripción:");
@@ -59,66 +62,127 @@ public class FrmRolesPermisos extends javax.swing.JInternalFrame {
 
         btnGuardarRol.setText("Guardar");
 
+        checkGestionProductoProveedor.setText("Gestión Productos y Proveedores");
+        checkGestionProductoProveedor.addActionListener(this::checkGestionProductoProveedorActionPerformed);
+
+        checkRegistroCompraVenta.setText("Registro Compra y Ventas");
+        checkRegistroCompraVenta.addActionListener(this::checkRegistroCompraVentaActionPerformed);
+
+        checkGestionUsuarios.setText("Gestión Usuarios");
+        checkGestionUsuarios.addActionListener(this::checkGestionUsuariosActionPerformed);
+
+        checkVerProductoProveedor.setText("Ver Productos y Proveedores");
+
+        checkVerCompraVenta.setText("Ver Compra y Ventas");
+
+        checkVerUsuarios.setText("Ver Usuarios");
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addComponent(jLabel1)
-                .addGap(152, 152, 152))
             .addGroup(layout.createSequentialGroup()
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(layout.createSequentialGroup()
-                        .addGap(26, 26, 26)
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                            .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                                .addGroup(layout.createSequentialGroup()
-                                    .addComponent(jLabel3)
-                                    .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                                    .addComponent(comboPermiso, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                    .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                        .addGroup(layout.createSequentialGroup()
+                            .addGap(31, 31, 31)
+                            .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                .addComponent(jLabel3)
                                 .addGroup(layout.createSequentialGroup()
                                     .addComponent(jLabel2)
                                     .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                                    .addComponent(txtRol, javax.swing.GroupLayout.PREFERRED_SIZE, 261, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                            .addGroup(layout.createSequentialGroup()
-                                .addComponent(jLabel4)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 242, javax.swing.GroupLayout.PREFERRED_SIZE))))
+                                    .addComponent(txtRol, javax.swing.GroupLayout.PREFERRED_SIZE, 261, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                .addComponent(checkGestionProductoProveedor)
+                                .addComponent(checkRegistroCompraVenta)
+                                .addComponent(checkGestionUsuarios)
+                                .addComponent(checkVerProductoProveedor)
+                                .addComponent(checkVerCompraVenta)
+                                .addComponent(checkVerUsuarios)))
+                        .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                            .addContainerGap()
+                            .addComponent(jLabel4)
+                            .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                            .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 242, javax.swing.GroupLayout.PREFERRED_SIZE)))
                     .addGroup(layout.createSequentialGroup()
-                        .addGap(181, 181, 181)
+                        .addGap(177, 177, 177)
                         .addComponent(btnGuardarRol)))
-                .addContainerGap(71, Short.MAX_VALUE))
+                .addContainerGap(58, Short.MAX_VALUE))
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                .addGap(0, 0, Short.MAX_VALUE)
+                .addComponent(jLabel1)
+                .addGap(159, 159, 159))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
-                .addGap(20, 20, 20)
+                .addContainerGap()
                 .addComponent(jLabel1)
-                .addGap(18, 18, 18)
+                .addGap(32, 32, 32)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel2)
                     .addComponent(txtRol, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(18, 18, 18)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jLabel3)
-                    .addComponent(comboPermiso, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(18, 18, 18)
+                .addComponent(jLabel3)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addComponent(checkGestionProductoProveedor)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(checkRegistroCompraVenta)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(checkGestionUsuarios)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(checkVerProductoProveedor)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(checkVerCompraVenta)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(checkVerUsuarios)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 21, Short.MAX_VALUE)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(jLabel4)
-                    .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 146, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 140, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(18, 18, 18)
                 .addComponent(btnGuardarRol)
-                .addContainerGap(14, Short.MAX_VALUE))
+                .addGap(10, 10, 10))
         );
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
+    private void checkGestionProductoProveedorActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_checkGestionProductoProveedorActionPerformed
+        // TODO add your handling code here:
+        if(checkGestionProductoProveedor.isSelected()){
+            checkVerProductoProveedor.setSelected(true);
+        }else if(!checkGestionProductoProveedor.isSelected()){
+            checkVerProductoProveedor.setSelected(false);
+        }
+    }//GEN-LAST:event_checkGestionProductoProveedorActionPerformed
+
+    private void checkRegistroCompraVentaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_checkRegistroCompraVentaActionPerformed
+        // TODO add your handling code here:
+        if(checkRegistroCompraVenta.isSelected()){
+            checkVerCompraVenta.setSelected(true);
+        }else if(!checkRegistroCompraVenta.isSelected()){
+            checkVerCompraVenta.setSelected(false);
+        }
+    }//GEN-LAST:event_checkRegistroCompraVentaActionPerformed
+
+    private void checkGestionUsuariosActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_checkGestionUsuariosActionPerformed
+        // TODO add your handling code here:
+        if(checkGestionUsuarios.isSelected()){
+            checkVerUsuarios.setSelected(true);
+        }else if(!checkGestionUsuarios.isSelected()){
+            checkVerUsuarios.setSelected(false);
+        }
+    }//GEN-LAST:event_checkGestionUsuariosActionPerformed
+
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     public javax.swing.JButton btnGuardarRol;
-    public javax.swing.JComboBox<String> comboPermiso;
+    public javax.swing.JCheckBox checkGestionProductoProveedor;
+    public javax.swing.JCheckBox checkGestionUsuarios;
+    public javax.swing.JCheckBox checkRegistroCompraVenta;
+    public javax.swing.JCheckBox checkVerCompraVenta;
+    public javax.swing.JCheckBox checkVerProductoProveedor;
+    public javax.swing.JCheckBox checkVerUsuarios;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
