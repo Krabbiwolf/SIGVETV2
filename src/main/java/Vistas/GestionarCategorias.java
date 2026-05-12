@@ -1,6 +1,8 @@
 package Vistas;
 
 import java.awt.*;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
 import javax.swing.*;
 import javax.swing.border.EmptyBorder;
 import javax.swing.table.DefaultTableCellRenderer;
@@ -51,13 +53,23 @@ public class GestionarCategorias extends javax.swing.JInternalFrame {
         getContentPane().add(jScrollPane1);
 
         // Botones Laterales
+        btnActualizar.setText("Actualizar"); // <-- TEXTO AÑADIDO
         estilizarBtn(btnActualizar, ACCENT, Color.WHITE);
         btnActualizar.setBounds(630, 60, 180, 42);
+        btnActualizar.addMouseListener(new MouseAdapter() {
+            public void mouseEntered(MouseEvent e) { btnActualizar.setBackground(Color.decode("#5850DC")); }
+            public void mouseExited(MouseEvent e)  { btnActualizar.setBackground(ACCENT); }
+        });
         getContentPane().add(btnActualizar);
 
+        btnEliminar.setText("Eliminar"); // <-- TEXTO AÑADIDO
         estilizarBtn(btnEliminar, Color.decode("#1E0A10"), DANGER);
         btnEliminar.setBorder(BorderFactory.createLineBorder(Color.decode("#3A1520"), 1));
         btnEliminar.setBounds(630, 115, 180, 42);
+        btnEliminar.addMouseListener(new MouseAdapter() {
+            public void mouseEntered(MouseEvent e) { btnEliminar.setBackground(DANGER); btnEliminar.setForeground(Color.WHITE); }
+            public void mouseExited(MouseEvent e)  { btnEliminar.setBackground(Color.decode("#1E0A10")); btnEliminar.setForeground(DANGER); }
+        });
         getContentPane().add(btnEliminar);
 
         // Panel Inferior de Edición
