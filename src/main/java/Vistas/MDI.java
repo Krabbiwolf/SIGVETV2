@@ -741,9 +741,7 @@ public class MDI extends javax.swing.JFrame {
         Modelos.Roles modeloRoles = new Modelos.Roles();
         Modelos.RolesDAO rolesDAO = new Modelos.RolesDAO();
         Controladores.CtrlRoles.CtrlGestionarRoles ctrlRoles = new Controladores.CtrlRoles.CtrlGestionarRoles(modeloRoles, roles, form2, rolesDAO);
-        jDesktopPane_MDI.add(roles);
-        roles.setVisible(true);
-    }//GEN-LAST:event_jMenuItem4ActionPerformed
+        //GEN-LAST:event_jMenuItem4ActionPerformed
         abrirVentana(roles, "Usuarios", "Roles y Permisos");
     }
 
