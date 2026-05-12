@@ -14,6 +14,8 @@ import Controladores.CtrlUsuarios.*;
 import Controladores.CtrlCompra.*;
 import Controladores.CtrlFactura.*;
 import Controladores.CtrlRoles.*;
+import Controladores.CtrlNuevoCliente;
+import Controladores.CtrlGestionarClientes;
 
 /**
  * SIGVET — MDI Principal
@@ -35,7 +37,6 @@ public class MDI extends javax.swing.JFrame {
     private static final Color TEXT_MUTED   = Color.decode("#9BA3C4");
     private static final Color TEXT_HINT    = Color.decode("#5A6280");
     private static final Color DANGER       = Color.decode("#FF5B7A");
-    private static final Color WARN         = Color.decode("#FFB547");
 
     // ── Tipografía ───────────────────────────────────────────────────────────
     private static final Font FONT_BRAND   = new Font("Segoe UI", Font.BOLD,  15);
@@ -61,10 +62,7 @@ public class MDI extends javax.swing.JFrame {
             System.err.println("FlatLaf no disponible: " + ex.getMessage());
         }
         initComponents();
-        
-        // Ocultamos la barra de menú gris antigua de NetBeans para lucir la nueva Sidebar
         jMenuBar1.setVisible(false);
-        
         setExtendedState(MAXIMIZED_BOTH);
         setMinimumSize(new Dimension(1100, 700));
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -80,9 +78,7 @@ public class MDI extends javax.swing.JFrame {
             configurarUIManager();
         } catch (Exception ex) {}
         initComponents();
-        
         jMenuBar1.setVisible(false);
-        
         setExtendedState(MAXIMIZED_BOTH);
         setMinimumSize(new Dimension(1100, 700));
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -118,7 +114,6 @@ public class MDI extends javax.swing.JFrame {
                     FontMetrics fm = g2.getFontMetrics();
                     String txt = "SIGVET ERP";
                     g2.drawString(txt, (getWidth() - fm.stringWidth(txt)) / 2, getHeight() / 2 - 20);
-                    
                     g2.setFont(new Font("Segoe UI", Font.PLAIN, 16));
                     fm = g2.getFontMetrics();
                     String sub = "Selecciona una opción del menú para comenzar";
@@ -138,14 +133,13 @@ public class MDI extends javax.swing.JFrame {
         JPanel sidebar = new JPanel();
         sidebar.setLayout(new BoxLayout(sidebar, BoxLayout.Y_AXIS));
         sidebar.setBackground(BG_SIDEBAR);
-        sidebar.setPreferredSize(new Dimension(230, 0));
+        sidebar.setPreferredSize(new Dimension(240, 0));
         sidebar.setBorder(BorderFactory.createMatteBorder(0, 0, 0, 1, BORDER_COLOR));
 
         JPanel brand = new JPanel(null);
         brand.setBackground(BG_SIDEBAR);
-        brand.setMaximumSize(new Dimension(230, 56));
-        brand.setMinimumSize(new Dimension(230, 56));
-        brand.setPreferredSize(new Dimension(230, 56));
+        brand.setMaximumSize(new Dimension(240, 60));
+        brand.setPreferredSize(new Dimension(240, 60));
         brand.setBorder(BorderFactory.createMatteBorder(0, 0, 1, 0, BORDER_COLOR));
 
         JPanel logoMini = new JPanel() {
@@ -159,8 +153,7 @@ public class MDI extends javax.swing.JFrame {
                 g2.setFont(new Font("Segoe UI", Font.BOLD, 11));
                 FontMetrics fm = g2.getFontMetrics();
                 String txt = "S";
-                g2.drawString(txt, (getWidth() - fm.stringWidth(txt)) / 2,
-                    (getHeight() + fm.getAscent() - fm.getDescent()) / 2);
+                g2.drawString(txt, (getWidth() - fm.stringWidth(txt)) / 2, (getHeight() + fm.getAscent() - fm.getDescent()) / 2);
             }
         };
         logoMini.setBounds(14, 14, 24, 24);
@@ -170,15 +163,14 @@ public class MDI extends javax.swing.JFrame {
         JLabel brandLbl = new JLabel("SIGVET");
         brandLbl.setFont(FONT_BRAND);
         brandLbl.setForeground(TEXT_PRIMARY);
-        brandLbl.setBounds(44, 12, 130, 20);
+        brandLbl.setBounds(46, 12, 130, 20);
         brand.add(brandLbl);
 
         JLabel versionLbl = new JLabel("v2.0 ERP");
         versionLbl.setFont(new Font("Segoe UI", Font.PLAIN, 9));
         versionLbl.setForeground(TEXT_HINT);
-        versionLbl.setBounds(44, 33, 80, 12);
+        versionLbl.setBounds(46, 33, 80, 12);
         brand.add(versionLbl);
-
         sidebar.add(brand);
 
         JPanel itemsWrap = new JPanel();
@@ -186,17 +178,13 @@ public class MDI extends javax.swing.JFrame {
         itemsWrap.setBackground(BG_SIDEBAR);
         itemsWrap.setBorder(BorderFactory.createEmptyBorder(6, 0, 6, 0));
 
-        // =====================================================================
-        // LAS CATEGORÍAS EXACTAS QUE PEDISTE:
-        // =====================================================================
-
         itemsWrap.add(crearSectionLabel("PRINCIPAL"));
-        itemsWrap.add(crearSidebarItem("📊", "Dashboard", null, () -> {
-            abrirVentana(new FrmDashboard(), "Dashboard", "Vista general del sistema");
-        }));
-        itemsWrap.add(crearSidebarItem("📈", "Analíticas", null, () -> {
-            abrirVentana(new FrmAnaliticas(), "Analíticas", "Reportes y estadísticas");
-        }));
+        itemsWrap.add(crearSidebarItem("📊", "Dashboard", null, () -> abrirVentana(new FrmDashboard(), "Dashboard", "Vista general del sistema")));
+        itemsWrap.add(crearSidebarItem("📈", "Analíticas", null, () -> abrirVentana(new FrmAnaliticas(), "Analíticas", "Reportes y estadísticas")));
+
+        itemsWrap.add(crearSectionLabel("CATEGORÍAS"));
+        itemsWrap.add(crearSidebarItem("📑", "Nueva Categoría", null, () -> abrirVentana(new NuevaCategoria(), "Categorías", "Registro de nueva categoría")));
+        itemsWrap.add(crearSidebarItem("📂", "Gestionar Categorías", null, () -> abrirVentana(new GestionarCategorias(), "Categorías", "Administración de categorías")));
 
         itemsWrap.add(crearSectionLabel("PRODUCTO"));
         itemsWrap.add(crearSidebarItem("📦", "Nuevo Producto", null, () -> {
@@ -229,14 +217,8 @@ public class MDI extends javax.swing.JFrame {
         }));
 
         itemsWrap.add(crearSectionLabel("CLIENTES"));
-        itemsWrap.add(crearSidebarItem("👥", "Nuevo Cliente", null, () -> {
-            NuevoCliente vista = new NuevoCliente();
-            abrirVentana(vista, "Clientes", "Nuevo Cliente");
-        }));
-        itemsWrap.add(crearSidebarItem("🤝", "Gestionar Clientes", null, () -> {
-            GestionarClientes vista = new GestionarClientes();
-            abrirVentana(vista, "Clientes", "Gestión de Clientes");
-        }));
+        itemsWrap.add(crearSidebarItem("👥", "Nuevo Cliente", null, () -> abrirVentana(new NuevoCliente(), "Clientes", "Nuevo Cliente")));
+        itemsWrap.add(crearSidebarItem("🤝", "Gestionar Clientes", null, () -> abrirVentana(new GestionarClientes(), "Clientes", "Gestión de Clientes")));
 
         itemsWrap.add(crearSectionLabel("USUARIOS"));
         itemsWrap.add(crearSidebarItem("👤", "Nuevo Usuario", null, () -> {
@@ -250,10 +232,7 @@ public class MDI extends javax.swing.JFrame {
             ctrl.cargarTabla();
             abrirVentana(vista, "Usuarios", "Control de accesos");
         }));
-        itemsWrap.add(crearSidebarItem("🛡️", "Roles y Permisos", null, () -> {
-            FrmRolesPermisos vista = new FrmRolesPermisos();
-            abrirVentana(vista, "Usuarios", "Roles y permisos");
-        }));
+        itemsWrap.add(crearSidebarItem("🛡️", "Roles y Permisos", null, () -> abrirVentana(new FrmRolesPermisos(), "Usuarios", "Roles y permisos")));
 
         itemsWrap.add(crearSectionLabel("COMPRAS"));
         itemsWrap.add(crearSidebarItem("🛒", "Nueva Compra", null, () -> {
@@ -291,7 +270,7 @@ public class MDI extends javax.swing.JFrame {
         JLabel lbl = new JLabel(text);
         lbl.setFont(FONT_SECTION);
         lbl.setForeground(TEXT_HINT);
-        lbl.setMaximumSize(new Dimension(230, 35));
+        lbl.setMaximumSize(new Dimension(240, 35));
         lbl.setAlignmentX(Component.LEFT_ALIGNMENT);
         lbl.setBorder(BorderFactory.createEmptyBorder(15, 16, 5, 8));
         return lbl;
@@ -309,10 +288,9 @@ public class MDI extends javax.swing.JFrame {
                 super.paintComponent(g);
             }
         };
-
         btn.setLayout(new BorderLayout());
-        btn.setMaximumSize(new Dimension(230, 38));
-        btn.setPreferredSize(new Dimension(230, 38));
+        btn.setMaximumSize(new Dimension(240, 38));
+        btn.setPreferredSize(new Dimension(240, 38));
         btn.setAlignmentX(Component.LEFT_ALIGNMENT);
         btn.setBackground(BG_SIDEBAR);
         btn.setForeground(TEXT_MUTED);
@@ -328,17 +306,6 @@ public class MDI extends javax.swing.JFrame {
         iconLbl.setForeground(TEXT_MUTED);
         btn.add(iconLbl, BorderLayout.CENTER);
 
-        if (badge != null) {
-            JLabel badgeLbl = new JLabel(badge, SwingConstants.CENTER);
-            badgeLbl.setFont(FONT_BADGE);
-            badgeLbl.setForeground(Color.WHITE);
-            badgeLbl.setBackground(ACCENT2);
-            badgeLbl.setOpaque(true);
-            badgeLbl.setPreferredSize(new Dimension(22, 16));
-            badgeLbl.putClientProperty("JLabel.arc", 10);
-            btn.add(badgeLbl, BorderLayout.EAST);
-        }
-
         btn.addActionListener(e -> {
             if (itemActivo != null) {
                 itemActivo.setBackground(BG_SIDEBAR);
@@ -351,16 +318,15 @@ public class MDI extends javax.swing.JFrame {
             itemActivo = btn;
             accion.run();
         });
-
         return btn;
     }
 
     private JPanel crearUserPanel() {
         JPanel panel = new JPanel(null);
         panel.setBackground(BG_SIDEBAR);
-        panel.setMaximumSize(new Dimension(230, 65));
-        panel.setMinimumSize(new Dimension(230, 65));
-        panel.setPreferredSize(new Dimension(230, 65));
+        panel.setMaximumSize(new Dimension(240, 65));
+        panel.setMinimumSize(new Dimension(240, 65));
+        panel.setPreferredSize(new Dimension(240, 65));
         panel.setBorder(BorderFactory.createMatteBorder(1, 0, 0, 0, BORDER_COLOR));
 
         JPanel avatar = new JPanel() {
@@ -384,13 +350,13 @@ public class MDI extends javax.swing.JFrame {
         JLabel name = new JLabel(nombreUsuario);
         name.setFont(new Font("Segoe UI", Font.BOLD, 12));
         name.setForeground(TEXT_PRIMARY);
-        name.setBounds(54, 14, 130, 16);
+        name.setBounds(54, 14, 140, 16);
         panel.add(name);
 
         JLabel role = new JLabel(rolUsuario);
         role.setFont(new Font("Segoe UI", Font.PLAIN, 10));
         role.setForeground(TEXT_HINT);
-        role.setBounds(54, 32, 130, 14);
+        role.setBounds(54, 32, 140, 14);
         panel.add(role);
 
         JButton logoutBtn = new JButton("⏻");
@@ -400,13 +366,10 @@ public class MDI extends javax.swing.JFrame {
         logoutBtn.setFocusPainted(false);
         logoutBtn.setBorderPainted(false);
         logoutBtn.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
-        logoutBtn.setBounds(185, 20, 30, 24);
+        logoutBtn.setBounds(195, 20, 30, 24);
         logoutBtn.addActionListener(e -> {
             int confirm = JOptionPane.showConfirmDialog(this, "¿Cerrar sesión y salir?", "SIGVET", JOptionPane.YES_NO_OPTION);
-            if (confirm == JOptionPane.YES_OPTION) {
-                dispose();
-                new FrmLogin().setVisible(true);
-            }
+            if (confirm == JOptionPane.YES_OPTION) { dispose(); new FrmLogin().setVisible(true); }
         });
         panel.add(logoutBtn);
         return panel;
@@ -434,34 +397,26 @@ public class MDI extends javax.swing.JFrame {
         clockLbl.setFont(new Font("Segoe UI", Font.BOLD, 12));
         clockLbl.setForeground(TEXT_MUTED);
         header.addComponentListener(new ComponentAdapter() {
-            @Override public void componentResized(ComponentEvent e) {
-                clockLbl.setBounds(header.getWidth() - 150, 20, 120, 16);
-            }
+            public void componentResized(ComponentEvent e) { clockLbl.setBounds(header.getWidth() - 150, 20, 120, 16); }
         });
-        Timer clockTimer = new Timer(1000, e -> {
-            clockLbl.setText(new java.text.SimpleDateFormat("dd MMM yyyy - HH:mm").format(new java.util.Date()));
-        });
+        Timer clockTimer = new Timer(1000, e -> clockLbl.setText(new java.text.SimpleDateFormat("dd MMM yyyy - HH:mm").format(new java.util.Date())));
         clockTimer.start();
         header.add(clockLbl);
 
         JButton tileBtn = makeHeaderButton("⊞");
-        tileBtn.setToolTipText("Organizar ventanas abiertas");
         tileBtn.addActionListener(e -> organizarVentanas());
         header.addComponentListener(new ComponentAdapter() {
-            @Override public void componentResized(ComponentEvent e) {
-                tileBtn.setBounds(header.getWidth() - 80, 13, 32, 28);
-            }
+            public void componentResized(ComponentEvent e) { tileBtn.setBounds(header.getWidth() - 80, 13, 32, 28); }
         });
         header.add(tileBtn);
 
         JButton closeAllBtn = makeHeaderButton("✕");
         closeAllBtn.setForeground(DANGER);
-        closeAllBtn.setToolTipText("Cerrar todas las ventanas");
-        closeAllBtn.addActionListener(e -> cerrarTodasLasVentanas());
+        closeAllBtn.addActionListener(e -> {
+            for (JInternalFrame f : jDesktopPane_MDI.getAllFrames()) try { f.setClosed(true); } catch (Exception ex) {}
+        });
         header.addComponentListener(new ComponentAdapter() {
-            @Override public void componentResized(ComponentEvent e) {
-                closeAllBtn.setBounds(header.getWidth() - 40, 13, 30, 28);
-            }
+            public void componentResized(ComponentEvent e) { closeAllBtn.setBounds(header.getWidth() - 40, 13, 30, 28); }
         });
         header.add(closeAllBtn);
 
@@ -476,7 +431,6 @@ public class MDI extends javax.swing.JFrame {
         btn.setFocusPainted(false);
         btn.setBorder(BorderFactory.createLineBorder(BORDER_COLOR, 1));
         btn.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
-        btn.putClientProperty("JButton.buttonType", "roundRect");
         return btn;
     }
 
@@ -487,25 +441,26 @@ public class MDI extends javax.swing.JFrame {
 
     private void abrirVentana(JInternalFrame frame, String seccion, String subtitulo) {
         actualizarPageTitle(seccion, subtitulo); 
-        
         frame.getContentPane().setBackground(Color.decode("#0A0C10"));
         frame.putClientProperty("JInternalFrame.paletteMode", false);
         frame.putClientProperty("JInternalFrame.style", "dark");
         JInternalFrame.JDesktopIcon di = frame.getDesktopIcon();
         if (di != null) di.setBackground(Color.decode("#181D2E"));
-
         jDesktopPane_MDI.add(frame);
         frame.setVisible(true);
         try { frame.setSelected(true); } catch (Exception ex) {}
+        centrarInternalFrame(frame);
+    }
 
+    private void centrarInternalFrame(JInternalFrame f) {
         Dimension desktop = jDesktopPane_MDI.getSize();
-        Dimension fSize   = frame.getPreferredSize();
-        if (fSize.width > 0 && fSize.height > 0) {
-            frame.setSize(fSize.width, fSize.height);
-            frame.setLocation((desktop.width - fSize.width) / 2, (desktop.height - fSize.height) / 2);
+        Dimension frame   = f.getPreferredSize();
+        if (frame.width > 0 && frame.height > 0) {
+            f.setSize(frame.width, frame.height);
+            f.setLocation(Math.max(0, (desktop.width - frame.width) / 2), Math.max(0, (desktop.height - frame.height) / 2));
         } else {
-            frame.setSize(800, 550);
-            frame.setLocation((desktop.width - 800) / 2, (desktop.height - 550) / 2);
+            f.setSize(800, 550);
+            f.setLocation((desktop.width - 800) / 2, (desktop.height - 550) / 2);
         }
     }
 
@@ -514,20 +469,10 @@ public class MDI extends javax.swing.JFrame {
         if (frames.length == 0) return;
         int cols = (int) Math.ceil(Math.sqrt(frames.length));
         int rows = (int) Math.ceil((double) frames.length / cols);
-        int w    = jDesktopPane_MDI.getWidth()  / cols;
-        int h    = jDesktopPane_MDI.getHeight() / rows;
+        int w = jDesktopPane_MDI.getWidth() / cols;
+        int h = jDesktopPane_MDI.getHeight() / rows;
         for (int i = 0; i < frames.length; i++) {
-            if (!frames[i].isIcon()) {
-                int col = i % cols;
-                int row = i / cols;
-                frames[i].setBounds(col * w, row * h, w, h);
-            }
-        }
-    }
-
-    private void cerrarTodasLasVentanas() {
-        for (JInternalFrame f : jDesktopPane_MDI.getAllFrames()) {
-            try { f.setClosed(true); } catch (Exception ex) {}
+            if (!frames[i].isIcon()) frames[i].setBounds((i % cols) * w, (i / cols) * h, w, h);
         }
     }
 
@@ -539,17 +484,6 @@ public class MDI extends javax.swing.JFrame {
         UIManager.put("InternalFrame.inactiveTitleForeground", Color.decode("#9BA3C4"));
         UIManager.put("InternalFrame.titleFont",         new Font("Segoe UI", Font.BOLD, 12));
         UIManager.put("InternalFrame.borderColor",       Color.decode("#2A3050"));
-        UIManager.put("MenuBar.background",              Color.decode("#111520"));
-        UIManager.put("MenuBar.borderColor",             Color.decode("#2A3050"));
-        UIManager.put("Menu.selectionBackground",        Color.decode("#6C63FF"));
-        UIManager.put("Menu.selectionForeground",        Color.WHITE);
-        UIManager.put("MenuItem.selectionBackground",    Color.decode("#6C63FF"));
-        UIManager.put("MenuItem.background",             Color.decode("#111520"));
-        UIManager.put("MenuItem.foreground",             Color.decode("#9BA3C4"));
-        UIManager.put("PopupMenu.background",            Color.decode("#111520"));
-        UIManager.put("PopupMenu.border",                BorderFactory.createLineBorder(Color.decode("#2A3050")));
-        UIManager.put("ScrollBar.thumb",                 Color.decode("#2A3050"));
-        UIManager.put("ScrollBar.track",                 Color.decode("#111520"));
         UIManager.put("Table.background",                Color.decode("#111520"));
         UIManager.put("Table.foreground",                Color.decode("#F0F2FF"));
         UIManager.put("Table.selectionBackground",       Color.decode("#6C63FF"));
@@ -562,12 +496,10 @@ public class MDI extends javax.swing.JFrame {
         UIManager.put("TextField.background",            Color.decode("#181D2E"));
         UIManager.put("TextField.foreground",            Color.decode("#F0F2FF"));
         UIManager.put("TextField.caretForeground",       Color.decode("#6C63FF"));
-        UIManager.put("PasswordField.background",        Color.decode("#181D2E"));
-        UIManager.put("PasswordField.foreground",        Color.decode("#F0F2FF"));
     }
 
     // =========================================================================
-    // BLOQUE INTACTO AUTOGENERADO POR NETBEANS DE TUS 518 LÍNEAS ORIGINALES
+    // BLOQUE INTACTO AUTOGENERADO POR NETBEANS DE TUS LÍNEAS ORIGINALES
     // =========================================================================
 
     @SuppressWarnings("unchecked")
