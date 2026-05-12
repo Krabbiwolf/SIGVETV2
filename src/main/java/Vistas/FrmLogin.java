@@ -2,6 +2,7 @@ package Vistas;
 
 import Modelos.Usuario;
 import Modelos.UsuarioDAO;
+import Modelos.SesionUsuario;
 import java.awt.*;
 import java.awt.event.*;
 import javax.swing.*;
@@ -47,8 +48,9 @@ public class FrmLogin extends javax.swing.JFrame {
         Usuario u = dao.login(user, pass);
 
         if (u != null) {
+            SesionUsuario.iniciarSesion(u);
             this.dispose();
-            new MDI().setVisible(true);
+            new MDI(SesionUsuario.getNombreUsuarioActual(), SesionUsuario.getRolUsuarioActual()).setVisible(true);
         } else {
             JOptionPane.showMessageDialog(this, "Acceso denegado: Usuario o clave inválidos.", "Error", JOptionPane.ERROR_MESSAGE);
         }

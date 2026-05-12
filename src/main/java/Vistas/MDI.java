@@ -374,7 +374,7 @@ public class MDI extends javax.swing.JFrame {
         logoutBtn.setBounds(195, 20, 30, 24);
         logoutBtn.addActionListener(e -> {
             int confirm = JOptionPane.showConfirmDialog(this, "¿Cerrar sesión y salir?", "SIGVET", JOptionPane.YES_NO_OPTION);
-            if (confirm == JOptionPane.YES_OPTION) { dispose(); new FrmLogin().setVisible(true); }
+            if (confirm == JOptionPane.YES_OPTION) { Modelos.SesionUsuario.cerrarSesion(); dispose(); new FrmLogin().setVisible(true); }
         });
         panel.add(logoutBtn);
         return panel;
