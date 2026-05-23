@@ -1,172 +1,179 @@
 package Vistas;
 
-import java.awt.*;
-import java.awt.event.MouseAdapter;
-import java.awt.event.MouseEvent;
-import javax.swing.*;
-import javax.swing.border.EmptyBorder;
-import javax.swing.table.DefaultTableCellRenderer;
+import java.awt.Color;
+import Controladores.CtrlGestionarCategoria; // O el nombre correcto de tu controlador
 
 public class GestionarCategorias extends javax.swing.JInternalFrame {
 
-    private static final Color BG_MAIN   = Color.decode("#0A0C10");
-    private static final Color BG_CARD   = Color.decode("#111520");
-    private static final Color BG_TABLE  = Color.decode("#0E1219");
-    private static final Color BG_INPUT  = Color.decode("#181D2E");
-    private static final Color BORDER    = Color.decode("#2A3050");
-    private static final Color ACCENT    = Color.decode("#6C63FF");
-    private static final Color DANGER    = Color.decode("#FF5B7A");
-    private static final Color TEXT_PRI  = Color.decode("#F0F2FF");
-    private static final Color TEXT_MUT  = Color.decode("#9BA3C4");
-
     public GestionarCategorias() {
         initComponents();
-        this.setSize(new Dimension(850, 520));
-        this.setPreferredSize(new Dimension(850, 520));
-        this.setTitle("Gestionar Categorías");
-        aplicarEstiloPremium();
-    }
-
-    private void aplicarEstiloPremium() {
-        getContentPane().setBackground(BG_MAIN);
-        getContentPane().setLayout(null);
-
-        JLabel lblTitulo = new JLabel("✦  Gestión de Categorías");
-        lblTitulo.setForeground(TEXT_PRI);
-        lblTitulo.setFont(new Font("Segoe UI", Font.BOLD, 18));
-        lblTitulo.setBounds(25, 15, 300, 30);
-        getContentPane().add(lblTitulo);
-
-        // Tabla
-        tblCategorias.setBackground(BG_TABLE);
-        tblCategorias.setForeground(TEXT_PRI);
-        tblCategorias.setRowHeight(30);
-        tblCategorias.setSelectionBackground(ACCENT);
-        tblCategorias.setSelectionForeground(Color.WHITE);
+        // Decoración extra para la tabla que el .form no soporta visualmente en NetBeans
         tblCategorias.getTableHeader().setBackground(Color.decode("#181D2E"));
-        tblCategorias.getTableHeader().setForeground(TEXT_MUT);
-        tblCategorias.getTableHeader().setFont(new Font("Segoe UI", Font.BOLD, 11));
-        tblCategorias.getTableHeader().setBorder(BorderFactory.createMatteBorder(0, 0, 1, 0, BORDER));
-        
-        jScrollPane1.setBorder(BorderFactory.createLineBorder(BORDER, 1));
-        jScrollPane1.setBounds(25, 60, 580, 260);
-        getContentPane().add(jScrollPane1);
-
-        // Botones Laterales
-        btnActualizar.setText("Actualizar"); // <-- TEXTO AÑADIDO
-        estilizarBtn(btnActualizar, ACCENT, Color.WHITE);
-        btnActualizar.setBounds(630, 60, 180, 42);
-        btnActualizar.addMouseListener(new MouseAdapter() {
-            public void mouseEntered(MouseEvent e) { btnActualizar.setBackground(Color.decode("#5850DC")); }
-            public void mouseExited(MouseEvent e)  { btnActualizar.setBackground(ACCENT); }
-        });
-        getContentPane().add(btnActualizar);
-
-        btnEliminar.setText("Eliminar"); // <-- TEXTO AÑADIDO
-        estilizarBtn(btnEliminar, Color.decode("#1E0A10"), DANGER);
-        btnEliminar.setBorder(BorderFactory.createLineBorder(Color.decode("#3A1520"), 1));
-        btnEliminar.setBounds(630, 115, 180, 42);
-        btnEliminar.addMouseListener(new MouseAdapter() {
-            public void mouseEntered(MouseEvent e) { btnEliminar.setBackground(DANGER); btnEliminar.setForeground(Color.WHITE); }
-            public void mouseExited(MouseEvent e)  { btnEliminar.setBackground(Color.decode("#1E0A10")); btnEliminar.setForeground(DANGER); }
-        });
-        getContentPane().add(btnEliminar);
-
-        // Panel Inferior de Edición
-        JPanel panelEdit = new JPanel(null);
-        panelEdit.setBackground(BG_CARD);
-        panelEdit.setBorder(BorderFactory.createLineBorder(BORDER, 1));
-        panelEdit.setBounds(25, 340, 785, 110);
-        getContentPane().add(panelEdit);
-
-        jLabel2.setText("ID");
-        jLabel2.setForeground(TEXT_MUT);
-        jLabel2.setFont(new Font("Segoe UI", Font.BOLD, 10));
-        jLabel2.setBounds(20, 15, 60, 16);
-        panelEdit.add(jLabel2);
-        txtId.setBounds(20, 35, 60, 38);
-        estilizarCampo(txtId);
-        txtId.setBackground(Color.decode("#0E1219"));
-        panelEdit.add(txtId);
-
-        jLabel4.setText("NOMBRE");
-        jLabel4.setForeground(TEXT_MUT);
-        jLabel4.setFont(new Font("Segoe UI", Font.BOLD, 10));
-        jLabel4.setBounds(100, 15, 200, 16);
-        panelEdit.add(jLabel4);
-        txtnombrecategoria.setBounds(100, 35, 200, 38);
-        estilizarCampo(txtnombrecategoria);
-        panelEdit.add(txtnombrecategoria);
-
-        jLabel1.setText("DESCRIPCIÓN");
-        jLabel1.setForeground(TEXT_MUT);
-        jLabel1.setFont(new Font("Segoe UI", Font.BOLD, 10));
-        jLabel1.setBounds(320, 15, 280, 16);
-        panelEdit.add(jLabel1);
-        txtDescripcion.setBounds(320, 35, 280, 38);
-        estilizarCampo(txtDescripcion);
-        panelEdit.add(txtDescripcion);
-
-        jLabel3.setText("ESTADO");
-        jLabel3.setForeground(TEXT_MUT);
-        jLabel3.setFont(new Font("Segoe UI", Font.BOLD, 10));
-        jLabel3.setBounds(620, 15, 140, 16);
-        panelEdit.add(jLabel3);
-        cbEstado.setBounds(620, 35, 140, 38);
-        cbEstado.setBackground(BG_INPUT);
-        cbEstado.setForeground(TEXT_PRI);
-        cbEstado.setBorder(BorderFactory.createLineBorder(BORDER, 1));
-        panelEdit.add(cbEstado);
-    }
-
-    private void estilizarCampo(JTextField f) {
-        f.setBackground(BG_INPUT);
-        f.setForeground(TEXT_PRI);
-        f.setCaretColor(ACCENT);
-        f.setFont(new Font("Segoe UI", Font.PLAIN, 13));
-        f.setBorder(BorderFactory.createCompoundBorder(BorderFactory.createLineBorder(BORDER, 1), new EmptyBorder(6, 10, 6, 10)));
-    }
-
-    private void estilizarBtn(JButton b, Color bg, Color fg) {
-        b.setBackground(bg);
-        b.setForeground(fg);
-        b.setFont(new Font("Segoe UI", Font.BOLD, 13));
-        b.setFocusPainted(false);
-        b.setBorderPainted(false);
-        b.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
+        tblCategorias.getTableHeader().setForeground(Color.decode("#9BA3C4"));
+        tblCategorias.getTableHeader().setFont(new java.awt.Font("Segoe UI", java.awt.Font.BOLD, 11));
+        tblCategorias.getTableHeader().setBorder(javax.swing.BorderFactory.createMatteBorder(0, 0, 1, 0, Color.decode("#2A3050")));
     }
 
     @SuppressWarnings("unchecked")
+    // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
+
+        lblTitulo = new javax.swing.JLabel();
         jScrollPane1 = new javax.swing.JScrollPane();
         tblCategorias = new javax.swing.JTable();
-        txtDescripcion = new javax.swing.JTextField();
-        txtId = new javax.swing.JTextField();
-        cbEstado = new javax.swing.JComboBox<>();
         btnActualizar = new javax.swing.JButton();
         btnEliminar = new javax.swing.JButton();
-        jLabel1 = new javax.swing.JLabel();
+        panelEdit = new javax.swing.JPanel();
         jLabel2 = new javax.swing.JLabel();
-        jLabel3 = new javax.swing.JLabel();
+        txtId = new javax.swing.JTextField();
         jLabel4 = new javax.swing.JLabel();
         txtnombrecategoria = new javax.swing.JTextField();
+        jLabel1 = new javax.swing.JLabel();
+        txtDescripcion = new javax.swing.JTextField();
+        jLabel3 = new javax.swing.JLabel();
+        cbEstado = new javax.swing.JComboBox<>();
 
+        setBackground(new java.awt.Color(10, 12, 16));
         setClosable(true);
-        tblCategorias.setModel(new javax.swing.table.DefaultTableModel(
-            new Object [][] {},
-            new String [] { "ID", "Nombre", "Descripción", "Estado" }
-        ));
-        jScrollPane1.setViewportView(tblCategorias);
-        cbEstado.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Activo", "Inactivo" }));
-        
-        pack();
-    }
+        setTitle("Gestionar Categorías");
+        setPreferredSize(new java.awt.Dimension(850, 520));
+        getContentPane().setLayout(null);
 
+        lblTitulo.setFont(new java.awt.Font("Segoe UI", 1, 18)); // NOI18N
+        lblTitulo.setForeground(new java.awt.Color(240, 242, 255));
+        lblTitulo.setText("✦ Gestión de Categorías");
+        getContentPane().add(lblTitulo);
+        lblTitulo.setBounds(25, 15, 300, 30);
+
+        jScrollPane1.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(42, 48, 80)));
+        jScrollPane1.setForeground(new java.awt.Color(245, 245, 245));
+
+        tblCategorias.setBackground(new java.awt.Color(14, 18, 25));
+        tblCategorias.setForeground(new java.awt.Color(240, 242, 255));
+        tblCategorias.setModel(new javax.swing.table.DefaultTableModel(
+            new Object [][] {
+
+            },
+            new String [] {
+                "ID", "Nombre", "Descripción", "Estado"
+            }
+        ));
+        tblCategorias.setRowHeight(30);
+        tblCategorias.setSelectionBackground(new java.awt.Color(108, 99, 255));
+        tblCategorias.setSelectionForeground(new java.awt.Color(255, 255, 255));
+        jScrollPane1.setViewportView(tblCategorias);
+
+        getContentPane().add(jScrollPane1);
+        jScrollPane1.setBounds(25, 60, 580, 260);
+
+        btnActualizar.setBackground(new java.awt.Color(108, 99, 255));
+        btnActualizar.setFont(new java.awt.Font("Segoe UI", 1, 13)); // NOI18N
+        btnActualizar.setForeground(new java.awt.Color(255, 255, 255));
+        btnActualizar.setText("Actualizar");
+        btnActualizar.setBorderPainted(false);
+        btnActualizar.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
+        btnActualizar.setFocusPainted(false);
+        btnActualizar.addActionListener(this::btnActualizarActionPerformed);
+        getContentPane().add(btnActualizar);
+        btnActualizar.setBounds(630, 60, 180, 42);
+
+        btnEliminar.setBackground(new java.awt.Color(30, 10, 16));
+        btnEliminar.setFont(new java.awt.Font("Segoe UI", 1, 13)); // NOI18N
+        btnEliminar.setForeground(new java.awt.Color(255, 91, 122));
+        btnEliminar.setText("Eliminar");
+        btnEliminar.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(58, 21, 32)));
+        btnEliminar.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
+        btnEliminar.setFocusPainted(false);
+        btnEliminar.addActionListener(this::btnEliminarActionPerformed);
+        getContentPane().add(btnEliminar);
+        btnEliminar.setBounds(630, 115, 180, 42);
+
+        panelEdit.setBackground(new java.awt.Color(17, 21, 32));
+        panelEdit.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(42, 48, 80)));
+        panelEdit.setLayout(null);
+
+        jLabel2.setFont(new java.awt.Font("Segoe UI", 1, 10)); // NOI18N
+        jLabel2.setForeground(new java.awt.Color(155, 163, 196));
+        jLabel2.setText("ID");
+        panelEdit.add(jLabel2);
+        jLabel2.setBounds(20, 15, 60, 16);
+
+        txtId.setBackground(new java.awt.Color(14, 18, 25));
+        txtId.setFont(new java.awt.Font("Segoe UI", 0, 13)); // NOI18N
+        txtId.setForeground(new java.awt.Color(240, 242, 255));
+        txtId.setBorder(javax.swing.BorderFactory.createCompoundBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(42, 48, 80)), javax.swing.BorderFactory.createEmptyBorder(6, 10, 6, 10)));
+        panelEdit.add(txtId);
+        txtId.setBounds(20, 35, 60, 38);
+
+        jLabel4.setFont(new java.awt.Font("Segoe UI", 1, 10)); // NOI18N
+        jLabel4.setForeground(new java.awt.Color(155, 163, 196));
+        jLabel4.setText("NOMBRE");
+        panelEdit.add(jLabel4);
+        jLabel4.setBounds(100, 15, 200, 16);
+
+        txtnombrecategoria.setBackground(new java.awt.Color(24, 29, 46));
+        txtnombrecategoria.setFont(new java.awt.Font("Segoe UI", 0, 13)); // NOI18N
+        txtnombrecategoria.setForeground(new java.awt.Color(240, 242, 255));
+        txtnombrecategoria.setCaretColor(new java.awt.Color(108, 99, 255));
+        txtnombrecategoria.setBorder(javax.swing.BorderFactory.createCompoundBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(42, 48, 80)), javax.swing.BorderFactory.createEmptyBorder(6, 10, 6, 10)));
+        panelEdit.add(txtnombrecategoria);
+        txtnombrecategoria.setBounds(100, 35, 200, 38);
+
+        jLabel1.setFont(new java.awt.Font("Segoe UI", 1, 10)); // NOI18N
+        jLabel1.setForeground(new java.awt.Color(155, 163, 196));
+        jLabel1.setText("DESCRIPCIÓN");
+        panelEdit.add(jLabel1);
+        jLabel1.setBounds(320, 15, 280, 16);
+
+        txtDescripcion.setBackground(new java.awt.Color(24, 29, 46));
+        txtDescripcion.setFont(new java.awt.Font("Segoe UI", 0, 13)); // NOI18N
+        txtDescripcion.setForeground(new java.awt.Color(240, 242, 255));
+        txtDescripcion.setCaretColor(new java.awt.Color(108, 99, 255));
+        txtDescripcion.setBorder(javax.swing.BorderFactory.createCompoundBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(42, 48, 80)), javax.swing.BorderFactory.createEmptyBorder(6, 10, 6, 10)));
+        panelEdit.add(txtDescripcion);
+        txtDescripcion.setBounds(320, 35, 280, 38);
+
+        jLabel3.setFont(new java.awt.Font("Segoe UI", 1, 10)); // NOI18N
+        jLabel3.setForeground(new java.awt.Color(155, 163, 196));
+        jLabel3.setText("ESTADO");
+        panelEdit.add(jLabel3);
+        jLabel3.setBounds(620, 15, 140, 16);
+
+        cbEstado.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Activo", "Inactivo" }));
+        cbEstado.setBackground(new java.awt.Color(24, 29, 46));
+        cbEstado.setForeground(new java.awt.Color(240, 242, 255));
+        cbEstado.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(42, 48, 80)));
+        panelEdit.add(cbEstado);
+        cbEstado.setBounds(620, 35, 140, 38);
+
+        getContentPane().add(panelEdit);
+        panelEdit.setBounds(25, 340, 785, 110);
+
+        pack();
+    }// </editor-fold>//GEN-END:initComponents
+
+    private void btnActualizarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnActualizarActionPerformed
+        // TODO lógica del controlador
+    }//GEN-LAST:event_btnActualizarActionPerformed
+
+    private void btnEliminarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnEliminarActionPerformed
+        // TODO lógica del controlador
+    }//GEN-LAST:event_btnEliminarActionPerformed
+
+    // Variables declaration - do not modify//GEN-BEGIN:variables
     public javax.swing.JButton btnActualizar;
     public javax.swing.JButton btnEliminar;
     public javax.swing.JComboBox<String> cbEstado;
-    private javax.swing.JLabel jLabel1, jLabel2, jLabel3, jLabel4;
+    private javax.swing.JLabel jLabel1;
+    private javax.swing.JLabel jLabel2;
+    private javax.swing.JLabel jLabel3;
+    private javax.swing.JLabel jLabel4;
     private javax.swing.JScrollPane jScrollPane1;
+    private javax.swing.JLabel lblTitulo;
+    private javax.swing.JPanel panelEdit;
     public javax.swing.JTable tblCategorias;
-    public javax.swing.JTextField txtDescripcion, txtId, txtnombrecategoria;
+    public javax.swing.JTextField txtDescripcion;
+    public javax.swing.JTextField txtId;
+    public javax.swing.JTextField txtnombrecategoria;
+    // End of variables declaration//GEN-END:variables
 }

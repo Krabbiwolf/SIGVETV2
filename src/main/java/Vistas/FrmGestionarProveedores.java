@@ -1,222 +1,197 @@
 package Vistas;
 
-import java.awt.*;
-import java.awt.event.*;
-import javax.swing.*;
-import javax.swing.border.EmptyBorder;
+import java.awt.Color;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
+import javax.swing.JLabel;
 import javax.swing.table.DefaultTableCellRenderer;
 
 public class FrmGestionarProveedores extends javax.swing.JInternalFrame {
 
-    private static final Color BG_MAIN   = Color.decode("#0A0C10");
-    private static final Color BG_CARD   = Color.decode("#111520");
-    private static final Color BG_TABLE  = Color.decode("#0E1219");
-    private static final Color BG_INPUT  = Color.decode("#181D2E");
-    private static final Color BORDER    = Color.decode("#2A3050");
-    private static final Color ACCENT    = Color.decode("#6C63FF");
-    private static final Color DANGER    = Color.decode("#FF5B7A");
-    private static final Color TEXT_PRI  = Color.decode("#F0F2FF");
-    private static final Color TEXT_MUT  = Color.decode("#9BA3C4");
-    private static final Color GRID      = Color.decode("#1A1F30");
-    private static final Color SEL_BG    = Color.decode("#6C63FF");
-
-    private static final int FIELD_H  = 36;
-    private static final int LABEL_H  = 16;
-    private static final int FIELD_W1 = 220; 
-    private static final int FIELD_W2 = 160; 
-    private static final int CMB_W    = 120; 
-    private static final int BTN_W    = 130;
-    private static final int BTN_H    = 36;
+    public static javax.swing.JTable TableProveedores;
 
     public FrmGestionarProveedores() {
         initComponents();
-        this.setSize(new Dimension(880, 480)); // --- CORRECCIÓN DE TAMAÑO ---
-        this.setTitle("Gestionar Proveedores");
-        aplicarEstilo();
+        TableProveedores = tableProveedores; // Alias para evitar errores en tu controlador
         
-        // --- CORRECCIÓN DE ALIAS (EVITA NULL POINTER) ---
-        TableProveedores = tableProveedores;
-    }
-
-    private void aplicarEstilo() {
-        getContentPane().setBackground(BG_MAIN);
-
-        lblTitulo.setForeground(TEXT_PRI);
-        lblTitulo.setFont(new Font("Segoe UI", Font.BOLD, 16));
-        lblTitulo.setHorizontalAlignment(SwingConstants.CENTER);
-
-        panelTabla.setBackground(BG_CARD);
-        panelTabla.setBorder(BorderFactory.createLineBorder(BORDER, 1));
-
-        tableProveedores.setBackground(BG_TABLE);
-        tableProveedores.setForeground(TEXT_PRI);
-        tableProveedores.setGridColor(GRID);
-        tableProveedores.setRowHeight(30);
-        tableProveedores.setSelectionBackground(SEL_BG);
-        tableProveedores.setSelectionForeground(Color.WHITE);
-        tableProveedores.setShowGrid(true);
-        tableProveedores.setFont(new Font("Segoe UI", Font.PLAIN, 12));
-        tableProveedores.setIntercellSpacing(new Dimension(0, 0));
-        tableProveedores.setFillsViewportHeight(true);
-        tableProveedores.setAutoResizeMode(JTable.AUTO_RESIZE_ALL_COLUMNS);
-
-        DefaultTableCellRenderer centerRnd = new DefaultTableCellRenderer();
-        centerRnd.setHorizontalAlignment(JLabel.CENTER);
-        centerRnd.setBackground(BG_TABLE);
-        centerRnd.setForeground(TEXT_PRI);
-        for (int i = 0; i < tableProveedores.getColumnModel().getColumnCount(); i++)
-            tableProveedores.getColumnModel().getColumn(i).setCellRenderer(centerRnd);
-        if (tableProveedores.getColumnModel().getColumnCount() > 0)
-            tableProveedores.getColumnModel().getColumn(0).setMaxWidth(60);
-
+        // Estilizar cabecera de tabla
         tableProveedores.getTableHeader().setBackground(Color.decode("#181D2E"));
-        tableProveedores.getTableHeader().setForeground(TEXT_MUT);
-        tableProveedores.getTableHeader().setFont(new Font("Segoe UI", Font.BOLD, 11));
-        tableProveedores.getTableHeader().setReorderingAllowed(false);
-        tableProveedores.getTableHeader().setResizingAllowed(false);
-        tableProveedores.getTableHeader().setBorder(BorderFactory.createMatteBorder(0, 0, 1, 0, BORDER));
+        tableProveedores.getTableHeader().setForeground(Color.decode("#9BA3C4"));
+        tableProveedores.getTableHeader().setFont(new java.awt.Font("Segoe UI", java.awt.Font.BOLD, 11));
+        tableProveedores.getTableHeader().setBorder(javax.swing.BorderFactory.createMatteBorder(0, 0, 1, 0, Color.decode("#2A3050")));
         ((DefaultTableCellRenderer) tableProveedores.getTableHeader().getDefaultRenderer()).setHorizontalAlignment(JLabel.CENTER);
 
-        scrollTabla.setBorder(BorderFactory.createLineBorder(BORDER, 1));
-        scrollTabla.getViewport().setBackground(BG_TABLE);
-
-        panelBotones.setBackground(BG_CARD);
-        panelBotones.setBorder(BorderFactory.createLineBorder(BORDER, 1));
-
-        btnActualizar.setBackground(ACCENT);
-        btnActualizar.setForeground(Color.WHITE);
-        btnActualizar.setFont(new Font("Segoe UI", Font.BOLD, 12));
-        btnActualizar.setFocusPainted(false);
-        btnActualizar.setBorderPainted(false);
-        btnActualizar.setOpaque(true);
-        btnActualizar.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
+        // Efectos Hover
         btnActualizar.addMouseListener(new MouseAdapter() {
             public void mouseEntered(MouseEvent e) { btnActualizar.setBackground(Color.decode("#5850DC")); }
-            public void mouseExited(MouseEvent e)  { btnActualizar.setBackground(ACCENT); }
+            public void mouseExited(MouseEvent e)  { btnActualizar.setBackground(Color.decode("#6C63FF")); }
         });
 
-        btnEliminar.setBackground(Color.decode("#1E0A10"));
-        btnEliminar.setForeground(DANGER);
-        btnEliminar.setFont(new Font("Segoe UI", Font.BOLD, 12));
-        btnEliminar.setFocusPainted(false);
-        btnEliminar.setBorder(BorderFactory.createLineBorder(Color.decode("#3A1520"), 1));
-        btnEliminar.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
         btnEliminar.addMouseListener(new MouseAdapter() {
-            public void mouseEntered(MouseEvent e) { btnEliminar.setBackground(DANGER); btnEliminar.setForeground(Color.WHITE); }
-            public void mouseExited(MouseEvent e) { btnEliminar.setBackground(Color.decode("#1E0A10")); btnEliminar.setForeground(DANGER); }
-        });
-
-        panelEdicion.setBackground(BG_MAIN);
-
-        for (JLabel lbl : new JLabel[]{lblNombre, lblTelefono, lblEstado}) {
-            lbl.setForeground(TEXT_MUT);
-            lbl.setFont(new Font("Segoe UI", Font.BOLD, 10));
-        }
-
-        estilizarCampo(txtNombre);
-        estilizarCampo(txtTelefono);
-
-        cmbEstado.setBackground(BG_INPUT);
-        cmbEstado.setForeground(TEXT_PRI);
-        cmbEstado.setFont(new Font("Segoe UI", Font.PLAIN, 12));
-        cmbEstado.setBorder(BorderFactory.createLineBorder(BORDER, 1));
-    }
-
-    private void estilizarCampo(JTextField f) {
-        f.setBackground(BG_INPUT);
-        f.setForeground(TEXT_PRI);
-        f.setCaretColor(ACCENT);
-        f.setFont(new Font("Segoe UI", Font.PLAIN, 13));
-        f.setBorder(BorderFactory.createCompoundBorder(BorderFactory.createLineBorder(BORDER, 1), new EmptyBorder(6, 10, 6, 10)));
-        f.addFocusListener(new FocusAdapter() {
-            public void focusGained(FocusEvent e) { f.setBorder(BorderFactory.createCompoundBorder(BorderFactory.createLineBorder(ACCENT, 1), new EmptyBorder(6, 10, 6, 10))); }
-            public void focusLost(FocusEvent e) { f.setBorder(BorderFactory.createCompoundBorder(BorderFactory.createLineBorder(BORDER, 1), new EmptyBorder(6, 10, 6, 10))); }
+            public void mouseEntered(MouseEvent e) { btnEliminar.setBackground(Color.decode("#FF5B7A")); btnEliminar.setForeground(Color.WHITE); }
+            public void mouseExited(MouseEvent e) { btnEliminar.setBackground(Color.decode("#1E0A10")); btnEliminar.setForeground(Color.decode("#FF5B7A")); }
         });
     }
 
     @SuppressWarnings("unchecked")
+    // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
-        lblTitulo     = new JLabel();
-        panelTabla    = new JPanel();
-        scrollTabla   = new JScrollPane();
-        tableProveedores = new JTable();
-        panelBotones  = new JPanel();
-        btnActualizar = new JButton();
-        btnEliminar   = new JButton();
-        panelEdicion  = new JPanel();
-        lblNombre     = new JLabel();
-        lblTelefono   = new JLabel();
-        lblEstado     = new JLabel();
-        txtNombre     = new JTextField();
-        txtTelefono   = new JTextField();
-        cmbEstado     = new JComboBox<>();
 
+        lblTitulo = new javax.swing.JLabel();
+        panelTabla = new javax.swing.JPanel();
+        scrollTabla = new javax.swing.JScrollPane();
+        tableProveedores = new javax.swing.JTable();
+        panelBotones = new javax.swing.JPanel();
+        btnActualizar = new javax.swing.JButton();
+        btnEliminar = new javax.swing.JButton();
+        panelEdicion = new javax.swing.JPanel();
+        lblNombre = new javax.swing.JLabel();
+        txtNombre = new javax.swing.JTextField();
+        lblTelefono = new javax.swing.JLabel();
+        txtTelefono = new javax.swing.JTextField();
+        lblEstado = new javax.swing.JLabel();
+        cmbEstado = new javax.swing.JComboBox<>();
+
+        setBackground(new java.awt.Color(10, 12, 16));
         setClosable(true);
         setIconifiable(true);
         setMaximizable(true);
         setResizable(true);
         setTitle("Gestionar Proveedores");
-        setPreferredSize(new Dimension(880, 480));
+        setPreferredSize(new java.awt.Dimension(880, 480));
+        getContentPane().setLayout(null);
 
-        getContentPane().setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
-
+        lblTitulo.setFont(new java.awt.Font("Segoe UI", 1, 18)); // NOI18N
+        lblTitulo.setForeground(new java.awt.Color(240, 242, 255));
+        lblTitulo.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         lblTitulo.setText("✦  Gestionar Proveedores");
-        getContentPane().add(lblTitulo, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 14, 880, 28));
+        getContentPane().add(lblTitulo);
+        lblTitulo.setBounds(0, 14, 880, 28);
 
-        panelTabla.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
+        panelTabla.setBackground(new java.awt.Color(17, 21, 32));
+        panelTabla.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(42, 48, 80)));
+        panelTabla.setLayout(null);
+
+        scrollTabla.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(42, 48, 80)));
+
+        tableProveedores.setBackground(new java.awt.Color(14, 18, 25));
+        tableProveedores.setForeground(new java.awt.Color(240, 242, 255));
         tableProveedores.setModel(new javax.swing.table.DefaultTableModel(
-            new Object[][]{},
-            new String[]{"Id", "Nombre", "Teléfono", "Estado"}
+            new Object [][] {
+
+            },
+            new String [] {
+                "Id", "Nombre", "Teléfono", "Estado"
+            }
         ));
+        tableProveedores.setGridColor(new java.awt.Color(26, 31, 48));
+        tableProveedores.setRowHeight(30);
+        tableProveedores.setSelectionBackground(new java.awt.Color(108, 99, 255));
+        tableProveedores.setSelectionForeground(new java.awt.Color(255, 255, 255));
         scrollTabla.setViewportView(tableProveedores);
-        panelTabla.add(scrollTabla, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 10, 580, 210));
-        getContentPane().add(panelTabla, new org.netbeans.lib.awtextra.AbsoluteConstraints(12, 50, 600, 230));
 
-        panelBotones.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
+        panelTabla.add(scrollTabla);
+        scrollTabla.setBounds(10, 10, 580, 210);
+
+        getContentPane().add(panelTabla);
+        panelTabla.setBounds(12, 50, 600, 230);
+
+        panelBotones.setBackground(new java.awt.Color(17, 21, 32));
+        panelBotones.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(42, 48, 80)));
+        panelBotones.setLayout(null);
+
+        btnActualizar.setBackground(new java.awt.Color(108, 99, 255));
+        btnActualizar.setFont(new java.awt.Font("Segoe UI", 1, 13)); // NOI18N
+        btnActualizar.setForeground(new java.awt.Color(255, 255, 255));
         btnActualizar.setText("Actualizar");
-        btnActualizar.addActionListener(evt -> btnActualizarActionPerformed(evt));
-        panelBotones.add(btnActualizar, new org.netbeans.lib.awtextra.AbsoluteConstraints(18, 40, BTN_W, BTN_H));
+        btnActualizar.setBorderPainted(false);
+        btnActualizar.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
+        btnActualizar.setFocusPainted(false);
+        btnActualizar.addActionListener(this::btnActualizarActionPerformed);
+        panelBotones.add(btnActualizar);
+        btnActualizar.setBounds(18, 40, 130, 36);
+
+        btnEliminar.setBackground(new java.awt.Color(30, 10, 16));
+        btnEliminar.setFont(new java.awt.Font("Segoe UI", 1, 13)); // NOI18N
+        btnEliminar.setForeground(new java.awt.Color(255, 91, 122));
         btnEliminar.setText("Eliminar");
-        panelBotones.add(btnEliminar, new org.netbeans.lib.awtextra.AbsoluteConstraints(18, 94, BTN_W, BTN_H));
-        getContentPane().add(panelBotones, new org.netbeans.lib.awtextra.AbsoluteConstraints(624, 50, 166, 230));
+        btnEliminar.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(58, 21, 32)));
+        btnEliminar.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
+        btnEliminar.setFocusPainted(false);
+        panelBotones.add(btnEliminar);
+        btnEliminar.setBounds(18, 94, 130, 36);
 
-        panelEdicion.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
+        getContentPane().add(panelBotones);
+        panelBotones.setBounds(624, 50, 166, 230);
 
+        panelEdicion.setBackground(new java.awt.Color(10, 12, 16));
+        panelEdicion.setLayout(null);
+
+        lblNombre.setFont(new java.awt.Font("Segoe UI", 1, 10)); // NOI18N
+        lblNombre.setForeground(new java.awt.Color(155, 163, 196));
         lblNombre.setText("NOMBRE");
-        panelEdicion.add(lblNombre, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, FIELD_W1, LABEL_H));
-        panelEdicion.add(txtNombre, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 18, FIELD_W1, FIELD_H));
+        panelEdicion.add(lblNombre);
+        lblNombre.setBounds(0, 0, 220, 16);
 
+        txtNombre.setBackground(new java.awt.Color(24, 29, 46));
+        txtNombre.setFont(new java.awt.Font("Segoe UI", 0, 13)); // NOI18N
+        txtNombre.setForeground(new java.awt.Color(240, 242, 255));
+        txtNombre.setCaretColor(new java.awt.Color(108, 99, 255));
+        txtNombre.setBorder(javax.swing.BorderFactory.createCompoundBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(42, 48, 80)), javax.swing.BorderFactory.createEmptyBorder(6, 10, 6, 10)));
+        panelEdicion.add(txtNombre);
+        txtNombre.setBounds(0, 18, 220, 36);
+
+        lblTelefono.setFont(new java.awt.Font("Segoe UI", 1, 10)); // NOI18N
+        lblTelefono.setForeground(new java.awt.Color(155, 163, 196));
         lblTelefono.setText("TELÉFONO");
-        panelEdicion.add(lblTelefono, new org.netbeans.lib.awtextra.AbsoluteConstraints(236, 0, FIELD_W2, LABEL_H));
-        panelEdicion.add(txtTelefono, new org.netbeans.lib.awtextra.AbsoluteConstraints(236, 18, FIELD_W2, FIELD_H));
+        panelEdicion.add(lblTelefono);
+        lblTelefono.setBounds(236, 0, 160, 16);
 
+        txtTelefono.setBackground(new java.awt.Color(24, 29, 46));
+        txtTelefono.setFont(new java.awt.Font("Segoe UI", 0, 13)); // NOI18N
+        txtTelefono.setForeground(new java.awt.Color(240, 242, 255));
+        txtTelefono.setCaretColor(new java.awt.Color(108, 99, 255));
+        txtTelefono.setBorder(javax.swing.BorderFactory.createCompoundBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(42, 48, 80)), javax.swing.BorderFactory.createEmptyBorder(6, 10, 6, 10)));
+        panelEdicion.add(txtTelefono);
+        txtTelefono.setBounds(236, 18, 160, 36);
+
+        lblEstado.setFont(new java.awt.Font("Segoe UI", 1, 10)); // NOI18N
+        lblEstado.setForeground(new java.awt.Color(155, 163, 196));
         lblEstado.setText("ESTADO");
-        panelEdicion.add(lblEstado, new org.netbeans.lib.awtextra.AbsoluteConstraints(412, 0, CMB_W, LABEL_H));
-        cmbEstado.setModel(new javax.swing.DefaultComboBoxModel<>(new String[]{"ACTIVO", "INACTIVO"}));
-        panelEdicion.add(cmbEstado, new org.netbeans.lib.awtextra.AbsoluteConstraints(412, 18, CMB_W, FIELD_H));
+        panelEdicion.add(lblEstado);
+        lblEstado.setBounds(412, 0, 120, 16);
 
-        getContentPane().add(panelEdicion, new org.netbeans.lib.awtextra.AbsoluteConstraints(24, 300, 550, 70));
+        cmbEstado.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "ACTIVO", "INACTIVO" }));
+        cmbEstado.setBackground(new java.awt.Color(24, 29, 46));
+        cmbEstado.setForeground(new java.awt.Color(240, 242, 255));
+        cmbEstado.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(42, 48, 80)));
+        panelEdicion.add(cmbEstado);
+        cmbEstado.setBounds(412, 18, 120, 36);
+
+        getContentPane().add(panelEdicion);
+        panelEdicion.setBounds(24, 300, 550, 70);
 
         pack();
-    }
+    }// </editor-fold>//GEN-END:initComponents
 
-    private void btnActualizarActionPerformed(java.awt.event.ActionEvent evt) {
-        // TODO
-    }
+    private void btnActualizarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnActualizarActionPerformed
+        // TODO lógica aquí
+    }//GEN-LAST:event_btnActualizarActionPerformed
 
-    public static javax.swing.JTable    TableProveedores; 
-    public        javax.swing.JButton   btnActualizar;
-    public        javax.swing.JButton   btnEliminar;
-    public        javax.swing.JComboBox<String> cmbEstado;
-    private       javax.swing.JLabel    lblEstado;
-    private       javax.swing.JLabel    lblNombre;
-    private       javax.swing.JLabel    lblTelefono;
-    private       javax.swing.JLabel    lblTitulo;
-    private       javax.swing.JPanel    panelBotones;
-    private       javax.swing.JPanel    panelEdicion;
-    private       javax.swing.JPanel    panelTabla;
-    private       javax.swing.JScrollPane scrollTabla;
-    public static javax.swing.JTable    tableProveedores;
-    public        javax.swing.JTextField txtNombre;
-    public        javax.swing.JTextField txtTelefono;
+    // Variables declaration - do not modify//GEN-BEGIN:variables
+    public javax.swing.JButton btnActualizar;
+    public javax.swing.JButton btnEliminar;
+    public javax.swing.JComboBox<String> cmbEstado;
+    private javax.swing.JLabel lblEstado;
+    private javax.swing.JLabel lblNombre;
+    private javax.swing.JLabel lblTelefono;
+    private javax.swing.JLabel lblTitulo;
+    private javax.swing.JPanel panelBotones;
+    private javax.swing.JPanel panelEdicion;
+    private javax.swing.JPanel panelTabla;
+    private javax.swing.JScrollPane scrollTabla;
+    public static javax.swing.JTable tableProveedores;
+    public javax.swing.JTextField txtNombre;
+    public javax.swing.JTextField txtTelefono;
+    // End of variables declaration//GEN-END:variables
 }

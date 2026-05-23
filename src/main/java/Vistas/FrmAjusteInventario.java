@@ -1,144 +1,216 @@
 package Vistas;
 
+import Controladores.ctrlProductos.AjusteInventarioController;
 import Modelos.LoteInventario;
-import java.awt.BorderLayout;
-import java.awt.Font;
-import javax.swing.BorderFactory;
-import javax.swing.GroupLayout;
-import javax.swing.JButton;
-import javax.swing.JComboBox;
-import javax.swing.JInternalFrame;
+import java.awt.Color;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
 import javax.swing.JLabel;
-import javax.swing.JPanel;
-import javax.swing.JScrollPane;
-import javax.swing.JTable;
-import javax.swing.JTextArea;
-import javax.swing.JTextField;
-import javax.swing.LayoutStyle;
+import javax.swing.table.DefaultTableCellRenderer;
 
-/**
- * Vista del módulo Ajuste de Inventario.
- * Esta pantalla se hizo manual para cumplir con los campos solicitados:
- * lote, stock actual, tipo de ajuste, cantidad, motivo, guardar y cancelar.
- */
-public class FrmAjusteInventario extends JInternalFrame {
-
-    public JButton btnLimpiar;
-    public JButton btnRegistrarAjuste;
-    public JComboBox<LoteInventario> cboLoteProducto;
-    public JComboBox<String> cboTipoMovimiento;
-    public JLabel lblStockActual;
-    public JTable tblAjustes;
-    public JTextField txtCantidad;
-    public JTextArea txtMotivoAjuste;
-
-    private JLabel jLabelTitulo;
-    private JLabel jLabelLote;
-    private JLabel jLabelStock;
-    private JLabel jLabelTipo;
-    private JLabel jLabelCantidad;
-    private JLabel jLabelMotivo;
-    private JScrollPane scrollMotivo;
-    private JScrollPane scrollTabla;
+public class FrmAjusteInventario extends javax.swing.JInternalFrame {
 
     public FrmAjusteInventario() {
         initComponents();
+        
+        // Estilizar cabecera de tabla
+        tblAjustes.getTableHeader().setBackground(Color.decode("#181D2E"));
+        tblAjustes.getTableHeader().setForeground(Color.decode("#9BA3C4"));
+        tblAjustes.getTableHeader().setFont(new java.awt.Font("Segoe UI", java.awt.Font.BOLD, 11));
+        tblAjustes.getTableHeader().setBorder(javax.swing.BorderFactory.createMatteBorder(0, 0, 1, 0, Color.decode("#2A3050")));
+        ((DefaultTableCellRenderer) tblAjustes.getTableHeader().getDefaultRenderer()).setHorizontalAlignment(JLabel.CENTER);
+
+        // Efectos Hover
+        btnRegistrarAjuste.addMouseListener(new MouseAdapter() {
+            public void mouseEntered(MouseEvent e) { btnRegistrarAjuste.setBackground(Color.decode("#5850DC")); }
+            public void mouseExited(MouseEvent e)  { btnRegistrarAjuste.setBackground(Color.decode("#6C63FF")); }
+        });
+
+        btnLimpiar.addMouseListener(new MouseAdapter() {
+            public void mouseEntered(MouseEvent e) { btnLimpiar.setBackground(Color.decode("#2A3050")); }
+            public void mouseExited(MouseEvent e)  { btnLimpiar.setBackground(Color.decode("#181D2E")); }
+        });
+        
+        // Inicializar controlador
+        AjusteInventarioController controlador = new AjusteInventarioController(this);
     }
 
+    @SuppressWarnings("unchecked")
+    // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
-        jLabelTitulo = new JLabel("AJUSTE DE INVENTARIO");
-        jLabelLote = new JLabel("Producto / lote");
-        jLabelStock = new JLabel("Stock actual");
-        jLabelTipo = new JLabel("Tipo de ajuste");
-        jLabelCantidad = new JLabel("Cantidad");
-        jLabelMotivo = new JLabel("Motivo del ajuste");
 
-        cboLoteProducto = new JComboBox<>();
-        cboTipoMovimiento = new JComboBox<>();
+        jLabelTitulo = new javax.swing.JLabel();
+        panelDatos = new javax.swing.JPanel();
+        jLabelLote = new javax.swing.JLabel();
+        cboLoteProducto = new javax.swing.JComboBox<>();
+        jLabelStock = new javax.swing.JLabel();
+        lblStockActual = new javax.swing.JLabel();
+        jLabelTipo = new javax.swing.JLabel();
+        cboTipoMovimiento = new javax.swing.JComboBox<>();
+        jLabelCantidad = new javax.swing.JLabel();
+        txtCantidad = new javax.swing.JTextField();
+        jLabelMotivo = new javax.swing.JLabel();
+        scrollMotivo = new javax.swing.JScrollPane();
+        txtMotivoAjuste = new javax.swing.JTextArea();
+        btnLimpiar = new javax.swing.JButton();
+        btnRegistrarAjuste = new javax.swing.JButton();
+        scrollTabla = new javax.swing.JScrollPane();
+        tblAjustes = new javax.swing.JTable();
 
-        lblStockActual = new JLabel("0");
-        lblStockActual.setFont(new Font("Segoe UI", Font.BOLD, 16));
-        lblStockActual.setBorder(BorderFactory.createEtchedBorder());
-
-        txtCantidad = new JTextField();
-        txtMotivoAjuste = new JTextArea(4, 20);
-        txtMotivoAjuste.setLineWrap(true);
-        txtMotivoAjuste.setWrapStyleWord(true);
-        scrollMotivo = new JScrollPane(txtMotivoAjuste);
-
-        btnRegistrarAjuste = new JButton("Guardar");
-        btnLimpiar = new JButton("Cancelar");
-
-        tblAjustes = new JTable();
-        scrollTabla = new JScrollPane(tblAjustes);
-
+        setBackground(new java.awt.Color(10, 12, 16));
         setClosable(true);
         setIconifiable(true);
         setMaximizable(true);
         setResizable(true);
         setTitle("Ajuste de Inventario");
+        setPreferredSize(new java.awt.Dimension(780, 580));
+        getContentPane().setLayout(null);
 
-        jLabelTitulo.setFont(new Font("Segoe UI", Font.BOLD, 18));
+        jLabelTitulo.setFont(new java.awt.Font("Segoe UI", 1, 20)); // NOI18N
+        jLabelTitulo.setForeground(new java.awt.Color(240, 242, 255));
+        jLabelTitulo.setText("✦  Ajuste de Inventario");
+        getContentPane().add(jLabelTitulo);
+        jLabelTitulo.setBounds(20, 15, 400, 30);
 
-        JPanel panelPrincipal = new JPanel();
-        panelPrincipal.setBorder(BorderFactory.createEmptyBorder(15, 15, 15, 15));
+        panelDatos.setBackground(new java.awt.Color(17, 21, 32));
+        panelDatos.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(42, 48, 80)));
+        panelDatos.setLayout(null);
 
-        GroupLayout layout = new GroupLayout(panelPrincipal);
-        panelPrincipal.setLayout(layout);
-        layout.setAutoCreateGaps(true);
-        layout.setAutoCreateContainerGaps(true);
+        jLabelLote.setFont(new java.awt.Font("Segoe UI", 1, 11)); // NOI18N
+        jLabelLote.setForeground(new java.awt.Color(155, 163, 196));
+        jLabelLote.setText("PRODUCTO / LOTE");
+        panelDatos.add(jLabelLote);
+        jLabelLote.setBounds(20, 20, 160, 16);
 
-        layout.setHorizontalGroup(
-            layout.createParallelGroup(GroupLayout.Alignment.LEADING)
-                .addComponent(jLabelTitulo)
-                .addGroup(layout.createSequentialGroup()
-                    .addGroup(layout.createParallelGroup(GroupLayout.Alignment.LEADING, false)
-                        .addComponent(jLabelLote, GroupLayout.PREFERRED_SIZE, 145, GroupLayout.PREFERRED_SIZE)
-                        .addComponent(jLabelStock, GroupLayout.PREFERRED_SIZE, 145, GroupLayout.PREFERRED_SIZE)
-                        .addComponent(jLabelTipo, GroupLayout.PREFERRED_SIZE, 145, GroupLayout.PREFERRED_SIZE)
-                        .addComponent(jLabelCantidad, GroupLayout.PREFERRED_SIZE, 145, GroupLayout.PREFERRED_SIZE)
-                        .addComponent(jLabelMotivo, GroupLayout.PREFERRED_SIZE, 145, GroupLayout.PREFERRED_SIZE))
-                    .addPreferredGap(LayoutStyle.ComponentPlacement.UNRELATED)
-                    .addGroup(layout.createParallelGroup(GroupLayout.Alignment.LEADING, false)
-                        .addComponent(cboLoteProducto, GroupLayout.PREFERRED_SIZE, 390, GroupLayout.PREFERRED_SIZE)
-                        .addComponent(lblStockActual, GroupLayout.PREFERRED_SIZE, 120, GroupLayout.PREFERRED_SIZE)
-                        .addComponent(cboTipoMovimiento, GroupLayout.PREFERRED_SIZE, 180, GroupLayout.PREFERRED_SIZE)
-                        .addComponent(txtCantidad, GroupLayout.PREFERRED_SIZE, 120, GroupLayout.PREFERRED_SIZE)
-                        .addComponent(scrollMotivo, GroupLayout.PREFERRED_SIZE, 390, GroupLayout.PREFERRED_SIZE))
-                    .addPreferredGap(LayoutStyle.ComponentPlacement.UNRELATED)
-                    .addGroup(layout.createParallelGroup(GroupLayout.Alignment.LEADING, false)
-                        .addComponent(btnRegistrarAjuste, GroupLayout.PREFERRED_SIZE, 120, GroupLayout.PREFERRED_SIZE)
-                        .addComponent(btnLimpiar, GroupLayout.PREFERRED_SIZE, 120, GroupLayout.PREFERRED_SIZE)))
-                .addComponent(scrollTabla, GroupLayout.DEFAULT_SIZE, 760, Short.MAX_VALUE)
-        );
+        cboLoteProducto.setBackground(new java.awt.Color(24, 29, 46));
+        cboLoteProducto.setForeground(new java.awt.Color(240, 242, 255));
+        cboLoteProducto.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(42, 48, 80)));
+        panelDatos.add(cboLoteProducto);
+        cboLoteProducto.setBounds(20, 40, 370, 38);
 
-        layout.setVerticalGroup(
-            layout.createSequentialGroup()
-                .addComponent(jLabelTitulo, GroupLayout.PREFERRED_SIZE, 35, GroupLayout.PREFERRED_SIZE)
-                .addGap(15)
-                .addGroup(layout.createParallelGroup(GroupLayout.Alignment.BASELINE)
-                    .addComponent(jLabelLote, GroupLayout.PREFERRED_SIZE, 28, GroupLayout.PREFERRED_SIZE)
-                    .addComponent(cboLoteProducto, GroupLayout.PREFERRED_SIZE, 28, GroupLayout.PREFERRED_SIZE)
-                    .addComponent(btnRegistrarAjuste, GroupLayout.PREFERRED_SIZE, 32, GroupLayout.PREFERRED_SIZE))
-                .addGroup(layout.createParallelGroup(GroupLayout.Alignment.BASELINE)
-                    .addComponent(jLabelStock, GroupLayout.PREFERRED_SIZE, 28, GroupLayout.PREFERRED_SIZE)
-                    .addComponent(lblStockActual, GroupLayout.PREFERRED_SIZE, 28, GroupLayout.PREFERRED_SIZE)
-                    .addComponent(btnLimpiar, GroupLayout.PREFERRED_SIZE, 32, GroupLayout.PREFERRED_SIZE))
-                .addGroup(layout.createParallelGroup(GroupLayout.Alignment.BASELINE)
-                    .addComponent(jLabelTipo, GroupLayout.PREFERRED_SIZE, 28, GroupLayout.PREFERRED_SIZE)
-                    .addComponent(cboTipoMovimiento, GroupLayout.PREFERRED_SIZE, 28, GroupLayout.PREFERRED_SIZE))
-                .addGroup(layout.createParallelGroup(GroupLayout.Alignment.BASELINE)
-                    .addComponent(jLabelCantidad, GroupLayout.PREFERRED_SIZE, 28, GroupLayout.PREFERRED_SIZE)
-                    .addComponent(txtCantidad, GroupLayout.PREFERRED_SIZE, 28, GroupLayout.PREFERRED_SIZE))
-                .addGroup(layout.createParallelGroup(GroupLayout.Alignment.LEADING)
-                    .addComponent(jLabelMotivo, GroupLayout.PREFERRED_SIZE, 28, GroupLayout.PREFERRED_SIZE)
-                    .addComponent(scrollMotivo, GroupLayout.PREFERRED_SIZE, 90, GroupLayout.PREFERRED_SIZE))
-                .addGap(20)
-                .addComponent(scrollTabla, GroupLayout.DEFAULT_SIZE, 230, Short.MAX_VALUE)
-        );
+        jLabelStock.setFont(new java.awt.Font("Segoe UI", 1, 11)); // NOI18N
+        jLabelStock.setForeground(new java.awt.Color(155, 163, 196));
+        jLabelStock.setText("STOCK ACTUAL");
+        panelDatos.add(jLabelStock);
+        jLabelStock.setBounds(410, 20, 120, 16);
 
-        getContentPane().setLayout(new BorderLayout());
-        getContentPane().add(panelPrincipal, BorderLayout.CENTER);
+        lblStockActual.setFont(new java.awt.Font("Segoe UI", 1, 16)); // NOI18N
+        lblStockActual.setForeground(new java.awt.Color(240, 242, 255));
+        lblStockActual.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        lblStockActual.setText("0");
+        lblStockActual.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(42, 48, 80)));
+        panelDatos.add(lblStockActual);
+        lblStockActual.setBounds(410, 40, 120, 38);
+
+        jLabelTipo.setFont(new java.awt.Font("Segoe UI", 1, 11)); // NOI18N
+        jLabelTipo.setForeground(new java.awt.Color(155, 163, 196));
+        jLabelTipo.setText("TIPO DE AJUSTE");
+        panelDatos.add(jLabelTipo);
+        jLabelTipo.setBounds(20, 90, 180, 16);
+
+        cboTipoMovimiento.setBackground(new java.awt.Color(24, 29, 46));
+        cboTipoMovimiento.setForeground(new java.awt.Color(240, 242, 255));
+        cboTipoMovimiento.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(42, 48, 80)));
+        panelDatos.add(cboTipoMovimiento);
+        cboTipoMovimiento.setBounds(20, 110, 180, 38);
+
+        jLabelCantidad.setFont(new java.awt.Font("Segoe UI", 1, 11)); // NOI18N
+        jLabelCantidad.setForeground(new java.awt.Color(155, 163, 196));
+        jLabelCantidad.setText("CANTIDAD");
+        panelDatos.add(jLabelCantidad);
+        jLabelCantidad.setBounds(220, 90, 120, 16);
+
+        txtCantidad.setBackground(new java.awt.Color(24, 29, 46));
+        txtCantidad.setFont(new java.awt.Font("Segoe UI", 0, 13)); // NOI18N
+        txtCantidad.setForeground(new java.awt.Color(240, 242, 255));
+        txtCantidad.setCaretColor(new java.awt.Color(108, 99, 255));
+        txtCantidad.setBorder(javax.swing.BorderFactory.createCompoundBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(42, 48, 80)), javax.swing.BorderFactory.createEmptyBorder(6, 10, 6, 10)));
+        panelDatos.add(txtCantidad);
+        txtCantidad.setBounds(220, 110, 120, 38);
+
+        jLabelMotivo.setFont(new java.awt.Font("Segoe UI", 1, 11)); // NOI18N
+        jLabelMotivo.setForeground(new java.awt.Color(155, 163, 196));
+        jLabelMotivo.setText("MOTIVO DEL AJUSTE");
+        panelDatos.add(jLabelMotivo);
+        jLabelMotivo.setBounds(20, 160, 180, 16);
+
+        scrollMotivo.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(42, 48, 80)));
+
+        txtMotivoAjuste.setBackground(new java.awt.Color(24, 29, 46));
+        txtMotivoAjuste.setColumns(20);
+        txtMotivoAjuste.setFont(new java.awt.Font("Segoe UI", 0, 13)); // NOI18N
+        txtMotivoAjuste.setForeground(new java.awt.Color(240, 242, 255));
+        txtMotivoAjuste.setRows(4);
+        txtMotivoAjuste.setCaretColor(new java.awt.Color(108, 99, 255));
+        scrollMotivo.setViewportView(txtMotivoAjuste);
+
+        panelDatos.add(scrollMotivo);
+        scrollMotivo.setBounds(20, 180, 510, 35);
+
+        btnLimpiar.setBackground(new java.awt.Color(24, 29, 46));
+        btnLimpiar.setFont(new java.awt.Font("Segoe UI", 1, 13)); // NOI18N
+        btnLimpiar.setForeground(new java.awt.Color(240, 242, 255));
+        btnLimpiar.setText("Cancelar");
+        btnLimpiar.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(42, 48, 80)));
+        btnLimpiar.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
+        btnLimpiar.setFocusPainted(false);
+        panelDatos.add(btnLimpiar);
+        btnLimpiar.setBounds(560, 100, 140, 42);
+
+        btnRegistrarAjuste.setBackground(new java.awt.Color(108, 99, 255));
+        btnRegistrarAjuste.setFont(new java.awt.Font("Segoe UI", 1, 13)); // NOI18N
+        btnRegistrarAjuste.setForeground(new java.awt.Color(255, 255, 255));
+        btnRegistrarAjuste.setText("Guardar");
+        btnRegistrarAjuste.setBorderPainted(false);
+        btnRegistrarAjuste.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
+        btnRegistrarAjuste.setFocusPainted(false);
+        panelDatos.add(btnRegistrarAjuste);
+        btnRegistrarAjuste.setBounds(560, 40, 140, 42);
+
+        getContentPane().add(panelDatos);
+        panelDatos.setBounds(20, 60, 730, 230);
+
+        scrollTabla.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(42, 48, 80)));
+
+        tblAjustes.setBackground(new java.awt.Color(14, 18, 25));
+        tblAjustes.setForeground(new java.awt.Color(240, 242, 255));
+        tblAjustes.setModel(new javax.swing.table.DefaultTableModel(
+            new Object [][] {
+
+            },
+            new String [] {
+
+            }
+        ));
+        tblAjustes.setGridColor(new java.awt.Color(26, 31, 48));
+        tblAjustes.setRowHeight(30);
+        tblAjustes.setSelectionBackground(new java.awt.Color(108, 99, 255));
+        tblAjustes.setSelectionForeground(new java.awt.Color(255, 255, 255));
+        scrollTabla.setViewportView(tblAjustes);
+
+        getContentPane().add(scrollTabla);
+        scrollTabla.setBounds(20, 310, 730, 220);
+
         pack();
-    }
+    }// </editor-fold>//GEN-END:initComponents
+
+    // Variables declaration - do not modify//GEN-BEGIN:variables
+    public javax.swing.JButton btnLimpiar;
+    public javax.swing.JButton btnRegistrarAjuste;
+    public javax.swing.JComboBox<Modelos.LoteInventario> cboLoteProducto;
+    public javax.swing.JComboBox<String> cboTipoMovimiento;
+    private javax.swing.JLabel jLabelCantidad;
+    private javax.swing.JLabel jLabelLote;
+    private javax.swing.JLabel jLabelMotivo;
+    private javax.swing.JLabel jLabelStock;
+    private javax.swing.JLabel jLabelTipo;
+    private javax.swing.JLabel jLabelTitulo;
+    public javax.swing.JLabel lblStockActual;
+    private javax.swing.JPanel panelDatos;
+    private javax.swing.JScrollPane scrollMotivo;
+    private javax.swing.JScrollPane scrollTabla;
+    public javax.swing.JTable tblAjustes;
+    public javax.swing.JTextField txtCantidad;
+    public javax.swing.JTextArea txtMotivoAjuste;
+    // End of variables declaration//GEN-END:variables
 }

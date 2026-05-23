@@ -11,26 +11,23 @@ import java.io.File;
 import java.util.ArrayList;
 import javax.swing.JFileChooser;
 import javax.swing.JOptionPane;
+import javax.swing.SwingWorker;
 import javax.swing.filechooser.FileNameExtensionFilter;
 import servicios.CloudinaryService;
 
-
-/**
- *
- * @author Usuario
- */
 public class NuevoProductoController {
-    
-private final ProductosDAO dao;
+
+    private final ProductosDAO dao;
     private final FrmNuevoProducto vista;
+    private SwingWorker<String, Void> currentUploadWorker;
+    private SwingWorker<ArrayList<String>, Void> currentCategoriasWorker;
 
     public NuevoProductoController(FrmNuevoProducto vista) {
         this.dao = new ProductosDAO();
         this.vista = vista;
-
         configurarVista();
-        cargarCategorias();
-        cargarIva();
+        cargarIva();                // local
+        cargarCategoriasAsync();    // 🔥 asíncrono
         agregarEventos();
     }
 
@@ -46,14 +43,33 @@ private final ProductosDAO dao;
         vista.jButton1.addActionListener(e -> seleccionarImagen());
     }
 
-    private void cargarCategorias() {
-        vista.cboCategoria.removeAllItems();
-
-        ArrayList<String> categorias = dao.listarCategoriasCombo();
-
-        for (String categoria : categorias) {
-            vista.cboCategoria.addItem(categoria);
+    // ================== Carga asíncrona de categorías ==================
+    private void cargarCategoriasAsync() {
+        if (currentCategoriasWorker != null && !currentCategoriasWorker.isDone()) {
+            currentCategoriasWorker.cancel(true);
         }
+        currentCategoriasWorker = new SwingWorker<ArrayList<String>, Void>() {
+            @Override
+            protected ArrayList<String> doInBackground() throws Exception {
+                return dao.listarCategoriasCombo();
+            }
+
+            @Override
+            protected void done() {
+                try {
+                    ArrayList<String> categorias = get();
+                    vista.cboCategoria.removeAllItems();
+                    for (String categoria : categorias) {
+                        vista.cboCategoria.addItem(categoria);
+                    }
+                } catch (Exception ex) {
+                    JOptionPane.showMessageDialog(vista, "Error al cargar categorías: " + ex.getMessage());
+                } finally {
+                    currentCategoriasWorker = null;
+                }
+            }
+        };
+        currentCategoriasWorker.execute();
     }
 
     private void cargarIva() {
@@ -62,34 +78,46 @@ private final ProductosDAO dao;
         vista.cbIva.addItem("0");
     }
 
+    // ================== Subida asíncrona de imagen ==================
     private void seleccionarImagen() {
         JFileChooser chooser = new JFileChooser();
         chooser.setDialogTitle("Seleccionar imagen");
-
         FileNameExtensionFilter filtro = new FileNameExtensionFilter(
-                "Imágenes JPG, PNG, JPEG",
-                "jpg",
-                "jpeg",
-                "png"
-        );
-
+                "Imágenes JPG, PNG, JPEG", "jpg", "jpeg", "png");
         chooser.setFileFilter(filtro);
-
         int opcion = chooser.showOpenDialog(vista);
-
         if (opcion == JFileChooser.APPROVE_OPTION) {
             File archivo = chooser.getSelectedFile();
-
-            CloudinaryService service = new CloudinaryService();
-            String urlImagen = service.subirImagen(archivo);
-
-            if (urlImagen != null) {
-                vista.txtRutaImagen.setText(urlImagen);
-                JOptionPane.showMessageDialog(vista, "Imagen subida correctamente.");
-            } else {
-                vista.txtRutaImagen.setText(archivo.getAbsolutePath());
-                JOptionPane.showMessageDialog(vista, "No se pudo subir a Cloudinary. Se guardó la ruta local.");
+            if (currentUploadWorker != null && !currentUploadWorker.isDone()) {
+                currentUploadWorker.cancel(true);
             }
+            currentUploadWorker = new SwingWorker<String, Void>() {
+                @Override
+                protected String doInBackground() throws Exception {
+                    CloudinaryService service = new CloudinaryService();
+                    return service.subirImagen(archivo);
+                }
+
+                @Override
+                protected void done() {
+                    try {
+                        String urlImagen = get();
+                        if (urlImagen != null) {
+                            vista.txtRutaImagen.setText(urlImagen);
+                            JOptionPane.showMessageDialog(vista, "Imagen subida correctamente.");
+                        } else {
+                            vista.txtRutaImagen.setText(archivo.getAbsolutePath());
+                            JOptionPane.showMessageDialog(vista, "No se pudo subir a Cloudinary. Se guardó la ruta local.");
+                        }
+                    } catch (Exception ex) {
+                        vista.txtRutaImagen.setText(archivo.getAbsolutePath());
+                        JOptionPane.showMessageDialog(vista, "Error al subir imagen: " + ex.getMessage());
+                    } finally {
+                        currentUploadWorker = null;
+                    }
+                }
+            };
+            currentUploadWorker.execute();
         }
     }
 
@@ -106,25 +134,20 @@ private final ProductosDAO dao;
     private void guardarProducto() {
         String nombre = vista.txtNombre.getText().trim();
         String descripcion = vista.txtDescripcion.getText().trim();
-
         if (nombre.isEmpty()) {
             JOptionPane.showMessageDialog(vista, "Ingrese el nombre del producto.");
             vista.txtNombre.requestFocus();
             return;
         }
-
         if (vista.cbIva.getSelectedItem() == null) {
             JOptionPane.showMessageDialog(vista, "Seleccione el IVA.");
             return;
         }
-
         if (vista.cboCategoria.getSelectedItem() == null) {
             JOptionPane.showMessageDialog(vista, "Seleccione una categoría.");
             return;
         }
-
         Producto producto = new Producto();
-
         producto.setCodigoBarras(generarCodigoAutomatico());
         producto.setNombre(nombre);
         producto.setDescripcionTecnica(descripcion);
@@ -134,7 +157,6 @@ private final ProductosDAO dao;
         producto.setIdCategoria(obtenerIdCategoria());
 
         boolean guardado = dao.guardarProducto(producto);
-
         if (guardado) {
             JOptionPane.showMessageDialog(vista, "Producto guardado correctamente.");
             limpiarCampos();
@@ -147,16 +169,8 @@ private final ProductosDAO dao;
         vista.txtNombre.setText("");
         vista.txtDescripcion.setText("");
         vista.txtRutaImagen.setText("");
-
-        if (vista.cbIva.getItemCount() > 0) {
-            vista.cbIva.setSelectedIndex(0);
-        }
-
-        if (vista.cboCategoria.getItemCount() > 0) {
-            vista.cboCategoria.setSelectedIndex(0);
-        }
-
+        if (vista.cbIva.getItemCount() > 0) vista.cbIva.setSelectedIndex(0);
+        if (vista.cboCategoria.getItemCount() > 0) vista.cboCategoria.setSelectedIndex(0);
         vista.txtNombre.requestFocus();
     }
-    
 }

@@ -1,149 +1,67 @@
 package Vistas;
 
-import java.awt.*;
+import java.awt.Color;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
 import java.util.Date;
-import javax.swing.*;
+import javax.swing.JComponent;
+import javax.swing.JLabel;
+import javax.swing.JSpinner;
+import javax.swing.table.DefaultTableCellRenderer;
 import javax.swing.table.DefaultTableModel;
+import Controladores.CtrlKardex.CtrlKardex;
 
-public class FrmKardex extends JInternalFrame {
-
-    public JSpinner spFechaInicio;
-    public JSpinner spFechaFin;
-    public JComboBox<String> cboTipoMovimiento;
-    public JTextField txtBuscar;
-    public JButton btnFiltrar;
-    public JButton btnLimpiar;
-    public JButton btnExportar;
-    public JTable tblKardex;
+public class FrmKardex extends javax.swing.JInternalFrame {
 
     public FrmKardex() {
         initComponents();
-    }
-
-    private void initComponents() {
-        setTitle("Kardex - Historial de Movimientos");
-        setClosable(true);
-        setIconifiable(true);
-        setMaximizable(true);
-        setResizable(true);
-
-        setSize(1100, 620);
-        setLayout(new BorderLayout(10, 10));
-
-        JPanel panelPrincipal = new JPanel(new BorderLayout(10, 10));
-        panelPrincipal.setBorder(BorderFactory.createEmptyBorder(15, 15, 15, 15));
-        panelPrincipal.setBackground(new Color(20, 24, 36));
-
-        JPanel panelFiltros = new JPanel(new GridBagLayout());
-        panelFiltros.setBackground(new Color(17, 21, 32));
-        panelFiltros.setBorder(BorderFactory.createTitledBorder("Filtros de búsqueda"));
-
-        GridBagConstraints gbc = new GridBagConstraints();
-        gbc.insets = new Insets(8, 8, 8, 8);
-        gbc.fill = GridBagConstraints.HORIZONTAL;
-
-        JLabel lblInicio = new JLabel("Fecha Inicio:");
-        lblInicio.setForeground(Color.WHITE);
-
-        JLabel lblFin = new JLabel("Fecha Fin:");
-        lblFin.setForeground(Color.WHITE);
-
-        JLabel lblTipo = new JLabel("Tipo Movimiento:");
-        lblTipo.setForeground(Color.WHITE);
-
-        JLabel lblBuscar = new JLabel("Buscar:");
-        lblBuscar.setForeground(Color.WHITE);
-
-        spFechaInicio = new JSpinner(new SpinnerDateModel());
-        spFechaFin = new JSpinner(new SpinnerDateModel());
         
-        java.util.Calendar calendarInicio = java.util.Calendar.getInstance();
-calendarInicio.add(java.util.Calendar.MONTH, -1);
-spFechaInicio.setValue(calendarInicio.getTime());
+        // Estilizar cabecera de tabla
+        tblKardex.getTableHeader().setBackground(Color.decode("#181D2E"));
+        tblKardex.getTableHeader().setForeground(Color.decode("#9BA3C4"));
+        tblKardex.getTableHeader().setFont(new java.awt.Font("Segoe UI", java.awt.Font.BOLD, 11));
+        tblKardex.getTableHeader().setBorder(javax.swing.BorderFactory.createMatteBorder(0, 0, 1, 0, Color.decode("#2A3050")));
+        ((DefaultTableCellRenderer) tblKardex.getTableHeader().getDefaultRenderer()).setHorizontalAlignment(JLabel.CENTER);
 
-java.util.Calendar calendarFin = java.util.Calendar.getInstance();
-calendarFin.add(java.util.Calendar.DAY_OF_MONTH, 1);
-spFechaFin.setValue(calendarFin.getTime());
+        // Inicializar Fechas de Spinners (Tal como lo tenías en tu código original)
+        java.util.Calendar calendarInicio = java.util.Calendar.getInstance();
+        calendarInicio.add(java.util.Calendar.MONTH, -1);
+        spFechaInicio.setValue(calendarInicio.getTime());
+
+        java.util.Calendar calendarFin = java.util.Calendar.getInstance();
+        calendarFin.add(java.util.Calendar.DAY_OF_MONTH, 1);
+        spFechaFin.setValue(calendarFin.getTime());
 
         JSpinner.DateEditor editorInicio = new JSpinner.DateEditor(spFechaInicio, "yyyy-MM-dd");
         JSpinner.DateEditor editorFin = new JSpinner.DateEditor(spFechaFin, "yyyy-MM-dd");
+        
+        
+        // Colorear el input del JSpinner a modo oscuro
+        editorInicio.getTextField().setBackground(Color.decode("#181D2E"));
+        editorInicio.getTextField().setForeground(Color.decode("#F0F2FF"));
+        editorFin.getTextField().setBackground(Color.decode("#181D2E"));
+        editorFin.getTextField().setForeground(Color.decode("#F0F2FF"));
 
         spFechaInicio.setEditor(editorInicio);
         spFechaFin.setEditor(editorFin);
 
-        cboTipoMovimiento = new JComboBox<>();
-        cboTipoMovimiento.addItem("Todos");
-        cboTipoMovimiento.addItem("ENTRADA");
-        cboTipoMovimiento.addItem("SALIDA");
-        cboTipoMovimiento.addItem("AJUSTE");
-
-        txtBuscar = new JTextField();
-        txtBuscar.setToolTipText("Buscar por código de barras o nombre del producto");
-
-        btnFiltrar = new JButton("Filtrar / Buscar");
-        btnLimpiar = new JButton("Limpiar");
-        btnExportar = new JButton("Exportar Excel");
-
-        gbc.gridx = 0;
-        gbc.gridy = 0;
-        panelFiltros.add(lblInicio, gbc);
-
-        gbc.gridx = 1;
-        gbc.gridy = 0;
-        panelFiltros.add(spFechaInicio, gbc);
-
-        gbc.gridx = 2;
-        gbc.gridy = 0;
-        panelFiltros.add(lblFin, gbc);
-
-        gbc.gridx = 3;
-        gbc.gridy = 0;
-        panelFiltros.add(spFechaFin, gbc);
-
-        gbc.gridx = 0;
-        gbc.gridy = 1;
-        panelFiltros.add(lblTipo, gbc);
-
-        gbc.gridx = 1;
-        gbc.gridy = 1;
-        panelFiltros.add(cboTipoMovimiento, gbc);
-
-        gbc.gridx = 2;
-        gbc.gridy = 1;
-        panelFiltros.add(lblBuscar, gbc);
-
-        gbc.gridx = 3;
-        gbc.gridy = 1;
-        gbc.weightx = 1;
-        panelFiltros.add(txtBuscar, gbc);
-
-        gbc.gridx = 4;
-        gbc.gridy = 0;
-        gbc.weightx = 0;
-        panelFiltros.add(btnFiltrar, gbc);
-
-        gbc.gridx = 4;
-        gbc.gridy = 1;
-        panelFiltros.add(btnLimpiar, gbc);
-
-        gbc.gridx = 5;
-        gbc.gridy = 0;
-        gbc.gridheight = 2;
-        panelFiltros.add(btnExportar, gbc);
-
-        tblKardex = new JTable();
-        tblKardex.setRowHeight(28);
-        tblKardex.getTableHeader().setReorderingAllowed(false);
-
-        JScrollPane scroll = new JScrollPane(tblKardex);
-        scroll.setBorder(BorderFactory.createTitledBorder("Historial de movimientos"));
-
-        panelPrincipal.add(panelFiltros, BorderLayout.NORTH);
-        panelPrincipal.add(scroll, BorderLayout.CENTER);
-
-        add(panelPrincipal, BorderLayout.CENTER);
+        // Efectos Hover
+        btnFiltrar.addMouseListener(new MouseAdapter() {
+            public void mouseEntered(MouseEvent e) { btnFiltrar.setBackground(Color.decode("#5850DC")); }
+            public void mouseExited(MouseEvent e)  { btnFiltrar.setBackground(Color.decode("#6C63FF")); }
+        });
+        btnLimpiar.addMouseListener(new MouseAdapter() {
+            public void mouseEntered(MouseEvent e) { btnLimpiar.setBackground(Color.decode("#2A3050")); }
+            public void mouseExited(MouseEvent e)  { btnLimpiar.setBackground(Color.decode("#181D2E")); }
+        });
+        btnExportar.addMouseListener(new MouseAdapter() {
+            public void mouseEntered(MouseEvent e) { btnExportar.setBackground(Color.decode("#00B38F")); }
+            public void mouseExited(MouseEvent e)  { btnExportar.setBackground(Color.decode("#00D4AA")); }
+        });
+        new CtrlKardex(this);
     }
 
+    // Métodos Originales Respetados
     public Date getFechaInicio() {
         return (Date) spFechaInicio.getValue();
     }
@@ -155,4 +73,170 @@ spFechaFin.setValue(calendarFin.getTime());
     public void cargarModelo(DefaultTableModel modelo) {
         tblKardex.setModel(modelo);
     }
+
+    @SuppressWarnings("unchecked")
+    // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
+    private void initComponents() {
+
+        lblTitulo = new javax.swing.JLabel();
+        panelFiltros = new javax.swing.JPanel();
+        lblInicio = new javax.swing.JLabel();
+        spFechaInicio = new javax.swing.JSpinner();
+        lblFin = new javax.swing.JLabel();
+        spFechaFin = new javax.swing.JSpinner();
+        lblTipo = new javax.swing.JLabel();
+        cboTipoMovimiento = new javax.swing.JComboBox<>();
+        lblBuscar = new javax.swing.JLabel();
+        txtBuscar = new javax.swing.JTextField();
+        btnFiltrar = new javax.swing.JButton();
+        btnLimpiar = new javax.swing.JButton();
+        btnExportar = new javax.swing.JButton();
+        scrollTabla = new javax.swing.JScrollPane();
+        tblKardex = new javax.swing.JTable();
+
+        setBackground(new java.awt.Color(10, 12, 16));
+        setClosable(true);
+        setIconifiable(true);
+        setMaximizable(true);
+        setResizable(true);
+        setTitle("Kardex - Historial de Movimientos");
+        setPreferredSize(new java.awt.Dimension(1100, 620));
+        getContentPane().setLayout(null);
+
+        lblTitulo.setFont(new java.awt.Font("Segoe UI", 1, 22)); // NOI18N
+        lblTitulo.setForeground(new java.awt.Color(240, 242, 255));
+        lblTitulo.setText("✦  Kardex / Historial de Movimientos");
+        getContentPane().add(lblTitulo);
+        lblTitulo.setBounds(30, 20, 400, 30);
+
+        panelFiltros.setBackground(new java.awt.Color(17, 21, 32));
+        panelFiltros.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(42, 48, 80)));
+        panelFiltros.setLayout(null);
+
+        lblInicio.setFont(new java.awt.Font("Segoe UI", 1, 11)); // NOI18N
+        lblInicio.setForeground(new java.awt.Color(155, 163, 196));
+        lblInicio.setText("FECHA INICIO");
+        panelFiltros.add(lblInicio);
+        lblInicio.setBounds(20, 20, 200, 16);
+
+        spFechaInicio.setModel(new javax.swing.SpinnerDateModel());
+        spFechaInicio.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(42, 48, 80)));
+        panelFiltros.add(spFechaInicio);
+        spFechaInicio.setBounds(20, 40, 200, 38);
+
+        lblFin.setFont(new java.awt.Font("Segoe UI", 1, 11)); // NOI18N
+        lblFin.setForeground(new java.awt.Color(155, 163, 196));
+        lblFin.setText("FECHA FIN");
+        panelFiltros.add(lblFin);
+        lblFin.setBounds(240, 20, 200, 16);
+
+        spFechaFin.setModel(new javax.swing.SpinnerDateModel());
+        spFechaFin.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(42, 48, 80)));
+        panelFiltros.add(spFechaFin);
+        spFechaFin.setBounds(240, 40, 200, 38);
+
+        lblTipo.setFont(new java.awt.Font("Segoe UI", 1, 11)); // NOI18N
+        lblTipo.setForeground(new java.awt.Color(155, 163, 196));
+        lblTipo.setText("TIPO DE MOVIMIENTO");
+        panelFiltros.add(lblTipo);
+        lblTipo.setBounds(460, 20, 200, 16);
+
+        cboTipoMovimiento.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Todos", "ENTRADA", "SALIDA", "AJUSTE" }));
+        cboTipoMovimiento.setBackground(new java.awt.Color(24, 29, 46));
+        cboTipoMovimiento.setFont(new java.awt.Font("Segoe UI", 0, 13)); // NOI18N
+        cboTipoMovimiento.setForeground(new java.awt.Color(240, 242, 255));
+        cboTipoMovimiento.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(42, 48, 80)));
+        panelFiltros.add(cboTipoMovimiento);
+        cboTipoMovimiento.setBounds(460, 40, 200, 38);
+
+        lblBuscar.setFont(new java.awt.Font("Segoe UI", 1, 11)); // NOI18N
+        lblBuscar.setForeground(new java.awt.Color(155, 163, 196));
+        lblBuscar.setText("BÚSQUEDA / CÓDIGO / NOMBRE");
+        panelFiltros.add(lblBuscar);
+        lblBuscar.setBounds(680, 20, 300, 16);
+
+        txtBuscar.setBackground(new java.awt.Color(24, 29, 46));
+        txtBuscar.setFont(new java.awt.Font("Segoe UI", 0, 13)); // NOI18N
+        txtBuscar.setForeground(new java.awt.Color(240, 242, 255));
+        txtBuscar.setToolTipText("Buscar por código de barras o nombre del producto");
+        txtBuscar.setCaretColor(new java.awt.Color(108, 99, 255));
+        txtBuscar.setBorder(javax.swing.BorderFactory.createCompoundBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(42, 48, 80)), javax.swing.BorderFactory.createEmptyBorder(6, 10, 6, 10)));
+        panelFiltros.add(txtBuscar);
+        txtBuscar.setBounds(680, 40, 310, 38);
+
+        btnFiltrar.setBackground(new java.awt.Color(108, 99, 255));
+        btnFiltrar.setFont(new java.awt.Font("Segoe UI", 1, 13)); // NOI18N
+        btnFiltrar.setForeground(new java.awt.Color(255, 255, 255));
+        btnFiltrar.setText("Filtrar / Buscar");
+        btnFiltrar.setBorderPainted(false);
+        btnFiltrar.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
+        btnFiltrar.setFocusPainted(false);
+        panelFiltros.add(btnFiltrar);
+        btnFiltrar.setBounds(20, 95, 150, 40);
+
+        btnLimpiar.setBackground(new java.awt.Color(24, 29, 46));
+        btnLimpiar.setFont(new java.awt.Font("Segoe UI", 1, 13)); // NOI18N
+        btnLimpiar.setForeground(new java.awt.Color(240, 242, 255));
+        btnLimpiar.setText("Limpiar");
+        btnLimpiar.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(42, 48, 80)));
+        btnLimpiar.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
+        btnLimpiar.setFocusPainted(false);
+        panelFiltros.add(btnLimpiar);
+        btnLimpiar.setBounds(180, 95, 150, 40);
+
+        btnExportar.setBackground(new java.awt.Color(0, 212, 170));
+        btnExportar.setFont(new java.awt.Font("Segoe UI", 1, 13)); // NOI18N
+        btnExportar.setForeground(new java.awt.Color(255, 255, 255));
+        btnExportar.setText("📊 Exportar a Excel");
+        btnExportar.setBorderPainted(false);
+        btnExportar.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
+        btnExportar.setFocusPainted(false);
+        panelFiltros.add(btnExportar);
+        btnExportar.setBounds(340, 95, 160, 40);
+
+        getContentPane().add(panelFiltros);
+        panelFiltros.setBounds(30, 70, 1020, 150);
+
+        scrollTabla.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(42, 48, 80)));
+
+        tblKardex.setBackground(new java.awt.Color(14, 18, 25));
+        tblKardex.setForeground(new java.awt.Color(240, 242, 255));
+        tblKardex.setModel(new javax.swing.table.DefaultTableModel(
+            new Object [][] {
+
+            },
+            new String [] {
+
+            }
+        ));
+        tblKardex.setGridColor(new java.awt.Color(26, 31, 48));
+        tblKardex.setRowHeight(28);
+        tblKardex.setSelectionBackground(new java.awt.Color(108, 99, 255));
+        tblKardex.setSelectionForeground(new java.awt.Color(255, 255, 255));
+        scrollTabla.setViewportView(tblKardex);
+
+        getContentPane().add(scrollTabla);
+        scrollTabla.setBounds(30, 240, 1020, 330);
+
+        pack();
+    }// </editor-fold>//GEN-END:initComponents
+
+
+    // Variables declaration - do not modify//GEN-BEGIN:variables
+    public javax.swing.JButton btnExportar;
+    public javax.swing.JButton btnFiltrar;
+    public javax.swing.JButton btnLimpiar;
+    public javax.swing.JComboBox<String> cboTipoMovimiento;
+    private javax.swing.JLabel lblBuscar;
+    private javax.swing.JLabel lblFin;
+    private javax.swing.JLabel lblInicio;
+    private javax.swing.JLabel lblTipo;
+    private javax.swing.JLabel lblTitulo;
+    private javax.swing.JPanel panelFiltros;
+    private javax.swing.JScrollPane scrollTabla;
+    public javax.swing.JSpinner spFechaFin;
+    public javax.swing.JSpinner spFechaInicio;
+    public javax.swing.JTable tblKardex;
+    public javax.swing.JTextField txtBuscar;
+    // End of variables declaration//GEN-END:variables
 }

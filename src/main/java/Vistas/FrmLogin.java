@@ -3,36 +3,25 @@ package Vistas;
 import Modelos.Usuario;
 import Modelos.UsuarioDAO;
 import Modelos.SesionUsuario;
-import java.awt.*;
-import java.awt.event.*;
-import javax.swing.*;
-import javax.swing.border.EmptyBorder;
+import java.awt.Color;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
+import javax.swing.JOptionPane;
+import javax.swing.UIManager;
 
 public class FrmLogin extends javax.swing.JFrame {
 
-    private static final Color BG_DEEP   = Color.decode("#0A0C10");
-    private static final Color BG_CARD   = Color.decode("#111520");
-    private static final Color BG_INPUT  = Color.decode("#181D2E");
-    private static final Color BORDER    = Color.decode("#2A3050");
-    private static final Color ACCENT    = Color.decode("#6C63FF");
-    private static final Color ACCENT2   = Color.decode("#FF6B9D");
-    private static final Color TEXT_PRI  = Color.decode("#F0F2FF");
-    private static final Color TEXT_MUT  = Color.decode("#9BA3C4");
-    private static final Color TEXT_HINT = Color.decode("#5A6280");
-
-    private static final int FW = 300;   
-    private static final int FH = 42;    
-    private static final int LH = 16;    
-    private static final int X  = 22;    
-
     public FrmLogin() {
         initComponents();
-        this.setLocationRelativeTo(null);
-        this.setTitle("SIGVET - Portal de Acceso");
+        // ESTO EVITA QUE SEA UNA VENTANITA PEQUEÑA
+        this.setSize(450, 520);
+        this.setLocationRelativeTo(null); 
         
-        aplicarEstiloLoginSIGVET();
-        
-        btnIngresar.addActionListener(e -> iniciarSesion());
+        // Efecto visual botón
+        btnIngresar.addMouseListener(new MouseAdapter() {
+            public void mouseEntered(MouseEvent e) { btnIngresar.setBackground(Color.decode("#5850DC")); }
+            public void mouseExited(MouseEvent e)  { btnIngresar.setBackground(Color.decode("#6C63FF")); }
+        });
     }
 
     private void iniciarSesion() {
@@ -45,6 +34,8 @@ public class FrmLogin extends javax.swing.JFrame {
         }
 
         UsuarioDAO dao = new UsuarioDAO();
+        // IMPORTANTE: Si dao.login() va a la nube, aquí podrías tener un milisegundo de lag, 
+        // pero en el login es aceptable. El problema mayor es en las tablas llenas de datos.
         Usuario u = dao.login(user, pass);
 
         if (u != null) {
@@ -56,128 +47,117 @@ public class FrmLogin extends javax.swing.JFrame {
         }
     }
 
-    private void aplicarEstiloLoginSIGVET() {
-        this.getContentPane().setBackground(BG_DEEP);
-
-        panelPrincipal.setBackground(BG_CARD);
-        panelPrincipal.setBorder(BorderFactory.createCompoundBorder(
-            BorderFactory.createLineBorder(BORDER, 1),
-            BorderFactory.createEmptyBorder(8, 8, 8, 8)
-        ));
-
-        lblTitulo.setForeground(TEXT_PRI);
-        lblTitulo.setFont(new Font("Segoe UI", Font.BOLD, 28));
-        lblTitulo.setHorizontalAlignment(SwingConstants.CENTER);
-        lblTitulo.setText("SIGVET");
-
-        lblSubtitulo.setForeground(TEXT_MUT);
-        lblSubtitulo.setFont(new Font("Segoe UI", Font.PLAIN, 12));
-        lblSubtitulo.setHorizontalAlignment(SwingConstants.CENTER);
-        lblSubtitulo.setText("Bienvenido al ecosistema SIGVET");
-
-        lblUsuario.setForeground(TEXT_MUT);
-        lblUsuario.setFont(new Font("Segoe UI", Font.BOLD, 10));
-        lblUsuario.setText("USUARIO");
-
-        lblPassword.setForeground(TEXT_MUT);
-        lblPassword.setFont(new Font("Segoe UI", Font.BOLD, 10));
-        lblPassword.setText("CONTRASEÑA");
-
-        javax.swing.JTextField[] inputs = {txtUsuario, txtPassword};
-        for (javax.swing.JTextField in : inputs) {
-            in.setBackground(BG_INPUT);
-            in.setForeground(TEXT_PRI);
-            in.setCaretColor(ACCENT);
-            in.setFont(new Font("Segoe UI", Font.PLAIN, 13));
-            in.setBorder(BorderFactory.createCompoundBorder(
-                BorderFactory.createLineBorder(BORDER, 1),
-                BorderFactory.createEmptyBorder(8, 12, 8, 12)
-            ));
-            
-            in.addFocusListener(new java.awt.event.FocusAdapter() {
-                public void focusGained(java.awt.event.FocusEvent e) {
-                    in.setBorder(BorderFactory.createCompoundBorder(
-                        BorderFactory.createLineBorder(ACCENT, 1),
-                        BorderFactory.createEmptyBorder(8, 12, 8, 12)
-                    ));
-                }
-                public void focusLost(java.awt.event.FocusEvent e) {
-                    in.setBorder(BorderFactory.createCompoundBorder(
-                        BorderFactory.createLineBorder(BORDER, 1),
-                        BorderFactory.createEmptyBorder(8, 12, 8, 12)
-                    ));
-                }
-            });
-        }
-
-        btnIngresar.setBackground(ACCENT);
-        btnIngresar.setForeground(Color.WHITE);
-        btnIngresar.setFont(new Font("Segoe UI", Font.BOLD, 14));
-        btnIngresar.setFocusPainted(false);
-        btnIngresar.setBorderPainted(false);
-        btnIngresar.setOpaque(true);
-        btnIngresar.setCursor(new Cursor(Cursor.HAND_CURSOR));
-        btnIngresar.setBorder(BorderFactory.createEmptyBorder(4, 0, 4, 0));
-        btnIngresar.setText("Iniciar Sesión");
-        
-        btnIngresar.addMouseListener(new MouseAdapter() {
-            public void mouseEntered(MouseEvent e) { btnIngresar.setBackground(Color.decode("#5850DC")); }
-            public void mouseExited(MouseEvent e)  { btnIngresar.setBackground(ACCENT); }
-            public void mousePressed(MouseEvent e) { btnIngresar.setBackground(Color.decode("#4A42C8")); }
-            public void mouseReleased(MouseEvent e){ btnIngresar.setBackground(ACCENT); }
-        });
-
-        lblFooter.setForeground(TEXT_HINT);
-        lblFooter.setFont(new Font("Segoe UI", Font.PLAIN, 10));
-        lblFooter.setHorizontalAlignment(SwingConstants.CENTER);
-        lblFooter.setText("© 2026 SIGVET ERP — Todos los derechos reservados");
-    }
-
     @SuppressWarnings("unchecked")
-    // <editor-fold defaultstate="collapsed" desc="Generated Code">                          
+    // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
-        panelPrincipal = new javax.swing.JPanel();
+        panelFondo = new javax.swing.JPanel();
+        panelCard = new javax.swing.JPanel();
         lblTitulo = new javax.swing.JLabel();
-        lblSubtitulo = new javax.swing.JLabel();
-        lblUsuario = new javax.swing.JLabel();
+        lblSub = new javax.swing.JLabel();
+        jLabel1 = new javax.swing.JLabel();
         txtUsuario = new javax.swing.JTextField();
-        lblPassword = new javax.swing.JLabel();
+        jLabel2 = new javax.swing.JLabel();
         txtPassword = new javax.swing.JPasswordField();
         btnIngresar = new javax.swing.JButton();
-        lblFooter = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        setTitle("SIGVET - Iniciar Sesión");
         setResizable(false);
-        getContentPane().setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
+        getContentPane().setLayout(null);
 
-        panelPrincipal.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
-        panelPrincipal.add(lblTitulo, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 45, 344, 32));
-        panelPrincipal.add(lblSubtitulo, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 80, 344, 20));
-        panelPrincipal.add(lblUsuario, new org.netbeans.lib.awtextra.AbsoluteConstraints(X, 146, FW, LH));
-        panelPrincipal.add(txtUsuario, new org.netbeans.lib.awtextra.AbsoluteConstraints(X, 164, FW, FH));
-        panelPrincipal.add(lblPassword, new org.netbeans.lib.awtextra.AbsoluteConstraints(X, 222, FW, LH));
-        panelPrincipal.add(txtPassword, new org.netbeans.lib.awtextra.AbsoluteConstraints(X, 240, FW, FH));
-        panelPrincipal.add(btnIngresar, new org.netbeans.lib.awtextra.AbsoluteConstraints(X, 308, FW, 46));
-        panelPrincipal.add(lblFooter, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 390, 344, 16));
+        panelFondo.setBackground(new java.awt.Color(10, 12, 16));
+        panelFondo.setLayout(null);
 
-        getContentPane().add(panelPrincipal, new org.netbeans.lib.awtextra.AbsoluteConstraints(48, 30, 344, 416));
+        panelCard.setBackground(new java.awt.Color(17, 21, 32));
+        panelCard.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(42, 48, 80)));
+        panelCard.setLayout(null);
 
-        setSize(new java.awt.Dimension(440, 510));
-    }// </editor-fold>                        
+        lblTitulo.setFont(new java.awt.Font("Segoe UI", 1, 26)); // NOI18N
+        lblTitulo.setForeground(new java.awt.Color(240, 242, 255));
+        lblTitulo.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        lblTitulo.setText("SIGVET ERP");
+        panelCard.add(lblTitulo);
+        lblTitulo.setBounds(0, 30, 350, 36);
+
+        lblSub.setForeground(new java.awt.Color(155, 163, 196));
+        lblSub.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        lblSub.setText("Ingresa tus credenciales");
+        panelCard.add(lblSub);
+        lblSub.setBounds(0, 70, 350, 16);
+
+        jLabel1.setFont(new java.awt.Font("Segoe UI", 1, 11)); // NOI18N
+        jLabel1.setForeground(new java.awt.Color(155, 163, 196));
+        jLabel1.setText("USUARIO");
+        panelCard.add(jLabel1);
+        jLabel1.setBounds(30, 120, 290, 15);
+
+        txtUsuario.setBackground(new java.awt.Color(24, 29, 46));
+        txtUsuario.setFont(new java.awt.Font("Segoe UI", 0, 13)); // NOI18N
+        txtUsuario.setForeground(new java.awt.Color(240, 242, 255));
+        txtUsuario.setBorder(javax.swing.BorderFactory.createCompoundBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(42, 48, 80)), javax.swing.BorderFactory.createEmptyBorder(5, 10, 5, 10)));
+        txtUsuario.setCaretColor(new java.awt.Color(108, 99, 255));
+        panelCard.add(txtUsuario);
+        txtUsuario.setBounds(30, 140, 290, 40);
+
+        jLabel2.setFont(new java.awt.Font("Segoe UI", 1, 11)); // NOI18N
+        jLabel2.setForeground(new java.awt.Color(155, 163, 196));
+        jLabel2.setText("CONTRASEÑA");
+        panelCard.add(jLabel2);
+        jLabel2.setBounds(30, 200, 290, 15);
+
+        txtPassword.setBackground(new java.awt.Color(24, 29, 46));
+        txtPassword.setFont(new java.awt.Font("Segoe UI", 0, 13)); // NOI18N
+        txtPassword.setForeground(new java.awt.Color(240, 242, 255));
+        txtPassword.setBorder(javax.swing.BorderFactory.createCompoundBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(42, 48, 80)), javax.swing.BorderFactory.createEmptyBorder(5, 10, 5, 10)));
+        txtPassword.setCaretColor(new java.awt.Color(108, 99, 255));
+        panelCard.add(txtPassword);
+        txtPassword.setBounds(30, 220, 290, 40);
+
+        btnIngresar.setBackground(new java.awt.Color(108, 99, 255));
+        btnIngresar.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
+        btnIngresar.setForeground(new java.awt.Color(255, 255, 255));
+        btnIngresar.setText("Iniciar Sesión");
+        btnIngresar.setBorderPainted(false);
+        btnIngresar.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
+        btnIngresar.setFocusPainted(false);
+        btnIngresar.addActionListener(this::btnIngresarActionPerformed);
+        panelCard.add(btnIngresar);
+        btnIngresar.setBounds(30, 300, 290, 45);
+
+        panelFondo.add(panelCard);
+        panelCard.setBounds(50, 40, 350, 400);
+
+        getContentPane().add(panelFondo);
+        panelFondo.setBounds(0, 0, 450, 520);
+
+        pack();
+        setLocationRelativeTo(null);
+    }// </editor-fold>//GEN-END:initComponents
+
+    private void btnIngresarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnIngresarActionPerformed
+        iniciarSesion();
+    }//GEN-LAST:event_btnIngresarActionPerformed
 
     public static void main(String args[]) {
-        com.formdev.flatlaf.FlatDarkLaf.setup();
+        // Look And Feel del sistema para compilar sin errores de dependencias externas
+        try {
+            UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
+        } catch (Exception ex) {
+            System.err.println("No se pudo cargar el tema visual del sistema");
+        }
         java.awt.EventQueue.invokeLater(() -> new FrmLogin().setVisible(true));
     }
 
-    private javax.swing.JButton btnIngresar;
-    private javax.swing.JLabel lblFooter;
-    private javax.swing.JLabel lblPassword;
-    private javax.swing.JLabel lblSubtitulo;
+    // Variables declaration - do not modify//GEN-BEGIN:variables
+    public javax.swing.JButton btnIngresar;
+    private javax.swing.JLabel jLabel1;
+    private javax.swing.JLabel jLabel2;
+    private javax.swing.JLabel lblSub;
     private javax.swing.JLabel lblTitulo;
-    private javax.swing.JLabel lblUsuario;
-    private javax.swing.JPanel panelPrincipal;
-    private javax.swing.JPasswordField txtPassword;
-    private javax.swing.JTextField txtUsuario;
+    private javax.swing.JPanel panelCard;
+    private javax.swing.JPanel panelFondo;
+    public javax.swing.JPasswordField txtPassword;
+    public javax.swing.JTextField txtUsuario;
+    // End of variables declaration//GEN-END:variables
 }

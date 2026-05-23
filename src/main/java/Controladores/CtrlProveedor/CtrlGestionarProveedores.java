@@ -9,21 +9,18 @@ import Modelos.ProveedorDAO;
 import Vistas.FrmGestionarProveedores;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.awt.event.MouseListener;
 import java.util.ArrayList;
 import javax.swing.JOptionPane;
+import javax.swing.SwingWorker;
 import javax.swing.table.DefaultTableModel;
 
-/**
- *
- * @author ASUS
- */
 public class CtrlGestionarProveedores implements ActionListener {
 
     private Proveedor proveedor;
     private FrmGestionarProveedores form;
     private ProveedorDAO dao;
     private ArrayList<Proveedor> proveedores;
+    private SwingWorker<ArrayList<Proveedor>, Void> currentWorker;
 
     public CtrlGestionarProveedores(Proveedor proveedor, FrmGestionarProveedores form, ProveedorDAO dao) {
         this.proveedor = proveedor;
@@ -39,24 +36,46 @@ public class CtrlGestionarProveedores implements ActionListener {
                 cargarDatosFilaSeleccionada();
             }
         });
+
+        // Carga asíncrona inicial
+        cargarTabla();
     }
 
+    // ================== CARGA ASÍNCRONA ==================
     public void cargarTabla() {
-        DefaultTableModel modeloTabla = (DefaultTableModel) Vistas.FrmGestionarProveedores.TableProveedores.getModel();
-        modeloTabla.setRowCount(0);
-
-        proveedores = dao.listar();
-        Object[] fila = new Object[4];
-
-        for (Proveedor p : proveedores) {
-            fila[0] = p.getId();
-            fila[1] = p.getNombre();
-            fila[2] = p.getTelefono();
-            fila[3] = p.getEstado();
-            modeloTabla.addRow(fila);
+        if (currentWorker != null && !currentWorker.isDone()) {
+            currentWorker.cancel(true);
         }
+        currentWorker = new SwingWorker<ArrayList<Proveedor>, Void>() {
+            @Override
+            protected ArrayList<Proveedor> doInBackground() throws Exception {
+                return dao.listar();
+            }
+
+            @Override
+            protected void done() {
+                try {
+                    proveedores = get();
+                    DefaultTableModel modeloTabla = (DefaultTableModel) form.TableProveedores.getModel();
+                    modeloTabla.setRowCount(0);
+                    for (Proveedor p : proveedores) {
+                        modeloTabla.addRow(new Object[]{
+                            p.getId(),
+                            p.getNombre(),
+                            p.getTelefono(),
+                            p.getEstado()
+                        });
+                    }
+                } catch (Exception ex) {
+                    JOptionPane.showMessageDialog(form, "Error al cargar proveedores: " + ex.getMessage());
+                } finally {
+                    currentWorker = null;
+                }
+            }
+        };
+        currentWorker.execute();
     }
-    
+
     public void limpiarCampos() {
         form.txtNombre.setText("");
         form.txtTelefono.setText("");
@@ -67,35 +86,28 @@ public class CtrlGestionarProveedores implements ActionListener {
     public void actionPerformed(ActionEvent e) {
         if (e.getSource() == form.btnActualizar) {
             int filaSeleccionada = form.TableProveedores.getSelectedRow();
-
             if (filaSeleccionada == -1) {
                 JOptionPane.showMessageDialog(null, "Por favor, seleccione una fila de la tabla para actualizar.");
                 return;
             }
-
             try {
                 int id = Integer.parseInt(form.TableProveedores.getValueAt(filaSeleccionada, 0).toString());
-
                 String nombre = form.txtNombre.getText().trim();
                 String telefono = form.txtTelefono.getText().trim();
                 String estado = form.cmbEstado.getSelectedItem().toString();
-
                 if (nombre.isEmpty()) {
                     JOptionPane.showMessageDialog(null, "El nombre no puede estar vacío.");
                     return;
                 }
-
                 String regexTelefono = "^[267]\\d{3}-?\\d{4}$";
                 if (!telefono.matches(regexTelefono) && !telefono.isEmpty()) {
                     JOptionPane.showMessageDialog(null, "Formato de teléfono incorrecto. Ej: 7123-4567");
                     return;
                 }
-
                 proveedor.setId(id);
                 proveedor.setNombre(nombre);
                 proveedor.setTelefono(telefono);
                 proveedor.setEstado(estado);
-
                 if (dao.actualizar(proveedor)) {
                     JOptionPane.showMessageDialog(null, "Proveedor actualizado con éxito.");
                     cargarTabla();
@@ -111,21 +123,17 @@ public class CtrlGestionarProveedores implements ActionListener {
 
         if (e.getSource() == form.btnEliminar) {
             int filaSeleccionada = form.TableProveedores.getSelectedRow();
-
             if (filaSeleccionada == -1) {
                 JOptionPane.showMessageDialog(null, "Por favor, seleccione una fila de la tabla para eliminar.");
                 return;
             }
-
             try {
                 int id = Integer.parseInt(form.TableProveedores.getValueAt(filaSeleccionada, 0).toString());
-
                 int confirmacion = JOptionPane.showConfirmDialog(null,
                         "¿Está seguro que desea eliminar este proveedor?",
                         "Confirmar eliminación",
                         JOptionPane.YES_NO_OPTION,
                         JOptionPane.WARNING_MESSAGE);
-
                 if (confirmacion == JOptionPane.YES_OPTION) {
                     if (dao.eliminar(id)) {
                         JOptionPane.showMessageDialog(null, "Proveedor eliminado correctamente.");
@@ -139,18 +147,14 @@ public class CtrlGestionarProveedores implements ActionListener {
                 System.out.println(ex);
             }
         }
+    }
 
-
-    }   
-    
-        public void cargarDatosFilaSeleccionada() {
+    public void cargarDatosFilaSeleccionada() {
         int fila = form.TableProveedores.getSelectedRow();
-
         if (fila >= 0) {
             String nombre = form.TableProveedores.getValueAt(fila, 1).toString();
             String telefono = form.TableProveedores.getValueAt(fila, 2).toString();
             String estado = form.TableProveedores.getValueAt(fila, 3).toString();
-
             form.txtNombre.setText(nombre);
             form.txtTelefono.setText(telefono);
             form.cmbEstado.setSelectedItem(estado);

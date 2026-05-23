@@ -11,49 +11,45 @@ import java.awt.Image;
 import java.io.File;
 import java.net.URL;
 import java.util.ArrayList;
+import java.util.concurrent.CancellationException;
 import javax.swing.ImageIcon;
 import javax.swing.JFileChooser;
 import javax.swing.JOptionPane;
 import javax.swing.ListSelectionModel;
+import javax.swing.SwingWorker;
 import javax.swing.filechooser.FileNameExtensionFilter;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableColumn;
 import servicios.CloudinaryService;
 
-/**
- *
- * @author Usuario
- */
 public class GestionProductosController {
 
-   private final ProductosDAO dao;
+    private final ProductosDAO dao;
     private final FrmGestionarProductos vista;
+    private SwingWorker<ArrayList<Producto>, Void> currentLoadWorker;
+    private SwingWorker<String, Void> currentUploadWorker;
+    private SwingWorker<ArrayList<String>, Void> currentCategoriasWorker;
 
     public GestionProductosController(FrmGestionarProductos vista) {
         this.dao = new ProductosDAO();
         this.vista = vista;
-
         configurarVista();
-        cargarCategorias();
         cargarEstados();
         cargarIva();
+        cargarCategoriasAsync();
         listarProductosEnTabla();
         agregarEventos();
     }
 
     private void configurarVista() {
         vista.setTitle("Gestionar Productos");
-
         vista.txtIdProducto.setEditable(false);
         vista.txtIdProducto.setFocusable(false);
-
         vista.txtRuta.setEditable(false);
         vista.txtRuta.setFocusable(false);
-
         vista.lblMostrarImagen.setText("Sin imagen");
         vista.lblMostrarImagen.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         vista.lblMostrarImagen.setVerticalAlignment(javax.swing.SwingConstants.CENTER);
-
         vista.tblProductos.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
     }
 
@@ -85,14 +81,39 @@ public class GestionProductosController {
         });
     }
 
-    private void cargarCategorias() {
-        vista.cboCategoria.removeAllItems();
-
-        ArrayList<String> categorias = dao.listarCategoriasCombo();
-
-        for (String categoria : categorias) {
-            vista.cboCategoria.addItem(categoria);
+    // ================== Carga asíncrona de categorías ==================
+    private void cargarCategoriasAsync() {
+        if (currentCategoriasWorker != null && !currentCategoriasWorker.isDone()) {
+            currentCategoriasWorker.cancel(true);
         }
+        currentCategoriasWorker = new SwingWorker<ArrayList<String>, Void>() {
+            @Override
+            protected ArrayList<String> doInBackground() throws Exception {
+                return dao.listarCategoriasCombo();
+            }
+
+            @Override
+            protected void done() {
+                try {
+                    ArrayList<String> categorias = get();
+                    vista.cboCategoria.removeAllItems();
+                    if (categorias != null) {
+                        for (String categoria : categorias) {
+                            vista.cboCategoria.addItem(categoria);
+                        }
+                    }
+                } catch (CancellationException e) {
+                    // Cancelación intencional, no mostrar error
+                    System.out.println("Carga de categorías cancelada.");
+                } catch (Exception ex) {
+                    System.err.println("Error al cargar categorías: " + ex.getMessage());
+                    ex.printStackTrace();
+                } finally {
+                    currentCategoriasWorker = null;
+                }
+            }
+        };
+        currentCategoriasWorker.execute();
     }
 
     private void cargarEstados() {
@@ -107,36 +128,50 @@ public class GestionProductosController {
         vista.cbIva.addItem("0");
     }
 
+    // ================== Subida de imagen asíncrona ==================
     private void seleccionarImagen() {
         JFileChooser chooser = new JFileChooser();
         chooser.setDialogTitle("Seleccionar imagen");
-
         FileNameExtensionFilter filtro = new FileNameExtensionFilter(
-                "Imágenes JPG, PNG, JPEG",
-                "jpg",
-                "jpeg",
-                "png"
-        );
-
+                "Imágenes JPG, PNG, JPEG", "jpg", "jpeg", "png");
         chooser.setFileFilter(filtro);
-
         int opcion = chooser.showOpenDialog(vista);
-
         if (opcion == JFileChooser.APPROVE_OPTION) {
             File archivo = chooser.getSelectedFile();
-
             mostrarImagen(archivo.getAbsolutePath());
-
-            CloudinaryService service = new CloudinaryService();
-            String urlImagen = service.subirImagen(archivo);
-
-            if (urlImagen != null) {
-                vista.txtRuta.setText(urlImagen);
-                JOptionPane.showMessageDialog(vista, "Imagen subida correctamente.");
-            } else {
-                vista.txtRuta.setText(archivo.getAbsolutePath());
-                JOptionPane.showMessageDialog(vista, "No se pudo subir a Cloudinary. Se guardó la ruta local.");
+            if (currentUploadWorker != null && !currentUploadWorker.isDone()) {
+                currentUploadWorker.cancel(true);
             }
+            currentUploadWorker = new SwingWorker<String, Void>() {
+                @Override
+                protected String doInBackground() throws Exception {
+                    CloudinaryService service = new CloudinaryService();
+                    return service.subirImagen(archivo);
+                }
+
+                @Override
+                protected void done() {
+                    try {
+                        String urlImagen = get();
+                        if (urlImagen != null && !urlImagen.isEmpty()) {
+                            vista.txtRuta.setText(urlImagen);
+                            JOptionPane.showMessageDialog(vista, "Imagen subida correctamente.");
+                        } else {
+                            vista.txtRuta.setText(archivo.getAbsolutePath());
+                            JOptionPane.showMessageDialog(vista, "No se pudo subir a Cloudinary. Se guardó la ruta local.");
+                        }
+                    } catch (CancellationException e) {
+                        // Subida cancelada, ignorar
+                    } catch (Exception ex) {
+                        vista.txtRuta.setText(archivo.getAbsolutePath());
+                        JOptionPane.showMessageDialog(vista, "Error al subir imagen: " + ex.getMessage());
+                        ex.printStackTrace();
+                    } finally {
+                        currentUploadWorker = null;
+                    }
+                }
+            };
+            currentUploadWorker.execute();
         }
     }
 
@@ -146,27 +181,21 @@ public class GestionProductosController {
                 limpiarImagen();
                 return;
             }
-
             ImageIcon iconoOriginal;
-
             if (ruta.startsWith("http")) {
                 URL url = new URL(ruta);
                 iconoOriginal = new ImageIcon(url);
             } else {
                 iconoOriginal = new ImageIcon(ruta);
             }
-
             int ancho = vista.lblMostrarImagen.getWidth() > 0 ? vista.lblMostrarImagen.getWidth() : 250;
             int alto = vista.lblMostrarImagen.getHeight() > 0 ? vista.lblMostrarImagen.getHeight() : 250;
-
-            Image imagenEscalada = iconoOriginal.getImage()
-                    .getScaledInstance(ancho, alto, Image.SCALE_SMOOTH);
-
+            Image imagenEscalada = iconoOriginal.getImage().getScaledInstance(ancho, alto, Image.SCALE_SMOOTH);
             vista.lblMostrarImagen.setText("");
             vista.lblMostrarImagen.setIcon(new ImageIcon(imagenEscalada));
-
         } catch (Exception e) {
             limpiarImagen();
+            e.printStackTrace();
         }
     }
 
@@ -175,6 +204,7 @@ public class GestionProductosController {
         vista.lblMostrarImagen.setText("Sin imagen");
     }
 
+    // ================== Tabla de productos (asíncrona) ==================
     private DefaultTableModel crearModeloTabla() {
         DefaultTableModel modelo = new DefaultTableModel() {
             @Override
@@ -182,7 +212,6 @@ public class GestionProductosController {
                 return false;
             }
         };
-
         modelo.addColumn("ID");
         modelo.addColumn("Código");
         modelo.addColumn("Nombre");
@@ -191,13 +220,15 @@ public class GestionProductosController {
         modelo.addColumn("Imagen");
         modelo.addColumn("Estado");
         modelo.addColumn("ID Categoría");
-
         return modelo;
     }
 
     private void llenarTabla(ArrayList<Producto> productos) {
+        if (productos == null) {
+            System.err.println("Productos es null, no se puede llenar la tabla.");
+            return;
+        }
         DefaultTableModel modelo = crearModeloTabla();
-
         for (Producto p : productos) {
             modelo.addRow(new Object[]{
                 p.getIdProducto(),
@@ -210,10 +241,8 @@ public class GestionProductosController {
                 p.getIdCategoria()
             });
         }
-
         vista.tblProductos.setModel(modelo);
         vista.tblProductos.setAutoCreateRowSorter(true);
-
         ocultarColumna(5);
         ocultarColumna(7);
     }
@@ -228,22 +257,79 @@ public class GestionProductosController {
     }
 
     private void listarProductosEnTabla() {
-        ArrayList<Producto> productos = dao.listarProductos();
-        llenarTabla(productos);
+        if (currentLoadWorker != null && !currentLoadWorker.isDone()) {
+            currentLoadWorker.cancel(true);
+        }
+        currentLoadWorker = new SwingWorker<ArrayList<Producto>, Void>() {
+            @Override
+            protected ArrayList<Producto> doInBackground() throws Exception {
+                System.out.println("Cargando productos desde la BD...");
+                return dao.listarProductos();
+            }
+
+            @Override
+            protected void done() {
+                try {
+                    ArrayList<Producto> productos = get();
+                    System.out.println("Productos recibidos: " + (productos != null ? productos.size() : "null"));
+                    if (productos == null) {
+                        productos = new ArrayList<>();
+                    }
+                    llenarTabla(productos);
+                } catch (CancellationException e) {
+                    // Cancelación intencional (nueva búsqueda o recarga), no mostrar error
+                    System.out.println("Carga de productos cancelada por nueva operación.");
+                } catch (Exception ex) {
+                    System.err.println("Error en SwingWorker de productos:");
+                    ex.printStackTrace();
+                    // Solo mostrar mensaje si es un error real (no cancelación)
+                    JOptionPane.showMessageDialog(vista,
+                        "Error al cargar productos: " + ex.getMessage() + "\nRevisa la consola para más detalles.",
+                        "Error", JOptionPane.ERROR_MESSAGE);
+                } finally {
+                    currentLoadWorker = null;
+                }
+            }
+        };
+        currentLoadWorker.execute();
     }
 
     private void buscarProductosEnTabla() {
         String texto = vista.txtBuscar.getText().trim();
-
         if (texto.isEmpty()) {
             listarProductosEnTabla();
             return;
         }
+        if (currentLoadWorker != null && !currentLoadWorker.isDone()) {
+            currentLoadWorker.cancel(true);
+        }
+        currentLoadWorker = new SwingWorker<ArrayList<Producto>, Void>() {
+            @Override
+            protected ArrayList<Producto> doInBackground() throws Exception {
+                return dao.buscarProductos(texto);
+            }
 
-        ArrayList<Producto> productos = dao.buscarProductos(texto);
-        llenarTabla(productos);
+            @Override
+            protected void done() {
+                try {
+                    ArrayList<Producto> productos = get();
+                    if (productos == null) productos = new ArrayList<>();
+                    llenarTabla(productos);
+                } catch (CancellationException e) {
+                    System.out.println("Búsqueda cancelada.");
+                } catch (Exception ex) {
+                    System.err.println("Error en búsqueda de productos:");
+                    ex.printStackTrace();
+                    JOptionPane.showMessageDialog(vista, "Error al buscar productos: " + ex.getMessage());
+                } finally {
+                    currentLoadWorker = null;
+                }
+            }
+        };
+        currentLoadWorker.execute();
     }
 
+    // ================== Métodos auxiliares ==================
     private String valorModelo(DefaultTableModel modelo, int fila, int columna) {
         Object valor = modelo.getValueAt(fila, columna);
         return valor == null ? "" : valor.toString();
@@ -251,47 +337,30 @@ public class GestionProductosController {
 
     private void seleccionarProductoTabla() {
         int filaVista = vista.tblProductos.getSelectedRow();
-
-        if (filaVista < 0) {
-            return;
-        }
-
+        if (filaVista < 0) return;
         int filaModelo = vista.tblProductos.convertRowIndexToModel(filaVista);
         DefaultTableModel modelo = (DefaultTableModel) vista.tblProductos.getModel();
-
         vista.txtIdProducto.setText(valorModelo(modelo, filaModelo, 0));
         vista.txtCodigoBarras.setText(valorModelo(modelo, filaModelo, 1));
         vista.txtNombre.setText(valorModelo(modelo, filaModelo, 2));
         vista.txtDescripcionTecnica.setText(valorModelo(modelo, filaModelo, 3));
-
         String iva = valorModelo(modelo, filaModelo, 4);
-
-        if (iva.equals("13.0") || iva.equals("13")) {
-            vista.cbIva.setSelectedItem("13");
-        } else {
-            vista.cbIva.setSelectedItem("0");
-        }
-
+        vista.cbIva.setSelectedItem(iva.equals("13.0") || iva.equals("13") ? "13" : "0");
         String rutaImagen = valorModelo(modelo, filaModelo, 5);
         vista.txtRuta.setText(rutaImagen);
         mostrarImagen(rutaImagen);
-
         vista.cboEstado.setSelectedItem(valorModelo(modelo, filaModelo, 6));
-
         try {
             int idCategoria = Integer.parseInt(valorModelo(modelo, filaModelo, 7));
             seleccionarCategoriaPorId(idCategoria);
         } catch (NumberFormatException e) {
-            if (vista.cboCategoria.getItemCount() > 0) {
-                vista.cboCategoria.setSelectedIndex(0);
-            }
+            if (vista.cboCategoria.getItemCount() > 0) vista.cboCategoria.setSelectedIndex(0);
         }
     }
 
     private void seleccionarCategoriaPorId(int idCategoria) {
         for (int i = 0; i < vista.cboCategoria.getItemCount(); i++) {
             String item = vista.cboCategoria.getItemAt(i).toString();
-
             if (item.startsWith(idCategoria + " - ")) {
                 vista.cboCategoria.setSelectedIndex(i);
                 break;
@@ -315,60 +384,36 @@ public class GestionProductosController {
                 JOptionPane.showMessageDialog(vista, "Seleccione un producto de la tabla.");
                 return;
             }
-
             String codigoBarras = vista.txtCodigoBarras.getText().trim();
             String nombre = vista.txtNombre.getText().trim();
-
             if (codigoBarras.isEmpty()) {
                 JOptionPane.showMessageDialog(vista, "Ingrese el código de barras.");
                 vista.txtCodigoBarras.requestFocus();
                 return;
             }
-
             if (nombre.isEmpty()) {
                 JOptionPane.showMessageDialog(vista, "Ingrese el nombre del producto.");
                 vista.txtNombre.requestFocus();
                 return;
             }
-
-            if (vista.cboCategoria.getSelectedItem() == null) {
-                JOptionPane.showMessageDialog(vista, "Seleccione una categoría.");
-                return;
-            }
-
-            if (vista.cboEstado.getSelectedItem() == null) {
-                JOptionPane.showMessageDialog(vista, "Seleccione un estado.");
-                return;
-            }
-
-            if (vista.cbIva.getSelectedItem() == null) {
-                JOptionPane.showMessageDialog(vista, "Seleccione el IVA.");
-                return;
-            }
-
             Producto producto = new Producto();
-
             producto.setIdProducto(Integer.parseInt(vista.txtIdProducto.getText().trim()));
             producto.setCodigoBarras(codigoBarras);
             producto.setNombre(nombre);
             producto.setDescripcionTecnica(vista.txtDescripcionTecnica.getText().trim());
-
             double iva = Double.parseDouble(vista.cbIva.getSelectedItem().toString());
             producto.setPorcentajeIvaDetalle(iva);
-
             producto.setImagenUrl(obtenerRutaImagen());
             producto.setEstado(vista.cboEstado.getSelectedItem().toString());
             producto.setIdCategoria(obtenerIdCategoria());
 
             boolean actualizado = dao.actualizarProducto(producto);
-
             if (actualizado) {
                 JOptionPane.showMessageDialog(vista, "Producto actualizado correctamente.");
                 limpiarCampos();
             } else {
                 JOptionPane.showMessageDialog(vista, "No se pudo actualizar el producto.");
             }
-
         } catch (NumberFormatException e) {
             JOptionPane.showMessageDialog(vista, "Error numérico. Revise los datos seleccionados.");
         }
@@ -379,19 +424,12 @@ public class GestionProductosController {
             JOptionPane.showMessageDialog(vista, "Seleccione un producto de la tabla.");
             return;
         }
-
-        int confirmacion = JOptionPane.showConfirmDialog(
-                vista,
-                "¿Desea desactivar este producto?",
-                "Confirmar",
-                JOptionPane.YES_NO_OPTION
-        );
-
+        int confirmacion = JOptionPane.showConfirmDialog(vista,
+                "¿Desea desactivar este producto?", "Confirmar",
+                JOptionPane.YES_NO_OPTION);
         if (confirmacion == JOptionPane.YES_OPTION) {
             int idProducto = Integer.parseInt(vista.txtIdProducto.getText().trim());
-
             boolean eliminado = dao.eliminarProducto(idProducto);
-
             if (eliminado) {
                 JOptionPane.showMessageDialog(vista, "Producto desactivado correctamente.");
                 limpiarCampos();
@@ -408,21 +446,9 @@ public class GestionProductosController {
         vista.txtDescripcionTecnica.setText("");
         vista.txtRuta.setText("");
         vista.txtBuscar.setText("");
-
         limpiarImagen();
-
-        if (vista.cbIva.getItemCount() > 0) {
-            vista.cbIva.setSelectedIndex(0);
-        }
-
-        if (vista.cboCategoria.getItemCount() > 0) {
-            vista.cboCategoria.setSelectedIndex(0);
-        }
-
-        if (vista.cboEstado.getItemCount() > 0) {
-            vista.cboEstado.setSelectedIndex(0);
-        }
-
+        if (vista.cbIva.getItemCount() > 0) vista.cbIva.setSelectedIndex(0);
+        if (vista.cboEstado.getItemCount() > 0) vista.cboEstado.setSelectedIndex(0);
         vista.tblProductos.clearSelection();
         listarProductosEnTabla();
         vista.txtCodigoBarras.requestFocus();

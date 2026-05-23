@@ -3,218 +3,343 @@ package Vistas;
 import Modelos.Cliente;
 import Controladores.CtrlGestionarClientes;
 import Modelos.ClienteDAO;
-import java.awt.*;
-import javax.swing.*;
-import javax.swing.border.EmptyBorder;
+import java.awt.Color;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
+import javax.swing.JLabel;
 import javax.swing.table.DefaultTableCellRenderer;
 
 public class GestionarClientes extends javax.swing.JInternalFrame {
 
     private CtrlGestionarClientes controladorGestionar;
 
-    private static final Color BG_MAIN   = Color.decode("#0A0C10");
-    private static final Color BG_TABLE  = Color.decode("#0E1219");
-    private static final Color BG_INPUT  = Color.decode("#181D2E");
-    private static final Color BORDER    = Color.decode("#2A3050");
-    private static final Color ACCENT    = Color.decode("#6C63FF");
-    private static final Color DANGER    = Color.decode("#FF5B7A");
-    private static final Color TEXT_PRI  = Color.decode("#F0F2FF");
-    private static final Color TEXT_MUT  = Color.decode("#9BA3C4");
-
-    private JPanel mainContentPanel;
-
     public GestionarClientes() {
         initComponents();
-        this.setSize(new Dimension(1050, 680));
-        this.setPreferredSize(new Dimension(1050, 680));
-        this.setTitle("Gestionar Clientes");
+        txtIdCliente.setVisible(false); // Ocultar ID
         
-        // Ejecutamos la estructura scrolleable segura
-        hacerFormularioScrolleable();
-        aplicarEstiloPremium();
-        
-        txtIdCliente.setVisible(false);
-        
+        // Estilizar cabecera de tabla
+        tblClientes.getTableHeader().setBackground(Color.decode("#181D2E"));
+        tblClientes.getTableHeader().setForeground(Color.decode("#9BA3C4"));
+        tblClientes.getTableHeader().setFont(new java.awt.Font("Segoe UI", java.awt.Font.BOLD, 11));
+        tblClientes.getTableHeader().setBorder(javax.swing.BorderFactory.createMatteBorder(0, 0, 1, 0, Color.decode("#2A3050")));
+        ((DefaultTableCellRenderer) tblClientes.getTableHeader().getDefaultRenderer()).setHorizontalAlignment(JLabel.CENTER);
+
+        // Efectos Hover a Botones
+        btnActualizar.addMouseListener(new MouseAdapter() {
+            public void mouseEntered(MouseEvent e) { btnActualizar.setBackground(Color.decode("#5850DC")); }
+            public void mouseExited(MouseEvent e)  { btnActualizar.setBackground(Color.decode("#6C63FF")); }
+        });
+        btnEliminar.addMouseListener(new MouseAdapter() {
+            public void mouseEntered(MouseEvent e) { btnEliminar.setBackground(Color.decode("#FF5B7A")); btnEliminar.setForeground(Color.WHITE); }
+            public void mouseExited(MouseEvent e) { btnEliminar.setBackground(Color.decode("#1E0A10")); btnEliminar.setForeground(Color.decode("#FF5B7A")); }
+        });
+        btnRefrescar.addMouseListener(new MouseAdapter() {
+            public void mouseEntered(MouseEvent e) { btnRefrescar.setBackground(Color.decode("#2A3050")); }
+            public void mouseExited(MouseEvent e)  { btnRefrescar.setBackground(Color.decode("#181D2E")); }
+        });
+
+        // Inicializar Controlador Original
         Cliente cliente = new Cliente();
         ClienteDAO clienteDAO = new ClienteDAO();
         controladorGestionar = new CtrlGestionarClientes(cliente, clienteDAO, this);
     }
 
-    // ── MAGIA SEGURA SIN DEPENDER DE LIBRERÍAS DE NETBEANS ───────────────────
-    private void hacerFormularioScrolleable() {
-        // Usamos un layout nulo nativo de Java, ya que aplicaremos bounds manualmente
-        mainContentPanel = new JPanel(null); 
-        mainContentPanel.setBackground(BG_MAIN);
-        mainContentPanel.setPreferredSize(new Dimension(1000, 750));
-
-        // Movemos los componentes del content pane original al nuevo panel
-        for (Component c : getContentPane().getComponents()) {
-            mainContentPanel.add(c);
-        }
-
-        JScrollPane scroll = new JScrollPane(mainContentPanel);
-        scroll.setBorder(null);
-        scroll.getVerticalScrollBar().setUnitIncrement(16);
-        scroll.setHorizontalScrollBarPolicy(ScrollPaneConstants.HORIZONTAL_SCROLLBAR_NEVER);
-
-        getContentPane().removeAll();
-        getContentPane().setLayout(new BorderLayout());
-        getContentPane().add(scroll, BorderLayout.CENTER);
-    }
-
-    private void aplicarEstiloPremium() {
-        JLabel lblTitulo = new JLabel("✦  Directorio y Gestión de Clientes");
-        lblTitulo.setForeground(TEXT_PRI);
-        lblTitulo.setFont(new Font("Segoe UI", Font.BOLD, 22));
-        lblTitulo.setBounds(30, 20, 400, 30);
-        mainContentPanel.add(lblTitulo);
-
-        // Tabla
-        tblClientes.setBackground(BG_TABLE);
-        tblClientes.setForeground(TEXT_PRI);
-        tblClientes.setRowHeight(30);
-        tblClientes.setSelectionBackground(ACCENT);
-        tblClientes.setSelectionForeground(Color.WHITE);
-        tblClientes.getTableHeader().setBackground(Color.decode("#181D2E"));
-        tblClientes.getTableHeader().setForeground(TEXT_MUT);
-        tblClientes.getTableHeader().setFont(new Font("Segoe UI", Font.BOLD, 11));
-        tblClientes.getTableHeader().setBorder(BorderFactory.createMatteBorder(0, 0, 1, 0, BORDER));
-        
-        jScrollPane1.setBorder(BorderFactory.createLineBorder(BORDER, 1));
-        jScrollPane1.setBounds(30, 70, 750, 380);
-
-        // Botones Laterales
-        estilizarBtn(btnActualizar, ACCENT, Color.WHITE);
-        btnActualizar.setBounds(810, 70, 180, 45);
-
-        estilizarBtn(btnEliminar, Color.decode("#1E0A10"), DANGER);
-        btnEliminar.setBorder(BorderFactory.createLineBorder(Color.decode("#3A1520"), 1));
-        btnEliminar.setBounds(810, 130, 180, 45);
-
-        estilizarBtn(btnRefrescar, BG_INPUT, TEXT_PRI);
-        btnRefrescar.setBorder(BorderFactory.createLineBorder(BORDER, 1));
-        btnRefrescar.setBounds(810, 190, 180, 45);
-
-        // Panel de edición abajo
-        JPanel panelEdit = new JPanel(null);
-        panelEdit.setBackground(Color.decode("#111520"));
-        panelEdit.setBorder(BorderFactory.createLineBorder(BORDER, 1));
-        panelEdit.setBounds(30, 480, 960, 180);
-        mainContentPanel.add(panelEdit);
-
-        // Fila 1 Edición
-        agregarCampoEdicion(panelEdit, jLabel2, txtNombre, "NOMBRES", 20, 20, 220);
-        agregarCampoEdicion(panelEdit, jLabel3, txtApellido, "APELLIDOS", 260, 20, 220);
-        agregarCampoEdicion(panelEdit, jLabel4, txtDui, "DUI", 500, 20, 200);
-
-        // Fila 2 Edición
-        agregarCampoEdicion(panelEdit, jLabel5, txtTelefono, "TELÉFONO", 20, 95, 220);
-        agregarCampoEdicion(panelEdit, jLabel6, txtDireccion, "DIRECCIÓN", 260, 95, 460);
-        
-        // Combo Box Estado
-        jLabel1.setText("ESTADO");
-        jLabel1.setForeground(TEXT_MUT);
-        jLabel1.setFont(new Font("Segoe UI", Font.BOLD, 10));
-        jLabel1.setBounds(740, 95, 200, 16);
-        panelEdit.add(jLabel1);
-        
-        cbEstado.setBounds(740, 115, 200, 38);
-        cbEstado.setBackground(BG_INPUT);
-        cbEstado.setForeground(TEXT_PRI);
-        cbEstado.setBorder(BorderFactory.createLineBorder(BORDER, 1));
-        panelEdit.add(cbEstado);
-    }
-
-    private void agregarCampoEdicion(JPanel parent, JLabel lbl, JTextField txt, String titulo, int x, int y, int w) {
-        lbl.setText(titulo);
-        lbl.setForeground(TEXT_MUT);
-        lbl.setFont(new Font("Segoe UI", Font.BOLD, 10));
-        lbl.setBounds(x, y, w, 16);
-        parent.add(lbl);
-
-        txt.setBounds(x, y + 20, w, 38);
-        txt.setBackground(BG_INPUT);
-        txt.setForeground(TEXT_PRI);
-        txt.setCaretColor(ACCENT);
-        txt.setBorder(BorderFactory.createCompoundBorder(BorderFactory.createLineBorder(BORDER, 1), new EmptyBorder(6, 10, 6, 10)));
-        parent.add(txt);
-    }
-
-    private void estilizarBtn(JButton b, Color bg, Color fg) {
-        b.setBackground(bg);
-        b.setForeground(fg);
-        b.setFont(new Font("Segoe UI", Font.BOLD, 14));
-        b.setFocusPainted(false);
-        b.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
-    }
-
     @SuppressWarnings("unchecked")
+    // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
+
+        lblTitulo = new javax.swing.JLabel();
         jScrollPane1 = new javax.swing.JScrollPane();
         tblClientes = new javax.swing.JTable();
-        txtIdCliente = new javax.swing.JTextField();
-        txtNombre = new javax.swing.JTextField();
-        txtApellido = new javax.swing.JTextField();
-        txtDui = new javax.swing.JTextField();
-        txtTelefono = new javax.swing.JTextField();
-        txtDireccion = new javax.swing.JTextField();
         btnActualizar = new javax.swing.JButton();
         btnEliminar = new javax.swing.JButton();
-        jLabel2 = new javax.swing.JLabel();
-        jLabel3 = new javax.swing.JLabel();
-        jLabel4 = new javax.swing.JLabel();
-        jLabel5 = new javax.swing.JLabel();
-        jLabel6 = new javax.swing.JLabel();
         btnRefrescar = new javax.swing.JButton();
-        cbEstado = new javax.swing.JComboBox<>();
+        panelEdit = new javax.swing.JPanel();
+        jLabel2 = new javax.swing.JLabel();
+        txtNombre = new javax.swing.JTextField();
+        jLabel3 = new javax.swing.JLabel();
+        txtApellido = new javax.swing.JTextField();
+        jLabel4 = new javax.swing.JLabel();
+        txtDui = new javax.swing.JTextField();
+        jLabel5 = new javax.swing.JLabel();
+        txtTelefono = new javax.swing.JTextField();
+        jLabel6 = new javax.swing.JLabel();
+        txtDireccion = new javax.swing.JTextField();
         jLabel1 = new javax.swing.JLabel();
+        cbEstado = new javax.swing.JComboBox<>();
+        txtIdCliente = new javax.swing.JTextField();
 
+        setBackground(new java.awt.Color(10, 12, 16));
         setClosable(true);
-        setMaximizable(true);
         setIconifiable(true);
+        setMaximizable(true);
+        setResizable(true);
+        setTitle("Gestionar Clientes");
+        setPreferredSize(new java.awt.Dimension(1050, 680));
+        addInternalFrameListener(new javax.swing.event.InternalFrameListener() {
+            public void internalFrameActivated(javax.swing.event.InternalFrameEvent evt) {
+                formInternalFrameActivated(evt);
+            }
+            public void internalFrameClosed(javax.swing.event.InternalFrameEvent evt) {
+            }
+            public void internalFrameClosing(javax.swing.event.InternalFrameEvent evt) {
+            }
+            public void internalFrameDeactivated(javax.swing.event.InternalFrameEvent evt) {
+            }
+            public void internalFrameDeiconified(javax.swing.event.InternalFrameEvent evt) {
+            }
+            public void internalFrameIconified(javax.swing.event.InternalFrameEvent evt) {
+            }
+            public void internalFrameOpened(javax.swing.event.InternalFrameEvent evt) {
+            }
+        });
+        getContentPane().setLayout(null);
 
+        lblTitulo.setFont(new java.awt.Font("Segoe UI", 1, 22)); // NOI18N
+        lblTitulo.setForeground(new java.awt.Color(240, 242, 255));
+        lblTitulo.setText("✦  Directorio y Gestión de Clientes");
+        getContentPane().add(lblTitulo);
+        lblTitulo.setBounds(30, 20, 400, 30);
+
+        jScrollPane1.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(42, 48, 80)));
+
+        tblClientes.setBackground(new java.awt.Color(14, 18, 25));
+        tblClientes.setForeground(new java.awt.Color(240, 242, 255));
         tblClientes.setModel(new javax.swing.table.DefaultTableModel(
-            new Object [][] {},
-            new String [] { "ID", "Nombre", "Apellido", "DUI", "Teléfono", "Dirección", "Estado" }
+            new Object [][] {
+
+            },
+            new String [] {
+                "ID", "Nombre", "Apellido", "DUI", "Teléfono", "Dirección", "Estado"
+            }
         ));
+        tblClientes.setGridColor(new java.awt.Color(26, 31, 48));
+        tblClientes.setRowHeight(30);
+        tblClientes.setSelectionBackground(new java.awt.Color(108, 99, 255));
+        tblClientes.setSelectionForeground(new java.awt.Color(255, 255, 255));
+        tblClientes.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                tblClientesMouseClicked(evt);
+            }
+        });
         jScrollPane1.setViewportView(tblClientes);
 
+        getContentPane().add(jScrollPane1);
+        jScrollPane1.setBounds(30, 70, 750, 380);
+
+        btnActualizar.setBackground(new java.awt.Color(108, 99, 255));
+        btnActualizar.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
+        btnActualizar.setForeground(new java.awt.Color(255, 255, 255));
         btnActualizar.setText("Actualizar");
+        btnActualizar.setBorderPainted(false);
+        btnActualizar.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
+        btnActualizar.setFocusPainted(false);
+        btnActualizar.addActionListener(this::btnActualizarActionPerformed);
+        getContentPane().add(btnActualizar);
+        btnActualizar.setBounds(810, 70, 180, 45);
+
+        btnEliminar.setBackground(new java.awt.Color(30, 10, 16));
+        btnEliminar.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
+        btnEliminar.setForeground(new java.awt.Color(255, 91, 122));
         btnEliminar.setText("Eliminar");
+        btnEliminar.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(58, 21, 32)));
+        btnEliminar.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
+        btnEliminar.setFocusPainted(false);
+        btnEliminar.addActionListener(this::btnEliminarActionPerformed);
+        getContentPane().add(btnEliminar);
+        btnEliminar.setBounds(810, 130, 180, 45);
+
+        btnRefrescar.setBackground(new java.awt.Color(24, 29, 46));
+        btnRefrescar.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
+        btnRefrescar.setForeground(new java.awt.Color(240, 242, 255));
         btnRefrescar.setText("Refrescar");
+        btnRefrescar.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(42, 48, 80)));
+        btnRefrescar.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
+        btnRefrescar.setFocusPainted(false);
+        btnRefrescar.addActionListener(this::btnRefrescarActionPerformed);
+        getContentPane().add(btnRefrescar);
+        btnRefrescar.setBounds(810, 190, 180, 45);
+
+        panelEdit.setBackground(new java.awt.Color(17, 21, 32));
+        panelEdit.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(42, 48, 80)));
+        panelEdit.setLayout(null);
+
+        jLabel2.setFont(new java.awt.Font("Segoe UI", 1, 10)); // NOI18N
+        jLabel2.setForeground(new java.awt.Color(155, 163, 196));
+        jLabel2.setText("NOMBRE:");
+        panelEdit.add(jLabel2);
+        jLabel2.setBounds(20, 20, 220, 16);
+
+        txtNombre.setBackground(new java.awt.Color(24, 29, 46));
+        txtNombre.setFont(new java.awt.Font("Segoe UI", 0, 13)); // NOI18N
+        txtNombre.setForeground(new java.awt.Color(240, 242, 255));
+        txtNombre.setBorder(javax.swing.BorderFactory.createCompoundBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(42, 48, 80)), javax.swing.BorderFactory.createEmptyBorder(6, 10, 6, 10)));
+        txtNombre.addActionListener(this::txtNombreActionPerformed);
+        txtNombre.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyTyped(java.awt.event.KeyEvent evt) {
+                txtNombreKeyTyped(evt);
+            }
+        });
+        panelEdit.add(txtNombre);
+        txtNombre.setBounds(20, 40, 220, 38);
+
+        jLabel3.setFont(new java.awt.Font("Segoe UI", 1, 10)); // NOI18N
+        jLabel3.setForeground(new java.awt.Color(155, 163, 196));
+        jLabel3.setText("APELLIDO:");
+        panelEdit.add(jLabel3);
+        jLabel3.setBounds(260, 20, 220, 16);
+
+        txtApellido.setBackground(new java.awt.Color(24, 29, 46));
+        txtApellido.setFont(new java.awt.Font("Segoe UI", 0, 13)); // NOI18N
+        txtApellido.setForeground(new java.awt.Color(240, 242, 255));
+        txtApellido.setBorder(javax.swing.BorderFactory.createCompoundBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(42, 48, 80)), javax.swing.BorderFactory.createEmptyBorder(6, 10, 6, 10)));
+        txtApellido.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyTyped(java.awt.event.KeyEvent evt) {
+                txtApellidoKeyTyped(evt);
+            }
+        });
+        panelEdit.add(txtApellido);
+        txtApellido.setBounds(260, 40, 220, 38);
+
+        jLabel4.setFont(new java.awt.Font("Segoe UI", 1, 10)); // NOI18N
+        jLabel4.setForeground(new java.awt.Color(155, 163, 196));
+        jLabel4.setText("DUI:");
+        panelEdit.add(jLabel4);
+        jLabel4.setBounds(500, 20, 200, 16);
+
+        txtDui.setBackground(new java.awt.Color(24, 29, 46));
+        txtDui.setFont(new java.awt.Font("Segoe UI", 0, 13)); // NOI18N
+        txtDui.setForeground(new java.awt.Color(240, 242, 255));
+        txtDui.setBorder(javax.swing.BorderFactory.createCompoundBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(42, 48, 80)), javax.swing.BorderFactory.createEmptyBorder(6, 10, 6, 10)));
+        txtDui.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyReleased(java.awt.event.KeyEvent evt) {
+                txtDuiKeyReleased(evt);
+            }
+            public void keyTyped(java.awt.event.KeyEvent evt) {
+                txtDuiKeyTyped(evt);
+            }
+        });
+        panelEdit.add(txtDui);
+        txtDui.setBounds(500, 40, 200, 38);
+
+        jLabel5.setFont(new java.awt.Font("Segoe UI", 1, 10)); // NOI18N
+        jLabel5.setForeground(new java.awt.Color(155, 163, 196));
+        jLabel5.setText("TELÉFONO:");
+        panelEdit.add(jLabel5);
+        jLabel5.setBounds(720, 20, 220, 16);
+
+        txtTelefono.setBackground(new java.awt.Color(24, 29, 46));
+        txtTelefono.setFont(new java.awt.Font("Segoe UI", 0, 13)); // NOI18N
+        txtTelefono.setForeground(new java.awt.Color(240, 242, 255));
+        txtTelefono.setBorder(javax.swing.BorderFactory.createCompoundBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(42, 48, 80)), javax.swing.BorderFactory.createEmptyBorder(6, 10, 6, 10)));
+        txtTelefono.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyTyped(java.awt.event.KeyEvent evt) {
+                txtTelefonoKeyTyped(evt);
+            }
+        });
+        panelEdit.add(txtTelefono);
+        txtTelefono.setBounds(720, 40, 190, 38);
+
+        jLabel6.setFont(new java.awt.Font("Segoe UI", 1, 10)); // NOI18N
+        jLabel6.setForeground(new java.awt.Color(155, 163, 196));
+        jLabel6.setText("DIRECCIÓN:");
+        panelEdit.add(jLabel6);
+        jLabel6.setBounds(20, 85, 460, 16);
+
+        txtDireccion.setBackground(new java.awt.Color(24, 29, 46));
+        txtDireccion.setFont(new java.awt.Font("Segoe UI", 0, 13)); // NOI18N
+        txtDireccion.setForeground(new java.awt.Color(240, 242, 255));
+        txtDireccion.setBorder(javax.swing.BorderFactory.createCompoundBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(42, 48, 80)), javax.swing.BorderFactory.createEmptyBorder(6, 10, 6, 10)));
+        panelEdit.add(txtDireccion);
+        txtDireccion.setBounds(20, 105, 460, 38);
+
+        jLabel1.setFont(new java.awt.Font("Segoe UI", 1, 10)); // NOI18N
+        jLabel1.setForeground(new java.awt.Color(155, 163, 196));
+        jLabel1.setText("ESTADO:");
+        panelEdit.add(jLabel1);
+        jLabel1.setBounds(500, 85, 200, 16);
 
         cbEstado.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Activo", "Inactivo" }));
+        cbEstado.setBackground(new java.awt.Color(24, 29, 46));
+        cbEstado.setForeground(new java.awt.Color(240, 242, 255));
+        cbEstado.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(42, 48, 80)));
+        panelEdit.add(cbEstado);
+        cbEstado.setBounds(500, 105, 200, 38);
 
-        // Asignamos todo de forma inicial (sin coordinadas de AbsoluteLayout conflictivas)
-        getContentPane().setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
-        
-        getContentPane().add(jScrollPane1, new org.netbeans.lib.awtextra.AbsoluteConstraints(0,0,0,0));
-        getContentPane().add(btnActualizar, new org.netbeans.lib.awtextra.AbsoluteConstraints(0,0,0,0));
-        getContentPane().add(btnEliminar, new org.netbeans.lib.awtextra.AbsoluteConstraints(0,0,0,0));
-        getContentPane().add(btnRefrescar, new org.netbeans.lib.awtextra.AbsoluteConstraints(0,0,0,0));
-        
-        getContentPane().add(txtIdCliente, new org.netbeans.lib.awtextra.AbsoluteConstraints(0,0,0,0));
-        getContentPane().add(txtNombre, new org.netbeans.lib.awtextra.AbsoluteConstraints(0,0,0,0));
-        getContentPane().add(txtApellido, new org.netbeans.lib.awtextra.AbsoluteConstraints(0,0,0,0));
-        getContentPane().add(txtDui, new org.netbeans.lib.awtextra.AbsoluteConstraints(0,0,0,0));
-        getContentPane().add(txtTelefono, new org.netbeans.lib.awtextra.AbsoluteConstraints(0,0,0,0));
-        getContentPane().add(txtDireccion, new org.netbeans.lib.awtextra.AbsoluteConstraints(0,0,0,0));
-        getContentPane().add(jLabel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(0,0,0,0));
-        getContentPane().add(jLabel2, new org.netbeans.lib.awtextra.AbsoluteConstraints(0,0,0,0));
-        getContentPane().add(jLabel3, new org.netbeans.lib.awtextra.AbsoluteConstraints(0,0,0,0));
-        getContentPane().add(jLabel4, new org.netbeans.lib.awtextra.AbsoluteConstraints(0,0,0,0));
-        getContentPane().add(jLabel5, new org.netbeans.lib.awtextra.AbsoluteConstraints(0,0,0,0));
-        getContentPane().add(jLabel6, new org.netbeans.lib.awtextra.AbsoluteConstraints(0,0,0,0));
-        getContentPane().add(cbEstado, new org.netbeans.lib.awtextra.AbsoluteConstraints(0,0,0,0));
-        
+        getContentPane().add(panelEdit);
+        panelEdit.setBounds(30, 470, 960, 150);
+
+        txtIdCliente.setBackground(new java.awt.Color(14, 18, 25));
+        getContentPane().add(txtIdCliente);
+        txtIdCliente.setBounds(0, 0, 0, 0);
+
         pack();
-    }
+    }// </editor-fold>//GEN-END:initComponents
 
-    // Variables
-    public javax.swing.JButton btnActualizar, btnEliminar, btnRefrescar;
+    private void formInternalFrameActivated(javax.swing.event.InternalFrameEvent evt) {//GEN-FIRST:event_formInternalFrameActivated
+        // TODO lógica del controlador original
+    }//GEN-LAST:event_formInternalFrameActivated
+
+    private void tblClientesMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tblClientesMouseClicked
+        // TODO lógica del controlador original
+    }//GEN-LAST:event_tblClientesMouseClicked
+
+    private void txtNombreActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtNombreActionPerformed
+        // TODO lógica del controlador original
+    }//GEN-LAST:event_txtNombreActionPerformed
+
+    private void txtNombreKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtNombreKeyTyped
+        // TODO lógica del controlador original
+    }//GEN-LAST:event_txtNombreKeyTyped
+
+    private void txtApellidoKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtApellidoKeyTyped
+        // TODO lógica del controlador original
+    }//GEN-LAST:event_txtApellidoKeyTyped
+
+    private void txtDuiKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtDuiKeyReleased
+        // TODO lógica del controlador original
+    }//GEN-LAST:event_txtDuiKeyReleased
+
+    private void txtDuiKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtDuiKeyTyped
+        // TODO lógica del controlador original
+    }//GEN-LAST:event_txtDuiKeyTyped
+
+    private void txtTelefonoKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtTelefonoKeyTyped
+        // TODO lógica del controlador original
+    }//GEN-LAST:event_txtTelefonoKeyTyped
+
+    private void btnActualizarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnActualizarActionPerformed
+        // TODO lógica del controlador original
+    }//GEN-LAST:event_btnActualizarActionPerformed
+
+    private void btnEliminarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnEliminarActionPerformed
+        // TODO lógica del controlador original
+    }//GEN-LAST:event_btnEliminarActionPerformed
+
+    private void btnRefrescarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnRefrescarActionPerformed
+        // TODO lógica del controlador original
+    }//GEN-LAST:event_btnRefrescarActionPerformed
+
+    // Variables declaration - do not modify//GEN-BEGIN:variables
+    public javax.swing.JButton btnActualizar;
+    public javax.swing.JButton btnEliminar;
+    public javax.swing.JButton btnRefrescar;
     public javax.swing.JComboBox<String> cbEstado;
-    private javax.swing.JLabel jLabel1, jLabel2, jLabel3, jLabel4, jLabel5, jLabel6;
+    private javax.swing.JLabel jLabel1;
+    private javax.swing.JLabel jLabel2;
+    private javax.swing.JLabel jLabel3;
+    private javax.swing.JLabel jLabel4;
+    private javax.swing.JLabel jLabel5;
+    private javax.swing.JLabel jLabel6;
     private javax.swing.JScrollPane jScrollPane1;
+    private javax.swing.JLabel lblTitulo;
+    private javax.swing.JPanel panelEdit;
     public javax.swing.JTable tblClientes;
-    public javax.swing.JTextField txtApellido, txtDireccion, txtDui, txtIdCliente, txtNombre, txtTelefono;
+    public javax.swing.JTextField txtApellido;
+    public javax.swing.JTextField txtDireccion;
+    public javax.swing.JTextField txtDui;
+    public javax.swing.JTextField txtIdCliente;
+    public javax.swing.JTextField txtNombre;
+    public javax.swing.JTextField txtTelefono;
+    // End of variables declaration//GEN-END:variables
 }
