@@ -1,17 +1,28 @@
 package Vistas;
 
-import java.awt.Color;
-import Controladores.CtrlGestionarCategoria; // O el nombre correcto de tu controlador
+import Controladores.CtrlGestionarCategoria;
+import Modelos.Categoria;
+import Modelos.CategoriaDAO;
+import java.awt.Color;// O el nombre correcto de tu controlador
 
 public class GestionarCategorias extends javax.swing.JInternalFrame {
 
     public GestionarCategorias() {
         initComponents();
-        // Decoración extra para la tabla que el .form no soporta visualmente en NetBeans
-        tblCategorias.getTableHeader().setBackground(Color.decode("#181D2E"));
-        tblCategorias.getTableHeader().setForeground(Color.decode("#9BA3C4"));
-        tblCategorias.getTableHeader().setFont(new java.awt.Font("Segoe UI", java.awt.Font.BOLD, 11));
-        tblCategorias.getTableHeader().setBorder(javax.swing.BorderFactory.createMatteBorder(0, 0, 1, 0, Color.decode("#2A3050")));
+
+    tblCategorias.getTableHeader().setBackground(Color.decode("#181D2E"));
+    tblCategorias.getTableHeader().setForeground(Color.decode("#9BA3C4"));
+    tblCategorias.getTableHeader().setFont(new java.awt.Font("Segoe UI", java.awt.Font.BOLD, 11));
+    tblCategorias.getTableHeader().setBorder(
+        javax.swing.BorderFactory.createMatteBorder(0, 0, 1, 0, Color.decode("#2A3050"))
+    );
+
+    txtId.setEnabled(false);
+    chkEstado.setSelected(true);
+
+    Categoria categoria = new Categoria();
+    CategoriaDAO categoriaDAO = new CategoriaDAO();
+    new CtrlGestionarCategoria(categoria, categoriaDAO, this);
     }
 
     @SuppressWarnings("unchecked")
@@ -31,7 +42,15 @@ public class GestionarCategorias extends javax.swing.JInternalFrame {
         jLabel1 = new javax.swing.JLabel();
         txtDescripcion = new javax.swing.JTextField();
         jLabel3 = new javax.swing.JLabel();
-        cbEstado = new javax.swing.JComboBox<>();
+        chkEstado = new javax.swing.JCheckBox();
+        btnGuardar = new javax.swing.JButton();
+        btnLimpiar = new javax.swing.JButton();
+        btnRefrescar = new javax.swing.JButton();
+        cbFiltroCategorias = new javax.swing.JComboBox<>();
+        txtBuscarCategorias = new javax.swing.JTextField();
+        btnBuscarCategorias = new javax.swing.JButton();
+        btnLimpiarFiltroCategorias = new javax.swing.JButton();
+        btnExportarCategorias = new javax.swing.JButton();
 
         setBackground(new java.awt.Color(10, 12, 16));
         setClosable(true);
@@ -64,29 +83,29 @@ public class GestionarCategorias extends javax.swing.JInternalFrame {
         jScrollPane1.setViewportView(tblCategorias);
 
         getContentPane().add(jScrollPane1);
-        jScrollPane1.setBounds(25, 60, 580, 260);
+        jScrollPane1.setBounds(25, 60, 530, 260);
 
         btnActualizar.setBackground(new java.awt.Color(108, 99, 255));
         btnActualizar.setFont(new java.awt.Font("Segoe UI", 1, 13)); // NOI18N
         btnActualizar.setForeground(new java.awt.Color(255, 255, 255));
         btnActualizar.setText("Actualizar");
         btnActualizar.setBorderPainted(false);
-        btnActualizar.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
+        btnActualizar.setCursor(new java.awt.Cursor(java.awt.Cursor.DEFAULT_CURSOR));
         btnActualizar.setFocusPainted(false);
         btnActualizar.addActionListener(this::btnActualizarActionPerformed);
         getContentPane().add(btnActualizar);
-        btnActualizar.setBounds(630, 60, 180, 42);
+        btnActualizar.setBounds(810, 50, 180, 42);
 
         btnEliminar.setBackground(new java.awt.Color(30, 10, 16));
         btnEliminar.setFont(new java.awt.Font("Segoe UI", 1, 13)); // NOI18N
         btnEliminar.setForeground(new java.awt.Color(255, 91, 122));
         btnEliminar.setText("Eliminar");
         btnEliminar.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(58, 21, 32)));
-        btnEliminar.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
+        btnEliminar.setCursor(new java.awt.Cursor(java.awt.Cursor.DEFAULT_CURSOR));
         btnEliminar.setFocusPainted(false);
         btnEliminar.addActionListener(this::btnEliminarActionPerformed);
         getContentPane().add(btnEliminar);
-        btnEliminar.setBounds(630, 115, 180, 42);
+        btnEliminar.setBounds(810, 110, 180, 42);
 
         panelEdit.setBackground(new java.awt.Color(17, 21, 32));
         panelEdit.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(42, 48, 80)));
@@ -139,15 +158,46 @@ public class GestionarCategorias extends javax.swing.JInternalFrame {
         panelEdit.add(jLabel3);
         jLabel3.setBounds(620, 15, 140, 16);
 
-        cbEstado.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Activo", "Inactivo" }));
-        cbEstado.setBackground(new java.awt.Color(24, 29, 46));
-        cbEstado.setForeground(new java.awt.Color(240, 242, 255));
-        cbEstado.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(42, 48, 80)));
-        panelEdit.add(cbEstado);
-        cbEstado.setBounds(620, 35, 140, 38);
+        chkEstado.setText("Activo");
+        panelEdit.add(chkEstado);
+        chkEstado.setBounds(630, 50, 100, 22);
 
         getContentPane().add(panelEdit);
         panelEdit.setBounds(25, 340, 785, 110);
+
+        btnGuardar.setText("Guardar");
+        getContentPane().add(btnGuardar);
+        btnGuardar.setBounds(870, 170, 87, 28);
+
+        btnLimpiar.setText("Limpiar");
+        btnLimpiar.addActionListener(this::btnLimpiarActionPerformed);
+        getContentPane().add(btnLimpiar);
+        btnLimpiar.setBounds(870, 220, 82, 28);
+
+        btnRefrescar.setText("Refrescar");
+        getContentPane().add(btnRefrescar);
+        btnRefrescar.setBounds(860, 270, 110, 28);
+
+        cbFiltroCategorias.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Todos", "ID", "Nombre", "Descripción", "Estado" }));
+        getContentPane().add(cbFiltroCategorias);
+        cbFiltroCategorias.setBounds(630, 100, 100, 28);
+
+        txtBuscarCategorias.addActionListener(this::txtBuscarCategoriasActionPerformed);
+        getContentPane().add(txtBuscarCategorias);
+        txtBuscarCategorias.setBounds(370, 10, 180, 28);
+
+        btnBuscarCategorias.setText("Buscar Categorias");
+        getContentPane().add(btnBuscarCategorias);
+        btnBuscarCategorias.setBounds(580, 10, 160, 28);
+
+        btnLimpiarFiltroCategorias.setText("Limpiar Categorias");
+        getContentPane().add(btnLimpiarFiltroCategorias);
+        btnLimpiarFiltroCategorias.setBounds(590, 250, 160, 28);
+
+        btnExportarCategorias.setText("Exportar Categorias");
+        btnExportarCategorias.addActionListener(this::btnExportarCategoriasActionPerformed);
+        getContentPane().add(btnExportarCategorias);
+        btnExportarCategorias.setBounds(590, 290, 170, 28);
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
@@ -160,10 +210,29 @@ public class GestionarCategorias extends javax.swing.JInternalFrame {
         // TODO lógica del controlador
     }//GEN-LAST:event_btnEliminarActionPerformed
 
+    private void btnLimpiarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnLimpiarActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_btnLimpiarActionPerformed
+
+    private void txtBuscarCategoriasActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtBuscarCategoriasActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_txtBuscarCategoriasActionPerformed
+
+    private void btnExportarCategoriasActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnExportarCategoriasActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_btnExportarCategoriasActionPerformed
+
     // Variables declaration - do not modify//GEN-BEGIN:variables
     public javax.swing.JButton btnActualizar;
+    public javax.swing.JButton btnBuscarCategorias;
     public javax.swing.JButton btnEliminar;
-    public javax.swing.JComboBox<String> cbEstado;
+    public javax.swing.JButton btnExportarCategorias;
+    public javax.swing.JButton btnGuardar;
+    public javax.swing.JButton btnLimpiar;
+    public javax.swing.JButton btnLimpiarFiltroCategorias;
+    public javax.swing.JButton btnRefrescar;
+    public javax.swing.JComboBox<String> cbFiltroCategorias;
+    public javax.swing.JCheckBox chkEstado;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
@@ -172,6 +241,7 @@ public class GestionarCategorias extends javax.swing.JInternalFrame {
     private javax.swing.JLabel lblTitulo;
     private javax.swing.JPanel panelEdit;
     public javax.swing.JTable tblCategorias;
+    public javax.swing.JTextField txtBuscarCategorias;
     public javax.swing.JTextField txtDescripcion;
     public javax.swing.JTextField txtId;
     public javax.swing.JTextField txtnombrecategoria;

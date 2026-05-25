@@ -66,8 +66,16 @@ public class GestionarClientes extends javax.swing.JInternalFrame {
         jLabel6 = new javax.swing.JLabel();
         txtDireccion = new javax.swing.JTextField();
         jLabel1 = new javax.swing.JLabel();
-        cbEstado = new javax.swing.JComboBox<>();
+        chkEstado = new javax.swing.JCheckBox();
         txtIdCliente = new javax.swing.JTextField();
+        btnLimpiar = new javax.swing.JButton();
+        btnGuardar = new javax.swing.JButton();
+        btnVerDetalle = new javax.swing.JButton();
+        txtBuscarClientes = new javax.swing.JTextField();
+        btnBuscarClientes = new javax.swing.JButton();
+        cbFiltroClientes = new javax.swing.JComboBox<>();
+        btnLimpiarFiltroClientes = new javax.swing.JButton();
+        btnExportarClientes = new javax.swing.JButton();
 
         setBackground(new java.awt.Color(10, 12, 16));
         setClosable(true);
@@ -132,33 +140,33 @@ public class GestionarClientes extends javax.swing.JInternalFrame {
         btnActualizar.setForeground(new java.awt.Color(255, 255, 255));
         btnActualizar.setText("Actualizar");
         btnActualizar.setBorderPainted(false);
-        btnActualizar.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
+        btnActualizar.setCursor(new java.awt.Cursor(java.awt.Cursor.DEFAULT_CURSOR));
         btnActualizar.setFocusPainted(false);
         btnActualizar.addActionListener(this::btnActualizarActionPerformed);
         getContentPane().add(btnActualizar);
-        btnActualizar.setBounds(810, 70, 180, 45);
+        btnActualizar.setBounds(940, 70, 180, 45);
 
         btnEliminar.setBackground(new java.awt.Color(30, 10, 16));
         btnEliminar.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
         btnEliminar.setForeground(new java.awt.Color(255, 91, 122));
         btnEliminar.setText("Eliminar");
         btnEliminar.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(58, 21, 32)));
-        btnEliminar.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
+        btnEliminar.setCursor(new java.awt.Cursor(java.awt.Cursor.DEFAULT_CURSOR));
         btnEliminar.setFocusPainted(false);
         btnEliminar.addActionListener(this::btnEliminarActionPerformed);
         getContentPane().add(btnEliminar);
-        btnEliminar.setBounds(810, 130, 180, 45);
+        btnEliminar.setBounds(930, 130, 180, 45);
 
         btnRefrescar.setBackground(new java.awt.Color(24, 29, 46));
         btnRefrescar.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
         btnRefrescar.setForeground(new java.awt.Color(240, 242, 255));
         btnRefrescar.setText("Refrescar");
         btnRefrescar.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(42, 48, 80)));
-        btnRefrescar.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
+        btnRefrescar.setCursor(new java.awt.Cursor(java.awt.Cursor.DEFAULT_CURSOR));
         btnRefrescar.setFocusPainted(false);
         btnRefrescar.addActionListener(this::btnRefrescarActionPerformed);
         getContentPane().add(btnRefrescar);
-        btnRefrescar.setBounds(810, 190, 180, 45);
+        btnRefrescar.setBounds(930, 200, 180, 45);
 
         panelEdit.setBackground(new java.awt.Color(17, 21, 32));
         panelEdit.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(42, 48, 80)));
@@ -259,12 +267,9 @@ public class GestionarClientes extends javax.swing.JInternalFrame {
         panelEdit.add(jLabel1);
         jLabel1.setBounds(500, 85, 200, 16);
 
-        cbEstado.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Activo", "Inactivo" }));
-        cbEstado.setBackground(new java.awt.Color(24, 29, 46));
-        cbEstado.setForeground(new java.awt.Color(240, 242, 255));
-        cbEstado.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(42, 48, 80)));
-        panelEdit.add(cbEstado);
-        cbEstado.setBounds(500, 105, 200, 38);
+        chkEstado.setText("Activo");
+        panelEdit.add(chkEstado);
+        chkEstado.setBounds(520, 110, 64, 22);
 
         getContentPane().add(panelEdit);
         panelEdit.setBounds(30, 470, 960, 150);
@@ -272,6 +277,39 @@ public class GestionarClientes extends javax.swing.JInternalFrame {
         txtIdCliente.setBackground(new java.awt.Color(14, 18, 25));
         getContentPane().add(txtIdCliente);
         txtIdCliente.setBounds(0, 0, 0, 0);
+
+        btnLimpiar.setText("Limpiar");
+        getContentPane().add(btnLimpiar);
+        btnLimpiar.setBounds(970, 300, 120, 28);
+
+        btnGuardar.setText("Guardar");
+        getContentPane().add(btnGuardar);
+        btnGuardar.setBounds(1000, 260, 87, 28);
+
+        btnVerDetalle.setText("Ver Detalle");
+        getContentPane().add(btnVerDetalle);
+        btnVerDetalle.setBounds(980, 340, 120, 28);
+
+        txtBuscarClientes.addActionListener(this::txtBuscarClientesActionPerformed);
+        getContentPane().add(txtBuscarClientes);
+        txtBuscarClientes.setBounds(530, 20, 180, 28);
+
+        btnBuscarClientes.setText("Buscar Clientes");
+        getContentPane().add(btnBuscarClientes);
+        btnBuscarClientes.setBounds(740, 20, 160, 28);
+
+        cbFiltroClientes.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Todos", "ID", "Nombre", "Apellido", "DUI", "Teléfono", "Dirección", "Estado" }));
+        getContentPane().add(cbFiltroClientes);
+        cbFiltroClientes.setBounds(810, 120, 100, 28);
+
+        btnLimpiarFiltroClientes.setText("Limpiar Clientes");
+        getContentPane().add(btnLimpiarFiltroClientes);
+        btnLimpiarFiltroClientes.setBounds(790, 390, 160, 28);
+
+        btnExportarClientes.setText("Exportar Clientes");
+        btnExportarClientes.addActionListener(this::btnExportarClientesActionPerformed);
+        getContentPane().add(btnExportarClientes);
+        btnExportarClientes.setBounds(800, 430, 170, 28);
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
@@ -320,11 +358,26 @@ public class GestionarClientes extends javax.swing.JInternalFrame {
         // TODO lógica del controlador original
     }//GEN-LAST:event_btnRefrescarActionPerformed
 
+    private void txtBuscarClientesActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtBuscarClientesActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_txtBuscarClientesActionPerformed
+
+    private void btnExportarClientesActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnExportarClientesActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_btnExportarClientesActionPerformed
+
     // Variables declaration - do not modify//GEN-BEGIN:variables
     public javax.swing.JButton btnActualizar;
+    public javax.swing.JButton btnBuscarClientes;
     public javax.swing.JButton btnEliminar;
+    public javax.swing.JButton btnExportarClientes;
+    public javax.swing.JButton btnGuardar;
+    public javax.swing.JButton btnLimpiar;
+    public javax.swing.JButton btnLimpiarFiltroClientes;
     public javax.swing.JButton btnRefrescar;
-    public javax.swing.JComboBox<String> cbEstado;
+    public javax.swing.JButton btnVerDetalle;
+    public javax.swing.JComboBox<String> cbFiltroClientes;
+    public javax.swing.JCheckBox chkEstado;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
@@ -336,6 +389,7 @@ public class GestionarClientes extends javax.swing.JInternalFrame {
     private javax.swing.JPanel panelEdit;
     public javax.swing.JTable tblClientes;
     public javax.swing.JTextField txtApellido;
+    public javax.swing.JTextField txtBuscarClientes;
     public javax.swing.JTextField txtDireccion;
     public javax.swing.JTextField txtDui;
     public javax.swing.JTextField txtIdCliente;
