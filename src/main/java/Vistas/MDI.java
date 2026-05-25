@@ -69,7 +69,6 @@ public class MDI extends javax.swing.JFrame {
         itemNuevoProveedor = new javax.swing.JMenuItem();
         itemGestionarProveedores = new javax.swing.JMenuItem();
         menuProductos = new javax.swing.JMenu();
-        itemNuevoProducto = new javax.swing.JMenuItem();
         itemGestionarProductos = new javax.swing.JMenuItem();
         itemGestionarCategorias = new javax.swing.JMenuItem();
         itemAjusteInventario = new javax.swing.JMenuItem();
@@ -116,10 +115,6 @@ public class MDI extends javax.swing.JFrame {
         menuBar.add(menuProveedores);
 
         menuProductos.setText("Productos");
-
-        itemNuevoProducto.setText("Nuevo Producto");
-        itemNuevoProducto.addActionListener(this::itemNuevoProductoActionPerformed);
-        menuProductos.add(itemNuevoProducto);
 
         itemGestionarProductos.setText("Gestionar Productos");
         itemGestionarProductos.addActionListener(this::itemGestionarProductosActionPerformed);
@@ -213,12 +208,6 @@ public class MDI extends javax.swing.JFrame {
         ctrl.cargarTabla();
         abrirVentana(form);
     }//GEN-LAST:event_itemGestionarProveedoresActionPerformed
-
-    private void itemNuevoProductoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_itemNuevoProductoActionPerformed
-        FrmNuevoProducto vista = new FrmNuevoProducto();
-        new NuevoProductoController(vista);
-        abrirVentana(vista);
-    }//GEN-LAST:event_itemNuevoProductoActionPerformed
 
     private void itemGestionarProductosActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_itemGestionarProductosActionPerformed
         FrmGestionarProductos vista = new FrmGestionarProductos();
@@ -329,7 +318,6 @@ public class MDI extends javax.swing.JFrame {
     private javax.swing.JMenuItem itemGestionarUsuarios;
     private javax.swing.JMenuItem itemKardex;
     private javax.swing.JMenuItem itemNuevaCompra;
-    private javax.swing.JMenuItem itemNuevoProducto;
     private javax.swing.JMenuItem itemNuevoProveedor;
     private javax.swing.JMenuItem itemNuevoUsuario;
     private javax.swing.JMenuItem itemPuntoVenta;
