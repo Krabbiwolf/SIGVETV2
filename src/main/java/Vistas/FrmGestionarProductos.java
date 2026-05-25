@@ -24,9 +24,9 @@ public class FrmGestionarProductos extends javax.swing.JInternalFrame {
         ((DefaultTableCellRenderer) tblProductos.getTableHeader().getDefaultRenderer()).setHorizontalAlignment(JLabel.CENTER);
 
         // Efectos Hover a Botones Principales
-        btnActualizar.addMouseListener(new MouseAdapter() {
-            public void mouseEntered(MouseEvent e) { btnActualizar.setBackground(Color.decode("#5850DC")); }
-            public void mouseExited(MouseEvent e)  { btnActualizar.setBackground(Color.decode("#6C63FF")); }
+        btnGuardar.addMouseListener(new MouseAdapter() {
+            public void mouseEntered(MouseEvent e) { btnGuardar.setBackground(Color.decode("#5850DC")); }
+            public void mouseExited(MouseEvent e)  { btnGuardar.setBackground(Color.decode("#6C63FF")); }
         });
 
         btnLimpiar.addMouseListener(new MouseAdapter() {
@@ -34,9 +34,9 @@ public class FrmGestionarProductos extends javax.swing.JInternalFrame {
             public void mouseExited(MouseEvent e)  { btnLimpiar.setBackground(Color.decode("#181D2E")); }
         });
 
-        btnEliminar.addMouseListener(new MouseAdapter() {
-            public void mouseEntered(MouseEvent e) { btnEliminar.setBackground(Color.decode("#FF5B7A")); btnEliminar.setForeground(Color.WHITE); }
-            public void mouseExited(MouseEvent e) { btnEliminar.setBackground(Color.decode("#1E0A10")); btnEliminar.setForeground(Color.decode("#FF5B7A")); }
+        btnExportarCSV.addMouseListener(new MouseAdapter() {
+            public void mouseEntered(MouseEvent e) { btnExportarCSV.setBackground(Color.decode("#FF5B7A")); btnExportarCSV.setForeground(Color.WHITE); }
+            public void mouseExited(MouseEvent e) { btnExportarCSV.setBackground(Color.decode("#1E0A10")); btnExportarCSV.setForeground(Color.decode("#FF5B7A")); }
         });
         
         btnBuscar.addMouseListener(new MouseAdapter() {
@@ -64,17 +64,16 @@ public class FrmGestionarProductos extends javax.swing.JInternalFrame {
         lblDescripcion = new javax.swing.JLabel();
         txtDescripcionTecnica = new javax.swing.JTextField();
         lblIva = new javax.swing.JLabel();
-        cbIva = new javax.swing.JComboBox<>();
         lblCategoria = new javax.swing.JLabel();
         cboCategoria = new javax.swing.JComboBox<>();
         lblEstado = new javax.swing.JLabel();
-        cboEstado = new javax.swing.JComboBox<>();
+        cboFiltroBusqueda = new javax.swing.JComboBox<>();
         lblImagen = new javax.swing.JLabel();
         btnAgregarImagen = new javax.swing.JButton();
         txtRuta = new javax.swing.JTextField();
-        btnActualizar = new javax.swing.JButton();
+        btnGuardar = new javax.swing.JButton();
         btnLimpiar = new javax.swing.JButton();
-        btnEliminar = new javax.swing.JButton();
+        btnExportarCSV = new javax.swing.JButton();
         lblBuscar = new javax.swing.JLabel();
         txtBuscar = new javax.swing.JTextField();
         btnBuscar = new javax.swing.JButton();
@@ -82,6 +81,12 @@ public class FrmGestionarProductos extends javax.swing.JInternalFrame {
         lblMostrarImagen = new javax.swing.JLabel();
         scrollTabla = new javax.swing.JScrollPane();
         tblProductos = new javax.swing.JTable();
+        btnActualizar = new javax.swing.JButton();
+        btnEliminar = new javax.swing.JButton();
+        btnVerDetalle = new javax.swing.JButton();
+        cboEstado = new javax.swing.JComboBox<>();
+        Iva13 = new javax.swing.JLabel();
+        lblEstado2 = new javax.swing.JLabel();
 
         setBackground(new java.awt.Color(10, 12, 16));
         setClosable(true);
@@ -157,13 +162,6 @@ public class FrmGestionarProductos extends javax.swing.JInternalFrame {
         getContentPane().add(lblIva);
         lblIva.setBounds(25, 289, 145, 16);
 
-        cbIva.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "13", "0" }));
-        cbIva.setBackground(new java.awt.Color(24, 29, 46));
-        cbIva.setForeground(new java.awt.Color(240, 242, 255));
-        cbIva.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(42, 48, 80)));
-        getContentPane().add(cbIva);
-        cbIva.setBounds(25, 309, 145, 38);
-
         lblCategoria.setFont(new java.awt.Font("Segoe UI", 1, 11)); // NOI18N
         lblCategoria.setForeground(new java.awt.Color(155, 163, 196));
         lblCategoria.setText("CATEGORÍA");
@@ -171,23 +169,23 @@ public class FrmGestionarProductos extends javax.swing.JInternalFrame {
         lblCategoria.setBounds(190, 289, 145, 16);
 
         cboCategoria.setBackground(new java.awt.Color(24, 29, 46));
-        cboCategoria.setForeground(new java.awt.Color(240, 242, 255));
+        cboCategoria.setForeground(new java.awt.Color(0, 0, 0));
         cboCategoria.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(42, 48, 80)));
         getContentPane().add(cboCategoria);
         cboCategoria.setBounds(190, 309, 145, 38);
 
         lblEstado.setFont(new java.awt.Font("Segoe UI", 1, 11)); // NOI18N
         lblEstado.setForeground(new java.awt.Color(155, 163, 196));
-        lblEstado.setText("ESTADO");
+        lblEstado.setText("BUSQUEDA ");
         getContentPane().add(lblEstado);
-        lblEstado.setBounds(25, 362, 145, 16);
+        lblEstado.setBounds(30, 510, 145, 16);
 
-        cboEstado.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Activo", "Inactivo" }));
-        cboEstado.setBackground(new java.awt.Color(24, 29, 46));
-        cboEstado.setForeground(new java.awt.Color(240, 242, 255));
-        cboEstado.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(42, 48, 80)));
-        getContentPane().add(cboEstado);
-        cboEstado.setBounds(25, 382, 145, 38);
+        cboFiltroBusqueda.setBackground(new java.awt.Color(24, 29, 46));
+        cboFiltroBusqueda.setForeground(new java.awt.Color(0, 0, 0));
+        cboFiltroBusqueda.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Activo", "Inactivo" }));
+        cboFiltroBusqueda.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(42, 48, 80)));
+        getContentPane().add(cboFiltroBusqueda);
+        cboFiltroBusqueda.setBounds(30, 540, 240, 38);
 
         lblImagen.setFont(new java.awt.Font("Segoe UI", 1, 11)); // NOI18N
         lblImagen.setForeground(new java.awt.Color(155, 163, 196));
@@ -200,7 +198,7 @@ public class FrmGestionarProductos extends javax.swing.JInternalFrame {
         btnAgregarImagen.setForeground(new java.awt.Color(255, 255, 255));
         btnAgregarImagen.setText("📁 Cargar Foto");
         btnAgregarImagen.setBorderPainted(false);
-        btnAgregarImagen.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
+        btnAgregarImagen.setCursor(new java.awt.Cursor(java.awt.Cursor.DEFAULT_CURSOR));
         btnAgregarImagen.setFocusPainted(false);
         btnAgregarImagen.addActionListener(this::btnAgregarImagenActionPerformed);
         getContentPane().add(btnAgregarImagen);
@@ -210,71 +208,71 @@ public class FrmGestionarProductos extends javax.swing.JInternalFrame {
         getContentPane().add(txtRuta);
         txtRuta.setBounds(0, 0, 0, 0);
 
-        btnActualizar.setBackground(new java.awt.Color(108, 99, 255));
-        btnActualizar.setFont(new java.awt.Font("Segoe UI", 1, 13)); // NOI18N
-        btnActualizar.setForeground(new java.awt.Color(255, 255, 255));
-        btnActualizar.setText("Guardar Cambios");
-        btnActualizar.setBorderPainted(false);
-        btnActualizar.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
-        btnActualizar.setFocusPainted(false);
-        getContentPane().add(btnActualizar);
-        btnActualizar.setBounds(360, 90, 250, 42);
+        btnGuardar.setBackground(new java.awt.Color(0, 153, 153));
+        btnGuardar.setFont(new java.awt.Font("Segoe UI", 1, 13)); // NOI18N
+        btnGuardar.setForeground(new java.awt.Color(255, 255, 255));
+        btnGuardar.setText("Guardar");
+        btnGuardar.setBorderPainted(false);
+        btnGuardar.setCursor(new java.awt.Cursor(java.awt.Cursor.DEFAULT_CURSOR));
+        btnGuardar.setFocusPainted(false);
+        getContentPane().add(btnGuardar);
+        btnGuardar.setBounds(360, 80, 250, 42);
 
-        btnLimpiar.setBackground(new java.awt.Color(24, 29, 46));
+        btnLimpiar.setBackground(new java.awt.Color(255, 255, 255));
         btnLimpiar.setFont(new java.awt.Font("Segoe UI", 1, 13)); // NOI18N
-        btnLimpiar.setForeground(new java.awt.Color(240, 242, 255));
+        btnLimpiar.setForeground(new java.awt.Color(0, 0, 0));
         btnLimpiar.setText("Limpiar Campos");
         btnLimpiar.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(42, 48, 80)));
-        btnLimpiar.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
+        btnLimpiar.setCursor(new java.awt.Cursor(java.awt.Cursor.DEFAULT_CURSOR));
         btnLimpiar.setFocusPainted(false);
         getContentPane().add(btnLimpiar);
-        btnLimpiar.setBounds(360, 142, 250, 42);
+        btnLimpiar.setBounds(360, 190, 250, 42);
 
-        btnEliminar.setBackground(new java.awt.Color(30, 10, 16));
-        btnEliminar.setFont(new java.awt.Font("Segoe UI", 1, 13)); // NOI18N
-        btnEliminar.setForeground(new java.awt.Color(255, 91, 122));
-        btnEliminar.setText("Desactivar Producto");
-        btnEliminar.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(58, 21, 32)));
-        btnEliminar.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
-        btnEliminar.setFocusPainted(false);
-        getContentPane().add(btnEliminar);
-        btnEliminar.setBounds(360, 194, 250, 42);
+        btnExportarCSV.setBackground(new java.awt.Color(204, 255, 204));
+        btnExportarCSV.setFont(new java.awt.Font("Segoe UI", 1, 13)); // NOI18N
+        btnExportarCSV.setForeground(new java.awt.Color(255, 91, 122));
+        btnExportarCSV.setText("Ver Detalle");
+        btnExportarCSV.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(58, 21, 32)));
+        btnExportarCSV.setCursor(new java.awt.Cursor(java.awt.Cursor.DEFAULT_CURSOR));
+        btnExportarCSV.setFocusPainted(false);
+        getContentPane().add(btnExportarCSV);
+        btnExportarCSV.setBounds(920, 560, 200, 30);
 
         lblBuscar.setFont(new java.awt.Font("Segoe UI", 1, 11)); // NOI18N
         lblBuscar.setForeground(new java.awt.Color(155, 163, 196));
         lblBuscar.setText("BÚSQUEDA RÁPIDA");
         getContentPane().add(lblBuscar);
-        lblBuscar.setBounds(360, 256, 250, 16);
+        lblBuscar.setBounds(30, 430, 250, 16);
 
         txtBuscar.setBackground(new java.awt.Color(24, 29, 46));
         txtBuscar.setFont(new java.awt.Font("Segoe UI", 0, 13)); // NOI18N
         txtBuscar.setForeground(new java.awt.Color(240, 242, 255));
         txtBuscar.setBorder(javax.swing.BorderFactory.createCompoundBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(42, 48, 80)), javax.swing.BorderFactory.createEmptyBorder(6, 10, 6, 10)));
         getContentPane().add(txtBuscar);
-        txtBuscar.setBounds(360, 276, 160, 38);
+        txtBuscar.setBounds(30, 460, 160, 38);
 
         btnBuscar.setBackground(new java.awt.Color(31, 38, 64));
         btnBuscar.setFont(new java.awt.Font("Segoe UI", 1, 13)); // NOI18N
         btnBuscar.setForeground(new java.awt.Color(255, 255, 255));
         btnBuscar.setText("Buscar");
         btnBuscar.setBorderPainted(false);
-        btnBuscar.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
+        btnBuscar.setCursor(new java.awt.Cursor(java.awt.Cursor.DEFAULT_CURSOR));
         btnBuscar.setFocusPainted(false);
         getContentPane().add(btnBuscar);
-        btnBuscar.setBounds(530, 276, 80, 38);
+        btnBuscar.setBounds(220, 460, 80, 38);
 
         lblPreview.setFont(new java.awt.Font("Segoe UI", 1, 11)); // NOI18N
         lblPreview.setForeground(new java.awt.Color(155, 163, 196));
         lblPreview.setText("VISTA PREVIA DEL PRODUCTO");
         getContentPane().add(lblPreview);
-        lblPreview.setBounds(360, 330, 250, 16);
+        lblPreview.setBounds(360, 360, 250, 16);
 
         lblMostrarImagen.setForeground(new java.awt.Color(155, 163, 196));
         lblMostrarImagen.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         lblMostrarImagen.setText("Sin imagen");
         lblMostrarImagen.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(42, 48, 80)));
         getContentPane().add(lblMostrarImagen);
-        lblMostrarImagen.setBounds(360, 350, 250, 200);
+        lblMostrarImagen.setBounds(360, 380, 250, 200);
 
         scrollTabla.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(42, 48, 80)));
 
@@ -295,7 +293,56 @@ public class FrmGestionarProductos extends javax.swing.JInternalFrame {
         scrollTabla.setViewportView(tblProductos);
 
         getContentPane().add(scrollTabla);
-        scrollTabla.setBounds(635, 90, 480, 485);
+        scrollTabla.setBounds(635, 90, 480, 460);
+
+        btnActualizar.setBackground(new java.awt.Color(255, 255, 255));
+        btnActualizar.setFont(new java.awt.Font("Segoe UI", 1, 13)); // NOI18N
+        btnActualizar.setForeground(new java.awt.Color(0, 102, 102));
+        btnActualizar.setText("Guardar Cambios");
+        btnActualizar.setBorderPainted(false);
+        btnActualizar.setCursor(new java.awt.Cursor(java.awt.Cursor.DEFAULT_CURSOR));
+        btnActualizar.setFocusPainted(false);
+        getContentPane().add(btnActualizar);
+        btnActualizar.setBounds(360, 130, 250, 42);
+
+        btnEliminar.setBackground(new java.awt.Color(30, 10, 16));
+        btnEliminar.setFont(new java.awt.Font("Segoe UI", 1, 13)); // NOI18N
+        btnEliminar.setForeground(new java.awt.Color(255, 91, 122));
+        btnEliminar.setText("Desactivar Producto");
+        btnEliminar.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(58, 21, 32)));
+        btnEliminar.setCursor(new java.awt.Cursor(java.awt.Cursor.DEFAULT_CURSOR));
+        btnEliminar.setFocusPainted(false);
+        getContentPane().add(btnEliminar);
+        btnEliminar.setBounds(360, 240, 250, 42);
+
+        btnVerDetalle.setBackground(new java.awt.Color(204, 255, 204));
+        btnVerDetalle.setFont(new java.awt.Font("Segoe UI", 1, 13)); // NOI18N
+        btnVerDetalle.setForeground(new java.awt.Color(255, 91, 122));
+        btnVerDetalle.setText("Ver Detalle");
+        btnVerDetalle.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(58, 21, 32)));
+        btnVerDetalle.setCursor(new java.awt.Cursor(java.awt.Cursor.DEFAULT_CURSOR));
+        btnVerDetalle.setFocusPainted(false);
+        getContentPane().add(btnVerDetalle);
+        btnVerDetalle.setBounds(360, 290, 250, 42);
+
+        cboEstado.setBackground(new java.awt.Color(24, 29, 46));
+        cboEstado.setForeground(new java.awt.Color(0, 0, 0));
+        cboEstado.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Activo", "Inactivo" }));
+        cboEstado.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(42, 48, 80)));
+        getContentPane().add(cboEstado);
+        cboEstado.setBounds(25, 382, 145, 38);
+
+        Iva13.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
+        Iva13.setForeground(new java.awt.Color(155, 163, 196));
+        Iva13.setText("13 %");
+        getContentPane().add(Iva13);
+        Iva13.setBounds(30, 320, 145, 16);
+
+        lblEstado2.setFont(new java.awt.Font("Segoe UI", 1, 11)); // NOI18N
+        lblEstado2.setForeground(new java.awt.Color(155, 163, 196));
+        lblEstado2.setText("ESTADO");
+        getContentPane().add(lblEstado2);
+        lblEstado2.setBounds(25, 362, 145, 16);
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
@@ -315,19 +362,24 @@ public class FrmGestionarProductos extends javax.swing.JInternalFrame {
     }//GEN-LAST:event_btnAgregarImagenActionPerformed
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JLabel Iva13;
     public javax.swing.JButton btnActualizar;
     public javax.swing.JButton btnAgregarImagen;
     public javax.swing.JButton btnBuscar;
     public javax.swing.JButton btnEliminar;
+    public javax.swing.JButton btnExportarCSV;
+    public javax.swing.JButton btnGuardar;
     public javax.swing.JButton btnLimpiar;
-    public javax.swing.JComboBox<String> cbIva;
+    public javax.swing.JButton btnVerDetalle;
     public javax.swing.JComboBox<String> cboCategoria;
     public javax.swing.JComboBox<String> cboEstado;
+    public javax.swing.JComboBox<String> cboFiltroBusqueda;
     private javax.swing.JLabel lblBuscar;
     private javax.swing.JLabel lblCategoria;
     private javax.swing.JLabel lblCodBarras;
     private javax.swing.JLabel lblDescripcion;
     private javax.swing.JLabel lblEstado;
+    private javax.swing.JLabel lblEstado2;
     private javax.swing.JLabel lblIdProducto;
     private javax.swing.JLabel lblImagen;
     private javax.swing.JLabel lblIva;

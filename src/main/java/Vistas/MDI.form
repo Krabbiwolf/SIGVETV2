@@ -47,14 +47,6 @@
             <Property name="text" type="java.lang.String" value="Productos"/>
           </Properties>
           <SubComponents>
-            <MenuItem class="javax.swing.JMenuItem" name="itemNuevoProducto">
-              <Properties>
-                <Property name="text" type="java.lang.String" value="Nuevo Producto"/>
-              </Properties>
-              <Events>
-                <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="itemNuevoProductoActionPerformed"/>
-              </Events>
-            </MenuItem>
             <MenuItem class="javax.swing.JMenuItem" name="itemGestionarProductos">
               <Properties>
                 <Property name="text" type="java.lang.String" value="Gestionar Productos"/>

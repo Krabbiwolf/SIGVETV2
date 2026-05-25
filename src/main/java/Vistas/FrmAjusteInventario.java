@@ -3,15 +3,22 @@ package Vistas;
 import Controladores.ctrlProductos.AjusteInventarioController;
 import Modelos.LoteInventario;
 import java.awt.Color;
+import java.awt.Component;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+import javax.swing.JButton;
+import javax.swing.JComboBox;
 import javax.swing.JLabel;
+import javax.swing.JList;
+import javax.swing.ListCellRenderer;
 import javax.swing.table.DefaultTableCellRenderer;
 
 public class FrmAjusteInventario extends javax.swing.JInternalFrame {
 
     public FrmAjusteInventario() {
         initComponents();
+        crearBotonExportarCSV();
+        corregirColoresComponentes();
         
         // Estilizar cabecera de tabla
         tblAjustes.getTableHeader().setBackground(Color.decode("#181D2E"));
@@ -30,10 +37,80 @@ public class FrmAjusteInventario extends javax.swing.JInternalFrame {
             public void mouseEntered(MouseEvent e) { btnLimpiar.setBackground(Color.decode("#2A3050")); }
             public void mouseExited(MouseEvent e)  { btnLimpiar.setBackground(Color.decode("#181D2E")); }
         });
+
+        btnExportarCSV.addMouseListener(new MouseAdapter() {
+            public void mouseEntered(MouseEvent e) { btnExportarCSV.setBackground(Color.decode("#2A3050")); }
+            public void mouseExited(MouseEvent e)  { btnExportarCSV.setBackground(Color.decode("#181D2E")); }
+        });
         
         // Inicializar controlador
         AjusteInventarioController controlador = new AjusteInventarioController(this);
     }
+
+    private void crearBotonExportarCSV() {
+        btnExportarCSV = new javax.swing.JButton();
+        btnExportarCSV.setText("Exportar CSV");
+        prepararBotonOscuro(btnExportarCSV, Color.decode("#181D2E"), Color.decode("#F0F2FF"));
+        getContentPane().add(btnExportarCSV);
+        btnExportarCSV.setBounds(610, 15, 140, 32);
+    }
+
+    private void corregirColoresComponentes() {
+        prepararBotonOscuro(btnLimpiar, Color.decode("#181D2E"), Color.decode("#F0F2FF"));
+        prepararBotonOscuro(btnRegistrarAjuste, Color.decode("#6C63FF"), Color.WHITE);
+        prepararComboOscuro(cboLoteProducto);
+        prepararComboOscuro(cboTipoMovimiento);
+    }
+
+    private void prepararBotonOscuro(JButton boton, Color fondo, Color texto) {
+        boton.setBackground(fondo);
+        boton.setForeground(texto);
+        boton.setOpaque(true);
+        boton.setContentAreaFilled(true);
+        boton.setBorderPainted(true);
+        boton.setFocusPainted(false);
+        boton.setFocusable(false);
+        boton.setFont(new java.awt.Font("Segoe UI", java.awt.Font.BOLD, 13));
+        boton.setBorder(javax.swing.BorderFactory.createLineBorder(Color.decode("#2A3050")));
+        boton.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
+    }
+
+    private void prepararComboOscuro(JComboBox<?> combo) {
+    combo.setBackground(Color.decode("#181D2E"));
+    combo.setForeground(Color.decode("#F0F2FF"));
+    combo.setOpaque(true);
+    combo.setFocusable(false);
+    combo.setBorder(javax.swing.BorderFactory.createLineBorder(Color.decode("#2A3050")));
+
+    combo.setRenderer(new javax.swing.DefaultListCellRenderer() {
+        @Override
+        public Component getListCellRendererComponent(
+                javax.swing.JList<?> list,
+                Object value,
+                int index,
+                boolean isSelected,
+                boolean cellHasFocus) {
+
+            JLabel label = (JLabel) super.getListCellRendererComponent(
+                    list, value, index, isSelected, cellHasFocus);
+
+            label.setOpaque(true);
+            label.setFont(new java.awt.Font("Segoe UI", java.awt.Font.PLAIN, 12));
+            label.setText(value == null ? "" : value.toString());
+
+            if (isSelected) {
+                label.setBackground(Color.decode("#6C63FF"));
+                label.setForeground(Color.WHITE);
+            } else {
+                label.setBackground(Color.decode("#181D2E"));
+                label.setForeground(Color.decode("#F0F2FF"));
+            }
+
+            label.setBorder(javax.swing.BorderFactory.createEmptyBorder(6, 8, 6, 8));
+            return label;
+        }
+    });
+}
 
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
@@ -83,7 +160,7 @@ public class FrmAjusteInventario extends javax.swing.JInternalFrame {
         jLabelLote.setBounds(20, 20, 160, 16);
 
         cboLoteProducto.setBackground(new java.awt.Color(24, 29, 46));
-        cboLoteProducto.setForeground(new java.awt.Color(240, 242, 255));
+        cboLoteProducto.setForeground(new java.awt.Color(0, 0, 0));
         cboLoteProducto.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(42, 48, 80)));
         panelDatos.add(cboLoteProducto);
         cboLoteProducto.setBounds(20, 40, 370, 38);
@@ -109,7 +186,7 @@ public class FrmAjusteInventario extends javax.swing.JInternalFrame {
         jLabelTipo.setBounds(20, 90, 180, 16);
 
         cboTipoMovimiento.setBackground(new java.awt.Color(24, 29, 46));
-        cboTipoMovimiento.setForeground(new java.awt.Color(240, 242, 255));
+        cboTipoMovimiento.setForeground(new java.awt.Color(0, 0, 0));
         cboTipoMovimiento.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(42, 48, 80)));
         panelDatos.add(cboTipoMovimiento);
         cboTipoMovimiento.setBounds(20, 110, 180, 38);
@@ -123,8 +200,8 @@ public class FrmAjusteInventario extends javax.swing.JInternalFrame {
         txtCantidad.setBackground(new java.awt.Color(24, 29, 46));
         txtCantidad.setFont(new java.awt.Font("Segoe UI", 0, 13)); // NOI18N
         txtCantidad.setForeground(new java.awt.Color(240, 242, 255));
-        txtCantidad.setCaretColor(new java.awt.Color(108, 99, 255));
         txtCantidad.setBorder(javax.swing.BorderFactory.createCompoundBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(42, 48, 80)), javax.swing.BorderFactory.createEmptyBorder(6, 10, 6, 10)));
+        txtCantidad.setCaretColor(new java.awt.Color(108, 99, 255));
         panelDatos.add(txtCantidad);
         txtCantidad.setBounds(220, 110, 120, 38);
 
@@ -139,7 +216,7 @@ public class FrmAjusteInventario extends javax.swing.JInternalFrame {
         txtMotivoAjuste.setBackground(new java.awt.Color(24, 29, 46));
         txtMotivoAjuste.setColumns(20);
         txtMotivoAjuste.setFont(new java.awt.Font("Segoe UI", 0, 13)); // NOI18N
-        txtMotivoAjuste.setForeground(new java.awt.Color(240, 242, 255));
+        txtMotivoAjuste.setForeground(new java.awt.Color(0, 0, 0));
         txtMotivoAjuste.setRows(4);
         txtMotivoAjuste.setCaretColor(new java.awt.Color(108, 99, 255));
         scrollMotivo.setViewportView(txtMotivoAjuste);
@@ -147,22 +224,22 @@ public class FrmAjusteInventario extends javax.swing.JInternalFrame {
         panelDatos.add(scrollMotivo);
         scrollMotivo.setBounds(20, 180, 510, 35);
 
-        btnLimpiar.setBackground(new java.awt.Color(24, 29, 46));
+        btnLimpiar.setBackground(new java.awt.Color(255, 255, 255));
         btnLimpiar.setFont(new java.awt.Font("Segoe UI", 1, 13)); // NOI18N
-        btnLimpiar.setForeground(new java.awt.Color(240, 242, 255));
+        btnLimpiar.setForeground(new java.awt.Color(204, 204, 255));
         btnLimpiar.setText("Cancelar");
         btnLimpiar.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(42, 48, 80)));
-        btnLimpiar.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
+        btnLimpiar.setCursor(new java.awt.Cursor(java.awt.Cursor.DEFAULT_CURSOR));
         btnLimpiar.setFocusPainted(false);
         panelDatos.add(btnLimpiar);
         btnLimpiar.setBounds(560, 100, 140, 42);
 
-        btnRegistrarAjuste.setBackground(new java.awt.Color(108, 99, 255));
+        btnRegistrarAjuste.setBackground(new java.awt.Color(102, 153, 255));
         btnRegistrarAjuste.setFont(new java.awt.Font("Segoe UI", 1, 13)); // NOI18N
-        btnRegistrarAjuste.setForeground(new java.awt.Color(255, 255, 255));
+        btnRegistrarAjuste.setForeground(new java.awt.Color(0, 0, 0));
         btnRegistrarAjuste.setText("Guardar");
         btnRegistrarAjuste.setBorderPainted(false);
-        btnRegistrarAjuste.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
+        btnRegistrarAjuste.setCursor(new java.awt.Cursor(java.awt.Cursor.DEFAULT_CURSOR));
         btnRegistrarAjuste.setFocusPainted(false);
         panelDatos.add(btnRegistrarAjuste);
         btnRegistrarAjuste.setBounds(560, 40, 140, 42);
@@ -193,6 +270,8 @@ public class FrmAjusteInventario extends javax.swing.JInternalFrame {
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
+
+    public javax.swing.JButton btnExportarCSV;
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     public javax.swing.JButton btnLimpiar;
