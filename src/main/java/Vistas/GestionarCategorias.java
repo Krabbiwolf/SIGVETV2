@@ -54,6 +54,8 @@ public class GestionarCategorias extends javax.swing.JInternalFrame {
 
         setBackground(new java.awt.Color(10, 12, 16));
         setClosable(true);
+        setMaximizable(true);
+        setResizable(true);
         setTitle("Gestionar Categorías");
         setPreferredSize(new java.awt.Dimension(850, 520));
         getContentPane().setLayout(null);
@@ -160,44 +162,44 @@ public class GestionarCategorias extends javax.swing.JInternalFrame {
 
         chkEstado.setText("Activo");
         panelEdit.add(chkEstado);
-        chkEstado.setBounds(630, 50, 100, 22);
+        chkEstado.setBounds(630, 50, 100, 20);
 
         getContentPane().add(panelEdit);
         panelEdit.setBounds(25, 340, 785, 110);
 
         btnGuardar.setText("Guardar");
         getContentPane().add(btnGuardar);
-        btnGuardar.setBounds(870, 170, 87, 28);
+        btnGuardar.setBounds(870, 170, 72, 23);
 
         btnLimpiar.setText("Limpiar");
         btnLimpiar.addActionListener(this::btnLimpiarActionPerformed);
         getContentPane().add(btnLimpiar);
-        btnLimpiar.setBounds(870, 220, 82, 28);
+        btnLimpiar.setBounds(870, 220, 72, 23);
 
         btnRefrescar.setText("Refrescar");
         getContentPane().add(btnRefrescar);
-        btnRefrescar.setBounds(860, 270, 110, 28);
+        btnRefrescar.setBounds(860, 270, 110, 23);
 
         cbFiltroCategorias.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Todos", "ID", "Nombre", "Descripción", "Estado" }));
         getContentPane().add(cbFiltroCategorias);
-        cbFiltroCategorias.setBounds(630, 100, 100, 28);
+        cbFiltroCategorias.setBounds(630, 100, 100, 22);
 
         txtBuscarCategorias.addActionListener(this::txtBuscarCategoriasActionPerformed);
         getContentPane().add(txtBuscarCategorias);
-        txtBuscarCategorias.setBounds(370, 10, 180, 28);
+        txtBuscarCategorias.setBounds(370, 10, 180, 22);
 
         btnBuscarCategorias.setText("Buscar Categorias");
         getContentPane().add(btnBuscarCategorias);
-        btnBuscarCategorias.setBounds(580, 10, 160, 28);
+        btnBuscarCategorias.setBounds(580, 10, 160, 23);
 
         btnLimpiarFiltroCategorias.setText("Limpiar Categorias");
         getContentPane().add(btnLimpiarFiltroCategorias);
-        btnLimpiarFiltroCategorias.setBounds(590, 250, 160, 28);
+        btnLimpiarFiltroCategorias.setBounds(590, 250, 160, 23);
 
         btnExportarCategorias.setText("Exportar Categorias");
         btnExportarCategorias.addActionListener(this::btnExportarCategoriasActionPerformed);
         getContentPane().add(btnExportarCategorias);
-        btnExportarCategorias.setBounds(590, 290, 170, 28);
+        btnExportarCategorias.setBounds(590, 290, 170, 23);
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
