@@ -35,12 +35,13 @@ public class MDI extends javax.swing.JFrame {
     }
 
     private void configurarEstilo() {
-        // Forzamos colores oscuros a nivel global para todas las ventanas internas que abramos
-        UIManager.put("InternalFrame.activeTitleBackground", Color.decode("#181D2E"));
-        UIManager.put("InternalFrame.inactiveTitleBackground", Color.decode("#111520"));
-        UIManager.put("InternalFrame.activeTitleForeground", Color.decode("#F0F2FF"));
-        UIManager.put("InternalFrame.inactiveTitleForeground", Color.decode("#9BA3C4"));
-        UIManager.put("InternalFrame.borderColor", Color.decode("#2A3050"));
+        // Inyectamos el tema Azul Corporativo (Light) a nivel global para las ventanas internas
+        UIManager.put("InternalFrame.activeTitleBackground", Color.decode("#2D4A8A"));
+        UIManager.put("InternalFrame.inactiveTitleBackground", Color.decode("#DCE6F2"));
+        UIManager.put("InternalFrame.activeTitleForeground", Color.WHITE);
+        UIManager.put("InternalFrame.inactiveTitleForeground", Color.decode("#2D4A8A"));
+        UIManager.put("InternalFrame.borderColor", Color.decode("#C5D8F5"));
+        UIManager.put("DesktopPane.background", Color.decode("#F0F4F8")); // Fondo limpio
     }
 
     // Método universal para abrir ventanas y centrarlas en el DesktopPane
@@ -91,7 +92,7 @@ public class MDI extends javax.swing.JFrame {
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setTitle("SIGVET - Sistema ERP");
 
-        desktopPane.setBackground(new java.awt.Color(10, 12, 16));
+        desktopPane.setBackground(new java.awt.Color(240, 244, 248));
         getContentPane().add(desktopPane, java.awt.BorderLayout.CENTER);
 
         menuArchivo.setText("Archivo");
@@ -222,8 +223,8 @@ public class MDI extends javax.swing.JFrame {
     }//GEN-LAST:event_itemAjusteInventarioActionPerformed
 
     private void itemKardexActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_itemKardexActionPerformed
-    FrmKardex vista = new FrmKardex();
-    abrirVentana(vista);
+        FrmKardex vista = new FrmKardex();
+        abrirVentana(vista);
     }//GEN-LAST:event_itemKardexActionPerformed
 
     private void itemNuevoUsuarioActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_itemNuevoUsuarioActionPerformed
@@ -273,7 +274,7 @@ public class MDI extends javax.swing.JFrame {
     }//GEN-LAST:event_itemAnaliticasActionPerformed
 
     private void itemGestionarClientesActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_itemGestionarClientesActionPerformed
-        GestionarClientes vista = new GestionarClientes();
+        FrmGestionarClientes vista = new FrmGestionarClientes(); // Cambiado al nuevo nombre de la clase
         abrirVentana(vista);
     }//GEN-LAST:event_itemGestionarClientesActionPerformed
 
@@ -287,8 +288,7 @@ public class MDI extends javax.swing.JFrame {
     }//GEN-LAST:event_menuItemSalirActionPerformed
 
     private void itemGestionarCategoriasActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_itemGestionarCategoriasActionPerformed
-        // TODO add your handling code here:
-        GestionarCategorias vista = new GestionarCategorias();
+        FrmGestionarCategorias vista = new FrmGestionarCategorias(); // Cambiado al nuevo nombre de la clase
         abrirVentana(vista);
     }//GEN-LAST:event_itemGestionarCategoriasActionPerformed
 
