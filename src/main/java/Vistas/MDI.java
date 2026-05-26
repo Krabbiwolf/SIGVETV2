@@ -1,12 +1,12 @@
 package Vistas;
 
-import Controladores.CtrlCompra.*;
-import Controladores.CtrlFactura.*;
+import Controladores.CtrlCompra.CtrlPuntoCompra;
 import Controladores.CtrlProveedor.*;
 import Controladores.CtrlRoles.*;
 import Controladores.CtrlUsuarios.*;
 import Controladores.ctrlProductos.*;
 import Controladores.CtrlGestionarClientes;
+import Controladores.CtrlPuntoVenta.CtrlPuntoVenta;
 import Modelos.*;
 import java.awt.Color;
 import java.awt.Dimension;
@@ -230,13 +230,14 @@ public class MDI extends javax.swing.JFrame {
     }//GEN-LAST:event_itemRolesActionPerformed
 
     private void itemNuevaCompraActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_itemNuevaCompraActionPerformed
-        FrmRegistrarNuevaCompra vista = new FrmRegistrarNuevaCompra();
-        new CtrlNuevaCompra(new Compra(), vista, new CompraDAO());
+        FrmPuntoDeCompra vista = new FrmPuntoDeCompra();
+        new CtrlPuntoCompra(vista,new CompraDAO());
         abrirVentana(vista);
     }//GEN-LAST:event_itemNuevaCompraActionPerformed
 
     private void itemPuntoVentaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_itemPuntoVentaActionPerformed
-        FrmFacturaPuntoVenta vista = new FrmFacturaPuntoVenta();
+        FrmPuntoDeVenta vista = new FrmPuntoDeVenta();
+        new CtrlPuntoVenta(vista,new VentaDAO());
         abrirVentana(vista);
     }//GEN-LAST:event_itemPuntoVentaActionPerformed
 

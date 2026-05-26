@@ -67,7 +67,7 @@ public class FrmGestionarProductos extends javax.swing.JInternalFrame {
 
         lblTitulo.setFont(new java.awt.Font("Segoe UI", 1, 20)); // NOI18N
         lblTitulo.setForeground(new java.awt.Color(43, 68, 122));
-        lblTitulo.setText("■ Gestión y Stock de Productos");
+        lblTitulo.setText("Gestión y Stock de Productos");
         getContentPane().add(lblTitulo, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 20, 310, 30));
 
         lblIdProducto.setFont(new java.awt.Font("Segoe UI", 1, 11)); // NOI18N
@@ -155,8 +155,7 @@ public class FrmGestionarProductos extends javax.swing.JInternalFrame {
         btnAgregarImagen.setBackground(new java.awt.Color(248, 249, 250));
         btnAgregarImagen.setFont(new java.awt.Font("Segoe UI", 1, 13)); // NOI18N
         btnAgregarImagen.setForeground(new java.awt.Color(43, 68, 122));
-        btnAgregarImagen.setText("📁 Cargar Foto");
-        btnAgregarImagen.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(209, 217, 230)));
+        btnAgregarImagen.setText("Cargar Foto");
         btnAgregarImagen.setCursor(new java.awt.Cursor(java.awt.Cursor.DEFAULT_CURSOR));
         btnAgregarImagen.setFocusPainted(false);
         btnAgregarImagen.addActionListener(this::btnAgregarImagenActionPerformed);
@@ -217,7 +216,6 @@ public class FrmGestionarProductos extends javax.swing.JInternalFrame {
         btnActualizar.setFont(new java.awt.Font("Segoe UI", 1, 13)); // NOI18N
         btnActualizar.setForeground(new java.awt.Color(43, 68, 122));
         btnActualizar.setText("Actualizar Producto");
-        btnActualizar.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(209, 217, 230)));
         btnActualizar.setCursor(new java.awt.Cursor(java.awt.Cursor.DEFAULT_CURSOR));
         btnActualizar.setFocusPainted(false);
         btnActualizar.addActionListener(this::btnActualizarActionPerformed);
@@ -227,16 +225,14 @@ public class FrmGestionarProductos extends javax.swing.JInternalFrame {
         btnLimpiar.setFont(new java.awt.Font("Segoe UI", 1, 13)); // NOI18N
         btnLimpiar.setForeground(new java.awt.Color(43, 68, 122));
         btnLimpiar.setText("Limpiar Campos");
-        btnLimpiar.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(209, 217, 230)));
         btnLimpiar.setCursor(new java.awt.Cursor(java.awt.Cursor.DEFAULT_CURSOR));
         btnLimpiar.setFocusPainted(false);
         getContentPane().add(btnLimpiar, new org.netbeans.lib.awtextra.AbsoluteConstraints(745, 65, 375, 35));
 
-        btnEliminar.setBackground(new java.awt.Color(255, 245, 245));
+        btnEliminar.setBackground(new java.awt.Color(255, 255, 255));
         btnEliminar.setFont(new java.awt.Font("Segoe UI", 1, 13)); // NOI18N
         btnEliminar.setForeground(new java.awt.Color(220, 53, 69));
         btnEliminar.setText("Desactivar Seleccionados");
-        btnEliminar.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(220, 53, 69)));
         btnEliminar.setCursor(new java.awt.Cursor(java.awt.Cursor.DEFAULT_CURSOR));
         btnEliminar.setFocusPainted(false);
         getContentPane().add(btnEliminar, new org.netbeans.lib.awtextra.AbsoluteConstraints(360, 110, 760, 35));
@@ -245,7 +241,6 @@ public class FrmGestionarProductos extends javax.swing.JInternalFrame {
         btnVerDetalle.setFont(new java.awt.Font("Segoe UI", 1, 13)); // NOI18N
         btnVerDetalle.setForeground(new java.awt.Color(43, 68, 122));
         btnVerDetalle.setText("Ver Detalle");
-        btnVerDetalle.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(209, 217, 230)));
         btnVerDetalle.setCursor(new java.awt.Cursor(java.awt.Cursor.DEFAULT_CURSOR));
         btnVerDetalle.setFocusPainted(false);
         getContentPane().add(btnVerDetalle, new org.netbeans.lib.awtextra.AbsoluteConstraints(360, 155, 760, 35));
