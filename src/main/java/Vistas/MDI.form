@@ -165,6 +165,45 @@
             </MenuItem>
           </SubComponents>
         </Menu>
+        <Menu class="javax.swing.JMenu" name="menuMaestroDetalle">
+          <Properties>
+            <Property name="text" type="java.lang.String" value="Maestro-Detalle"/>
+          </Properties>
+          <SubComponents>
+            <MenuItem class="javax.swing.JMenuItem" name="itemMDClientesFacturas">
+              <Properties>
+                <Property name="text" type="java.lang.String" value="Clientes -&gt; Facturas/Ventas"/>
+              </Properties>
+              <Events>
+                <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="itemMDClientesFacturasActionPerformed"/>
+              </Events>
+            </MenuItem>
+            <MenuItem class="javax.swing.JMenuItem" name="itemMDProveedoresCompras">
+              <Properties>
+                <Property name="text" type="java.lang.String" value="Proveedores -&gt; Compras"/>
+              </Properties>
+              <Events>
+                <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="itemMDProveedoresComprasActionPerformed"/>
+              </Events>
+            </MenuItem>
+            <MenuItem class="javax.swing.JMenuItem" name="itemMDCategoriasProductos">
+              <Properties>
+                <Property name="text" type="java.lang.String" value="Categor&#xed;as -&gt; Productos"/>
+              </Properties>
+              <Events>
+                <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="itemMDCategoriasProductosActionPerformed"/>
+              </Events>
+            </MenuItem>
+            <MenuItem class="javax.swing.JMenuItem" name="itemMDProductosLotes">
+              <Properties>
+                <Property name="text" type="java.lang.String" value="Productos -&gt; Lotes"/>
+              </Properties>
+              <Events>
+                <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="itemMDProductosLotesActionPerformed"/>
+              </Events>
+            </MenuItem>
+          </SubComponents>
+        </Menu>
         <Menu class="javax.swing.JMenu" name="menuAnaliticas">
           <Properties>
             <Property name="text" type="java.lang.String" value="Dashboard y Reportes"/>
