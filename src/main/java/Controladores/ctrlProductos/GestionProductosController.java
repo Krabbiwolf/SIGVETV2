@@ -43,6 +43,7 @@ public class GestionProductosController {
     private SwingWorker<ArrayList<Producto>, Void> currentLoadWorker;
     private SwingWorker<String, Void> currentUploadWorker;
     private SwingWorker<ArrayList<String>, Void> currentCategoriasWorker;
+    private SwingWorker<ImageIcon, Void> currentImageLoaderWorker;
 
     public GestionProductosController(FrmGestionarProductos vista) {
         this.dao = new ProductosDAO();
@@ -66,12 +67,6 @@ public class GestionProductosController {
         vista.lblMostrarImagen.setVerticalAlignment(SwingConstants.CENTER);
         vista.tblProductos.setSelectionMode(ListSelectionModel.MULTIPLE_INTERVAL_SELECTION);
         vista.tblProductos.setRowHeight(32);
-
-        vista.btnGuardar.setText("Guardar Producto");
-        vista.btnActualizar.setText("Actualizar Producto");
-        vista.btnEliminar.setText("Desactivar Seleccionados");
-        vista.btnExportarCSV.setText("Exportar CSV");
-        vista.btnVerDetalle.setText("Ver Detalle");
     }
 
     private void agregarEventos() {
@@ -184,19 +179,27 @@ public class GestionProductosController {
         vista.cboFiltroBusqueda.addItem("Inactivo");
     }
 
+    // ================== CARGA DE IMAGEN ASÍNCRONA ==================
     private void seleccionarImagen() {
         JFileChooser chooser = new JFileChooser();
         chooser.setDialogTitle("Seleccionar imagen");
-        FileNameExtensionFilter filtro = new FileNameExtensionFilter(
-                "Imágenes JPG, PNG, JPEG", "jpg", "jpeg", "png");
+        FileNameExtensionFilter filtro = new FileNameExtensionFilter("Imágenes JPG, PNG, JPEG", "jpg", "jpeg", "png");
         chooser.setFileFilter(filtro);
+        
         int opcion = chooser.showOpenDialog(vista);
         if (opcion == JFileChooser.APPROVE_OPTION) {
             File archivo = chooser.getSelectedFile();
-            mostrarImagen(archivo.getAbsolutePath());
+            
+            // Preparar UI para la carga
+            vista.lblMostrarImagen.setIcon(null);
+            vista.lblMostrarImagen.setText("Subiendo a la nube...");
+            vista.btnGuardar.setEnabled(false);
+            vista.btnActualizar.setEnabled(false);
+
             if (currentUploadWorker != null && !currentUploadWorker.isDone()) {
                 currentUploadWorker.cancel(true);
             }
+            
             currentUploadWorker = new SwingWorker<String, Void>() {
                 @Override
                 protected String doInBackground() throws Exception {
@@ -210,19 +213,28 @@ public class GestionProductosController {
                         String urlImagen = get();
                         if (urlImagen != null && !urlImagen.trim().isEmpty()) {
                             vista.txtRuta.setText(urlImagen);
-                            JOptionPane.showMessageDialog(vista, "Imagen subida correctamente.");
+                            mostrarImagen(urlImagen); // Muestra la imagen descargándola asíncronamente
                         } else {
                             vista.txtRuta.setText(archivo.getAbsolutePath());
-                            JOptionPane.showMessageDialog(vista, "No se pudo subir a Cloudinary. Se guardó la ruta local.");
+                            mostrarImagen(archivo.getAbsolutePath());
+                            JOptionPane.showMessageDialog(vista, "No se pudo subir a Cloudinary. Se usará la ruta local.");
                         }
                     } catch (CancellationException e) {
                         System.out.println("Subida de imagen cancelada.");
+                        limpiarImagen();
                     } catch (Exception ex) {
                         vista.txtRuta.setText(archivo.getAbsolutePath());
+                        mostrarImagen(archivo.getAbsolutePath());
                         JOptionPane.showMessageDialog(vista, "Error al subir imagen: " + ex.getMessage());
                         ex.printStackTrace();
                     } finally {
                         currentUploadWorker = null;
+                        // Restaurar los botones según el modo
+                        if (vista.txtIdProducto.getText().trim().isEmpty()) {
+                            vista.btnGuardar.setEnabled(true);
+                        } else {
+                            vista.btnActualizar.setEnabled(true);
+                        }
                     }
                 }
             };
@@ -231,27 +243,53 @@ public class GestionProductosController {
     }
 
     private void mostrarImagen(String ruta) {
-        try {
-            if (ruta == null || ruta.trim().isEmpty()) {
-                limpiarImagen();
-                return;
-            }
-            ImageIcon iconoOriginal;
-            if (ruta.startsWith("http")) {
-                URL url = new URL(ruta);
-                iconoOriginal = new ImageIcon(url);
-            } else {
-                iconoOriginal = new ImageIcon(ruta);
-            }
-            int ancho = vista.lblMostrarImagen.getWidth() > 0 ? vista.lblMostrarImagen.getWidth() : 250;
-            int alto = vista.lblMostrarImagen.getHeight() > 0 ? vista.lblMostrarImagen.getHeight() : 250;
-            Image imagenEscalada = iconoOriginal.getImage().getScaledInstance(ancho, alto, Image.SCALE_SMOOTH);
-            vista.lblMostrarImagen.setText("");
-            vista.lblMostrarImagen.setIcon(new ImageIcon(imagenEscalada));
-        } catch (Exception e) {
+        if (ruta == null || ruta.trim().isEmpty()) {
             limpiarImagen();
-            e.printStackTrace();
+            return;
         }
+
+        vista.lblMostrarImagen.setIcon(null);
+        vista.lblMostrarImagen.setText("Cargando vista previa...");
+
+        if (currentImageLoaderWorker != null && !currentImageLoaderWorker.isDone()) {
+            currentImageLoaderWorker.cancel(true);
+        }
+
+        currentImageLoaderWorker = new SwingWorker<ImageIcon, Void>() {
+            @Override
+            protected ImageIcon doInBackground() throws Exception {
+                ImageIcon iconoOriginal;
+                if (ruta.startsWith("http")) {
+                    URL url = new URL(ruta);
+                    iconoOriginal = new ImageIcon(url);
+                } else {
+                    iconoOriginal = new ImageIcon(ruta);
+                }
+                
+                int ancho = vista.lblMostrarImagen.getWidth() > 0 ? vista.lblMostrarImagen.getWidth() : 250;
+                int alto = vista.lblMostrarImagen.getHeight() > 0 ? vista.lblMostrarImagen.getHeight() : 250;
+                
+                Image imagenEscalada = iconoOriginal.getImage().getScaledInstance(ancho, alto, Image.SCALE_SMOOTH);
+                return new ImageIcon(imagenEscalada);
+            }
+
+            @Override
+            protected void done() {
+                try {
+                    ImageIcon icon = get();
+                    vista.lblMostrarImagen.setText("");
+                    vista.lblMostrarImagen.setIcon(icon);
+                } catch (CancellationException e) {
+                    // Carga cancelada por un clic posterior
+                } catch (Exception e) {
+                    limpiarImagen();
+                    vista.lblMostrarImagen.setText("Error al cargar vista previa");
+                } finally {
+                    currentImageLoaderWorker = null;
+                }
+            }
+        };
+        currentImageLoaderWorker.execute();
     }
 
     private void limpiarImagen() {
@@ -381,6 +419,10 @@ public class GestionProductosController {
     private void seleccionarProductoTabla() {
         int filaVista = vista.tblProductos.getSelectedRow();
         if (filaVista < 0) return;
+        
+        int columnaClic = vista.tblProductos.getSelectedColumn();
+        if (columnaClic == 0) return; // Evitar cargar si se hace clic en el Checkbox
+
         int filaModelo = vista.tblProductos.convertRowIndexToModel(filaVista);
         DefaultTableModel modelo = (DefaultTableModel) vista.tblProductos.getModel();
 
@@ -390,7 +432,9 @@ public class GestionProductosController {
         vista.txtDescripcionTecnica.setText(valorModelo(modelo, filaModelo, 4));
         String rutaImagen = valorModelo(modelo, filaModelo, 6);
         vista.txtRuta.setText(rutaImagen);
-        mostrarImagen(rutaImagen);
+        
+        mostrarImagen(rutaImagen); // Se carga asíncronamente gracias a la mejora
+        
         vista.cboEstado.setSelectedItem(valorModelo(modelo, filaModelo, 7));
         try {
             int idCategoria = Integer.parseInt(valorModelo(modelo, filaModelo, 8));
@@ -575,7 +619,7 @@ public class GestionProductosController {
         JPanel panel = new JPanel(new BorderLayout(12, 12));
         panel.setPreferredSize(new Dimension(560, 330));
 
-        JLabel lblImagen = new JLabel("Sin imagen", SwingConstants.CENTER);
+        JLabel lblImagen = new JLabel("Cargando...", SwingConstants.CENTER);
         lblImagen.setPreferredSize(new Dimension(220, 220));
         lblImagen.setBorder(BorderFactory.createEtchedBorder());
         cargarImagenEnLabel(imagen, lblImagen, 220, 220);
@@ -616,20 +660,34 @@ public class GestionProductosController {
     }
 
     private void cargarImagenEnLabel(String ruta, JLabel label, int ancho, int alto) {
-        try {
-            if (ruta == null || ruta.trim().isEmpty()) return;
-            ImageIcon icono;
-            if (ruta.startsWith("http")) {
-                icono = new ImageIcon(new URL(ruta));
-            } else {
-                icono = new ImageIcon(ruta);
-            }
-            Image img = icono.getImage().getScaledInstance(ancho, alto, Image.SCALE_SMOOTH);
-            label.setText("");
-            label.setIcon(new ImageIcon(img));
-        } catch (Exception e) {
-            label.setText("Imagen no disponible");
+        if (ruta == null || ruta.trim().isEmpty()) {
+            label.setText("Sin imagen");
+            return;
         }
+        
+        new SwingWorker<ImageIcon, Void>() {
+            @Override
+            protected ImageIcon doInBackground() throws Exception {
+                ImageIcon icono;
+                if (ruta.startsWith("http")) {
+                    icono = new ImageIcon(new URL(ruta));
+                } else {
+                    icono = new ImageIcon(ruta);
+                }
+                Image img = icono.getImage().getScaledInstance(ancho, alto, Image.SCALE_SMOOTH);
+                return new ImageIcon(img);
+            }
+
+            @Override
+            protected void done() {
+                try {
+                    label.setText("");
+                    label.setIcon(get());
+                } catch (Exception e) {
+                    label.setText("Imagen no disponible");
+                }
+            }
+        }.execute();
     }
 
     private void exportarProductosCSV() {
