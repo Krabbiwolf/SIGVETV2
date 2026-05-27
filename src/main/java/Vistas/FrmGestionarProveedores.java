@@ -199,7 +199,6 @@ public class FrmGestionarProveedores extends javax.swing.JInternalFrame {
     }//GEN-LAST:event_btnActualizarActionPerformed
 
     private void btnAgregarImagenActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAgregarImagenActionPerformed
-
     }//GEN-LAST:event_btnAgregarImagenActionPerformed
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
