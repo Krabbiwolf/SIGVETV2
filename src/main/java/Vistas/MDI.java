@@ -1,13 +1,12 @@
 package Vistas;
 
-import Controladores.CtrlCompra.*;
-import Controladores.CtrlFactura.*;
+import Controladores.CtrlCompra.CtrlPuntoCompra;
 import Controladores.CtrlProveedor.*;
 import Controladores.CtrlRoles.*;
 import Controladores.CtrlUsuarios.*;
 import Controladores.ctrlProductos.*;
-import Controladores.CtrlNuevoCliente;
 import Controladores.CtrlGestionarClientes;
+import Controladores.CtrlPuntoVenta.CtrlPuntoVenta;
 import Modelos.*;
 import java.awt.Color;
 import java.awt.Dimension;
@@ -35,12 +34,13 @@ public class MDI extends javax.swing.JFrame {
     }
 
     private void configurarEstilo() {
-        // Forzamos colores oscuros a nivel global para todas las ventanas internas que abramos
-        UIManager.put("InternalFrame.activeTitleBackground", Color.decode("#181D2E"));
-        UIManager.put("InternalFrame.inactiveTitleBackground", Color.decode("#111520"));
-        UIManager.put("InternalFrame.activeTitleForeground", Color.decode("#F0F2FF"));
-        UIManager.put("InternalFrame.inactiveTitleForeground", Color.decode("#9BA3C4"));
-        UIManager.put("InternalFrame.borderColor", Color.decode("#2A3050"));
+        // Inyectamos el tema Azul Corporativo (Light) a nivel global para las ventanas internas
+        UIManager.put("InternalFrame.activeTitleBackground", Color.decode("#2D4A8A"));
+        UIManager.put("InternalFrame.inactiveTitleBackground", Color.decode("#DCE6F2"));
+        UIManager.put("InternalFrame.activeTitleForeground", Color.WHITE);
+        UIManager.put("InternalFrame.inactiveTitleForeground", Color.decode("#2D4A8A"));
+        UIManager.put("InternalFrame.borderColor", Color.decode("#C5D8F5"));
+        UIManager.put("DesktopPane.background", Color.decode("#F0F4F8")); // Fondo limpio
     }
 
     // Método universal para abrir ventanas y centrarlas en el DesktopPane
@@ -55,30 +55,31 @@ public class MDI extends javax.swing.JFrame {
             ventana.setSelected(true);
         } catch (Exception e) {
         }
+        
     }
 
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
+        jMenuItem1 = new javax.swing.JMenuItem();
+        jMenuBar1 = new javax.swing.JMenuBar();
+        jMenu1 = new javax.swing.JMenu();
+        jMenu2 = new javax.swing.JMenu();
         desktopPane = new javax.swing.JDesktopPane();
         menuBar = new javax.swing.JMenuBar();
         menuArchivo = new javax.swing.JMenu();
         menuItemSalir = new javax.swing.JMenuItem();
         menuProveedores = new javax.swing.JMenu();
-        itemNuevoProveedor = new javax.swing.JMenuItem();
         itemGestionarProveedores = new javax.swing.JMenuItem();
+        itemGestionarClientes = new javax.swing.JMenuItem();
         menuProductos = new javax.swing.JMenu();
-        itemNuevoProducto = new javax.swing.JMenuItem();
         itemGestionarProductos = new javax.swing.JMenuItem();
         itemGestionarCategorias = new javax.swing.JMenuItem();
         itemAjusteInventario = new javax.swing.JMenuItem();
         itemKardex = new javax.swing.JMenuItem();
-        menuClientes = new javax.swing.JMenu();
-        itemGestionarClientes = new javax.swing.JMenuItem();
         menuUsuarios = new javax.swing.JMenu();
         itemNuevoUsuario = new javax.swing.JMenuItem();
-        itemGestionarUsuarios = new javax.swing.JMenuItem();
         itemRoles = new javax.swing.JMenuItem();
         menuCompras = new javax.swing.JMenu();
         itemNuevaCompra = new javax.swing.JMenuItem();
@@ -88,11 +89,24 @@ public class MDI extends javax.swing.JFrame {
         menuAnaliticas = new javax.swing.JMenu();
         itemDashboard = new javax.swing.JMenuItem();
         itemAnaliticas = new javax.swing.JMenuItem();
+        jMenu3 = new javax.swing.JMenu();
+        jMenuItem3 = new javax.swing.JMenuItem();
+        jMenuItem5 = new javax.swing.JMenuItem();
+        jMenuItem4 = new javax.swing.JMenuItem();
+        jMenuItem2 = new javax.swing.JMenuItem();
+
+        jMenuItem1.setText("jMenuItem1");
+
+        jMenu1.setText("File");
+        jMenuBar1.add(jMenu1);
+
+        jMenu2.setText("Edit");
+        jMenuBar1.add(jMenu2);
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setTitle("SIGVET - Sistema ERP");
 
-        desktopPane.setBackground(new java.awt.Color(10, 12, 16));
+        desktopPane.setBackground(new java.awt.Color(240, 244, 248));
         getContentPane().add(desktopPane, java.awt.BorderLayout.CENTER);
 
         menuArchivo.setText("Archivo");
@@ -103,23 +117,19 @@ public class MDI extends javax.swing.JFrame {
 
         menuBar.add(menuArchivo);
 
-        menuProveedores.setText("Proveedores");
-
-        itemNuevoProveedor.setText("Nuevo Proveedor");
-        itemNuevoProveedor.addActionListener(this::itemNuevoProveedorActionPerformed);
-        menuProveedores.add(itemNuevoProveedor);
+        menuProveedores.setText("Terceros");
 
         itemGestionarProveedores.setText("Gestionar Proveedores");
         itemGestionarProveedores.addActionListener(this::itemGestionarProveedoresActionPerformed);
         menuProveedores.add(itemGestionarProveedores);
 
+        itemGestionarClientes.setText("Gestionar Clientes");
+        itemGestionarClientes.addActionListener(this::itemGestionarClientesActionPerformed);
+        menuProveedores.add(itemGestionarClientes);
+
         menuBar.add(menuProveedores);
 
         menuProductos.setText("Productos");
-
-        itemNuevoProducto.setText("Nuevo Producto");
-        itemNuevoProducto.addActionListener(this::itemNuevoProductoActionPerformed);
-        menuProductos.add(itemNuevoProducto);
 
         itemGestionarProductos.setText("Gestionar Productos");
         itemGestionarProductos.addActionListener(this::itemGestionarProductosActionPerformed);
@@ -139,23 +149,11 @@ public class MDI extends javax.swing.JFrame {
 
         menuBar.add(menuProductos);
 
-        menuClientes.setText("Clientes");
-
-        itemGestionarClientes.setText("Gestionar Clientes");
-        itemGestionarClientes.addActionListener(this::itemGestionarClientesActionPerformed);
-        menuClientes.add(itemGestionarClientes);
-
-        menuBar.add(menuClientes);
-
         menuUsuarios.setText("Usuarios y Permisos");
 
         itemNuevoUsuario.setText("Nuevo Usuario");
         itemNuevoUsuario.addActionListener(this::itemNuevoUsuarioActionPerformed);
         menuUsuarios.add(itemNuevoUsuario);
-
-        itemGestionarUsuarios.setText("Gestionar Usuarios");
-        itemGestionarUsuarios.addActionListener(this::itemGestionarUsuariosActionPerformed);
-        menuUsuarios.add(itemGestionarUsuarios);
 
         itemRoles.setText("Roles y Permisos");
         itemRoles.addActionListener(this::itemRolesActionPerformed);
@@ -195,17 +193,31 @@ public class MDI extends javax.swing.JFrame {
 
         menuBar.add(menuAnaliticas);
 
+        jMenu3.setText("Maestros-Detalle");
+
+        jMenuItem3.setText("Clientes-Ventas");
+        jMenuItem3.addActionListener(this::jMenuItem3ActionPerformed);
+        jMenu3.add(jMenuItem3);
+
+        jMenuItem5.setText("Proveedores-Compras");
+        jMenuItem5.addActionListener(this::jMenuItem5ActionPerformed);
+        jMenu3.add(jMenuItem5);
+
+        jMenuItem4.setText("Productos-Lotes");
+        jMenuItem4.addActionListener(this::jMenuItem4ActionPerformed);
+        jMenu3.add(jMenuItem4);
+
+        jMenuItem2.setText("Categorias-Productos");
+        jMenuItem2.addActionListener(this::jMenuItem2ActionPerformed);
+        jMenu3.add(jMenuItem2);
+
+        menuBar.add(jMenu3);
+
         setJMenuBar(menuBar);
 
         pack();
         setLocationRelativeTo(null);
     }// </editor-fold>//GEN-END:initComponents
-
-    private void itemNuevoProveedorActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_itemNuevoProveedorActionPerformed
-        FrmNuevoProveedor form = new FrmNuevoProveedor();
-        new CtrlNuevoProveedor(new Proveedor(), form, new ProveedorDAO());
-        abrirVentana(form);
-    }//GEN-LAST:event_itemNuevoProveedorActionPerformed
 
     private void itemGestionarProveedoresActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_itemGestionarProveedoresActionPerformed
         FrmGestionarProveedores form = new FrmGestionarProveedores();
@@ -213,12 +225,6 @@ public class MDI extends javax.swing.JFrame {
         ctrl.cargarTabla();
         abrirVentana(form);
     }//GEN-LAST:event_itemGestionarProveedoresActionPerformed
-
-    private void itemNuevoProductoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_itemNuevoProductoActionPerformed
-        FrmNuevoProducto vista = new FrmNuevoProducto();
-        new NuevoProductoController(vista);
-        abrirVentana(vista);
-    }//GEN-LAST:event_itemNuevoProductoActionPerformed
 
     private void itemGestionarProductosActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_itemGestionarProductosActionPerformed
         FrmGestionarProductos vista = new FrmGestionarProductos();
@@ -233,22 +239,16 @@ public class MDI extends javax.swing.JFrame {
     }//GEN-LAST:event_itemAjusteInventarioActionPerformed
 
     private void itemKardexActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_itemKardexActionPerformed
-    FrmKardex vista = new FrmKardex();
-    abrirVentana(vista);
+        FrmKardex vista = new FrmKardex();
+        abrirVentana(vista);
     }//GEN-LAST:event_itemKardexActionPerformed
 
     private void itemNuevoUsuarioActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_itemNuevoUsuarioActionPerformed
         FrmNuevoUsuario vista = new FrmNuevoUsuario();
-        new CtrlNuevoUsuario(new Usuario(), vista, new UsuarioDAO());
-        abrirVentana(vista);
-    }//GEN-LAST:event_itemNuevoUsuarioActionPerformed
-
-    private void itemGestionarUsuariosActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_itemGestionarUsuariosActionPerformed
-        FrmGestionarUsuarios vista = new FrmGestionarUsuarios();
-        CtrlGestionarUsuarios ctrl = new CtrlGestionarUsuarios(new Usuario(), vista, new UsuarioDAO());
+        CtrlNuevoUsuario ctrl = new CtrlNuevoUsuario(new Usuario(), vista, new UsuarioDAO());
         ctrl.cargarTabla();
         abrirVentana(vista);
-    }//GEN-LAST:event_itemGestionarUsuariosActionPerformed
+    }//GEN-LAST:event_itemNuevoUsuarioActionPerformed
 
     private void itemRolesActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_itemRolesActionPerformed
         FrmRolesPermisos vista = new FrmRolesPermisos();
@@ -258,13 +258,14 @@ public class MDI extends javax.swing.JFrame {
     }//GEN-LAST:event_itemRolesActionPerformed
 
     private void itemNuevaCompraActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_itemNuevaCompraActionPerformed
-        FrmRegistrarNuevaCompra vista = new FrmRegistrarNuevaCompra();
-        new CtrlNuevaCompra(new Compra(), vista, new CompraDAO());
+        FrmPuntoDeCompra vista = new FrmPuntoDeCompra();
+        new CtrlPuntoCompra(vista,new CompraDAO());
         abrirVentana(vista);
     }//GEN-LAST:event_itemNuevaCompraActionPerformed
 
     private void itemPuntoVentaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_itemPuntoVentaActionPerformed
-        FrmFacturaPuntoVenta vista = new FrmFacturaPuntoVenta();
+        FrmPuntoDeVenta vista = new FrmPuntoDeVenta();
+        new CtrlPuntoVenta(vista,new VentaDAO());
         abrirVentana(vista);
     }//GEN-LAST:event_itemPuntoVentaActionPerformed
 
@@ -284,7 +285,7 @@ public class MDI extends javax.swing.JFrame {
     }//GEN-LAST:event_itemAnaliticasActionPerformed
 
     private void itemGestionarClientesActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_itemGestionarClientesActionPerformed
-        GestionarClientes vista = new GestionarClientes();
+        FrmGestionarClientes vista = new FrmGestionarClientes(); // Cambiado al nuevo nombre de la clase
         abrirVentana(vista);
     }//GEN-LAST:event_itemGestionarClientesActionPerformed
 
@@ -298,10 +299,33 @@ public class MDI extends javax.swing.JFrame {
     }//GEN-LAST:event_menuItemSalirActionPerformed
 
     private void itemGestionarCategoriasActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_itemGestionarCategoriasActionPerformed
-        // TODO add your handling code here:
-        GestionarCategorias vista = new GestionarCategorias();
+        FrmGestionarCategorias vista = new FrmGestionarCategorias(); // Cambiado al nuevo nombre de la clase
         abrirVentana(vista);
     }//GEN-LAST:event_itemGestionarCategoriasActionPerformed
+
+    private void jMenuItem2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem2ActionPerformed
+        // TODO add your handling code here:
+        FrmMDCategoriasProductos vista =new FrmMDCategoriasProductos();
+        abrirVentana(vista);
+    }//GEN-LAST:event_jMenuItem2ActionPerformed
+
+    private void jMenuItem3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem3ActionPerformed
+        // TODO add your handling code here:
+        FrmMDClientesFacturas vista = new FrmMDClientesFacturas();
+        abrirVentana(vista);
+    }//GEN-LAST:event_jMenuItem3ActionPerformed
+
+    private void jMenuItem4ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem4ActionPerformed
+        // TODO add your handling code here:
+        FrmMDProductosLotes vista = new FrmMDProductosLotes();
+        abrirVentana(vista);
+    }//GEN-LAST:event_jMenuItem4ActionPerformed
+
+    private void jMenuItem5ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem5ActionPerformed
+        // TODO add your handling code here:
+        FrmMDProveedoresCompras vista= new FrmMDProveedoresCompras();
+        abrirVentana(vista);
+    }//GEN-LAST:event_jMenuItem5ActionPerformed
 
     public static void main(String args[]) {
         try {
@@ -326,18 +350,23 @@ public class MDI extends javax.swing.JFrame {
     private javax.swing.JMenuItem itemGestionarClientes;
     private javax.swing.JMenuItem itemGestionarProductos;
     private javax.swing.JMenuItem itemGestionarProveedores;
-    private javax.swing.JMenuItem itemGestionarUsuarios;
     private javax.swing.JMenuItem itemKardex;
     private javax.swing.JMenuItem itemNuevaCompra;
-    private javax.swing.JMenuItem itemNuevoProducto;
-    private javax.swing.JMenuItem itemNuevoProveedor;
     private javax.swing.JMenuItem itemNuevoUsuario;
     private javax.swing.JMenuItem itemPuntoVenta;
     private javax.swing.JMenuItem itemRoles;
+    private javax.swing.JMenu jMenu1;
+    private javax.swing.JMenu jMenu2;
+    private javax.swing.JMenu jMenu3;
+    private javax.swing.JMenuBar jMenuBar1;
+    private javax.swing.JMenuItem jMenuItem1;
+    private javax.swing.JMenuItem jMenuItem2;
+    private javax.swing.JMenuItem jMenuItem3;
+    private javax.swing.JMenuItem jMenuItem4;
+    private javax.swing.JMenuItem jMenuItem5;
     private javax.swing.JMenu menuAnaliticas;
     private javax.swing.JMenu menuArchivo;
     private javax.swing.JMenuBar menuBar;
-    private javax.swing.JMenu menuClientes;
     private javax.swing.JMenu menuCompras;
     private javax.swing.JMenu menuFacturacion;
     private javax.swing.JMenuItem menuItemSalir;
