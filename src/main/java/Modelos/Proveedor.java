@@ -13,23 +13,35 @@ public class Proveedor {
     private String nombre;
     private String telefono;
     private String estado;
+    private String rutaImagen;
 
-    public Proveedor(int id, String nombre, String telefono, String estado) {
+    public Proveedor(int id, String nombre, String telefono, String estado,String rutaImagen) {
         this.id = id;
         this.nombre = nombre;
         this.telefono = telefono;
         this.estado = estado;
+        this.rutaImagen=rutaImagen;
     }
 
-    public Proveedor(String nombre, String telefono, String estado) {
+    public Proveedor(String nombre, String telefono, String estado, String rutaImagen) {
         this.nombre = nombre;
         this.telefono = telefono;
+        this.estado = estado;
+        this.rutaImagen = rutaImagen;
     }
+
+    
 
     public Proveedor() {
     }
     
-    
+    public String getRutaImagen() {
+    return rutaImagen;
+}
+
+public void setRutaImagen(String rutaImagen) {
+    this.rutaImagen = rutaImagen;
+}
 
     public int getId() {
         return id;
