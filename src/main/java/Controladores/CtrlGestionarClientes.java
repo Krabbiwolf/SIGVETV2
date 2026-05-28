@@ -37,7 +37,7 @@ public class CtrlGestionarClientes implements ActionListener {
         this.form.btnActualizar.addActionListener(this);
         this.form.btnEliminar.addActionListener(this);
         this.form.btnRefrescar.addActionListener(this);
-        this.form.btnLimpiar.addActionListener(this);
+        this.form.btnEliminar.addActionListener(this);
         this.form.btnVerDetalle.addActionListener(this);
 
         this.form.btnBuscarClientes.addActionListener(this);
@@ -608,7 +608,7 @@ public class CtrlGestionarClientes implements ActionListener {
         } else if (source == form.btnRefrescar) {
             limpiarCampos();
             cargarTabla();
-        } else if (source == form.btnLimpiar) {
+        } else if (source == form.btnEliminar) {
             limpiarCampos();
         } else if (source == form.btnVerDetalle) {
             verDetalle();

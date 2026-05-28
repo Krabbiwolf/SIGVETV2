@@ -102,8 +102,8 @@ btnEliminar.setUI(new javax.swing.plaf.basic.BasicButtonUI());
         setMaximizable(true);
         setResizable(true);
         setTitle("Gestionar Proveedores");
-        setPreferredSize(new java.awt.Dimension(1100, 650));
-        getContentPane().setLayout(null);
+        setPreferredSize(new java.awt.Dimension(1100, 720));
+        getContentPane().setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
 
         lblTitulo.setFont(new java.awt.Font("Segoe UI", 1, 20)); // NOI18N
         lblTitulo.setForeground(new java.awt.Color(45, 74, 138));
@@ -158,6 +158,7 @@ btnEliminar.setUI(new javax.swing.plaf.basic.BasicButtonUI());
         getContentPane().add(btnAgregarImagen);
         btnAgregarImagen.setBounds(20, 280, 260, 38);
 
+        lblMostrarImagen.setBackground(new java.awt.Color(255, 255, 255));
         lblMostrarImagen.setForeground(new java.awt.Color(51, 51, 51));
         lblMostrarImagen.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         lblMostrarImagen.setText("Sin imagen");
@@ -215,7 +216,7 @@ btnEliminar.setUI(new javax.swing.plaf.basic.BasicButtonUI());
         getContentPane().add(btnVerDetalle);
         btnVerDetalle.setBounds(860, 90, 130, 42);
 
-        scrollTabla.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(197, 216, 245)));
+        scrollTabla.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(209, 217, 230)));
 
         tableProveedores.setForeground(new java.awt.Color(51, 51, 51));
         tableProveedores.setModel(new javax.swing.table.DefaultTableModel(
@@ -223,13 +224,13 @@ btnEliminar.setUI(new javax.swing.plaf.basic.BasicButtonUI());
 
             },
             new String [] {
-                "ID", "Nombre", "Teléfono", "Estado"
+                "Sel", "Id", "Nombre", "Telefono", "Estado"
             }
         ));
-        tableProveedores.setGridColor(new java.awt.Color(224, 224, 224));
-        tableProveedores.setRowHeight(32);
-        tableProveedores.setSelectionBackground(new java.awt.Color(197, 216, 245));
-        tableProveedores.setSelectionForeground(new java.awt.Color(13, 32, 96));
+        tableProveedores.setGridColor(new java.awt.Color(224, 229, 236));
+        tableProveedores.setRowHeight(35);
+        tableProveedores.setSelectionBackground(new java.awt.Color(217, 226, 243));
+        tableProveedores.setSelectionForeground(new java.awt.Color(0, 0, 0));
         scrollTabla.setViewportView(tableProveedores);
 
         getContentPane().add(scrollTabla);

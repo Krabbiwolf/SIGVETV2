@@ -1,5 +1,6 @@
 package Vistas;
 
+import Controladores.CtrlCompra.CtrlConsultaCompras;
 import Controladores.CtrlCompra.CtrlPuntoCompra;
 import Controladores.CtrlProveedor.*;
 import Controladores.CtrlRoles.*;
@@ -7,6 +8,7 @@ import Controladores.CtrlUsuarios.*;
 import Controladores.ctrlProductos.*;
 import Controladores.CtrlGestionarClientes;
 import Controladores.CtrlPuntoVenta.CtrlPuntoVenta;
+import Controladores.CtrlPuntoVenta.CtrlConsultarFactura;
 import Modelos.*;
 import java.awt.Color;
 import java.awt.Dimension;
@@ -92,6 +94,7 @@ public class MDI extends javax.swing.JFrame {
         itemRoles = new javax.swing.JMenuItem();
         menuCompras = new javax.swing.JMenu();
         itemNuevaCompra = new javax.swing.JMenuItem();
+        jMenuItem6 = new javax.swing.JMenuItem();
         menuFacturacion = new javax.swing.JMenu();
         itemPuntoVenta = new javax.swing.JMenuItem();
         itemConsultarFactura = new javax.swing.JMenuItem();
@@ -176,6 +179,10 @@ public class MDI extends javax.swing.JFrame {
         itemNuevaCompra.addActionListener(this::itemNuevaCompraActionPerformed);
         menuCompras.add(itemNuevaCompra);
 
+        jMenuItem6.setText("Consultar Compras");
+        jMenuItem6.addActionListener(this::jMenuItem6ActionPerformed);
+        menuCompras.add(jMenuItem6);
+
         menuBar.add(menuCompras);
 
         menuFacturacion.setText("Facturación y Ventas");
@@ -184,7 +191,7 @@ public class MDI extends javax.swing.JFrame {
         itemPuntoVenta.addActionListener(this::itemPuntoVentaActionPerformed);
         menuFacturacion.add(itemPuntoVenta);
 
-        itemConsultarFactura.setText("Consultar Facturas");
+        itemConsultarFactura.setText("Consultar Ventas");
         itemConsultarFactura.addActionListener(this::itemConsultarFacturaActionPerformed);
         menuFacturacion.add(itemConsultarFactura);
 
@@ -265,25 +272,27 @@ public class MDI extends javax.swing.JFrame {
 
     private void itemRolesActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_itemRolesActionPerformed
         FrmRolesPermisos vista = new FrmRolesPermisos();
-        FrmNuevoUsuario vistaUsuario = new FrmNuevoUsuario();           
+        FrmNuevoUsuario vistaUsuario = new FrmNuevoUsuario();
         new CtrlGestionarRoles(new Roles(), vista, vistaUsuario, new RolesDAO());
         abrirVentana(vista);
     }//GEN-LAST:event_itemRolesActionPerformed
 
     private void itemNuevaCompraActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_itemNuevaCompraActionPerformed
         FrmPuntoDeCompra vista = new FrmPuntoDeCompra();
-        new CtrlPuntoCompra(vista,new CompraDAO());
+        new CtrlPuntoCompra(vista, new CompraDAO());
         abrirVentana(vista);
     }//GEN-LAST:event_itemNuevaCompraActionPerformed
 
     private void itemPuntoVentaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_itemPuntoVentaActionPerformed
         FrmPuntoDeVenta vista = new FrmPuntoDeVenta();
-        new CtrlPuntoVenta(vista,new VentaDAO());
+        new CtrlPuntoVenta(vista, new VentaDAO());
         abrirVentana(vista);
     }//GEN-LAST:event_itemPuntoVentaActionPerformed
 
     private void itemConsultarFacturaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_itemConsultarFacturaActionPerformed
         FrmFacturaConsultar vista = new FrmFacturaConsultar();
+        ConsultarFacturasDAO dao = new ConsultarFacturasDAO();
+        CtrlConsultarFactura controlador = new CtrlConsultarFactura(vista, dao);
         abrirVentana(vista);
     }//GEN-LAST:event_itemConsultarFacturaActionPerformed
 
@@ -304,10 +313,10 @@ public class MDI extends javax.swing.JFrame {
 
     private void menuItemSalirActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_menuItemSalirActionPerformed
         int confirm = JOptionPane.showConfirmDialog(this, "¿Cerrar sesión y salir?", "SIGVET", JOptionPane.YES_NO_OPTION);
-        if (confirm == JOptionPane.YES_OPTION) { 
-            Modelos.SesionUsuario.cerrarSesion(); 
-            this.dispose(); 
-            new FrmLogin().setVisible(true); 
+        if (confirm == JOptionPane.YES_OPTION) {
+            Modelos.SesionUsuario.cerrarSesion();
+            this.dispose();
+            new FrmLogin().setVisible(true);
         }
     }//GEN-LAST:event_menuItemSalirActionPerformed
 
@@ -318,7 +327,7 @@ public class MDI extends javax.swing.JFrame {
 
     private void jMenuItem2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem2ActionPerformed
         // TODO add your handling code here:
-        FrmMDCategoriasProductos vista =new FrmMDCategoriasProductos();
+        FrmMDCategoriasProductos vista = new FrmMDCategoriasProductos();
         abrirVentana(vista);
     }//GEN-LAST:event_jMenuItem2ActionPerformed
 
@@ -336,9 +345,17 @@ public class MDI extends javax.swing.JFrame {
 
     private void jMenuItem5ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem5ActionPerformed
         // TODO add your handling code here:
-        FrmMDProveedoresCompras vista= new FrmMDProveedoresCompras();
+        FrmMDProveedoresCompras vista = new FrmMDProveedoresCompras();
         abrirVentana(vista);
     }//GEN-LAST:event_jMenuItem5ActionPerformed
+
+    private void jMenuItem6ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem6ActionPerformed
+        // TODO add your handling code here:
+        FrmConsultarCompras vista = new FrmConsultarCompras();
+        ConsultaComprasDAO dao = new ConsultaComprasDAO();
+        CtrlConsultaCompras controlador = new CtrlConsultaCompras(vista, dao);
+        abrirVentana(vista);
+    }//GEN-LAST:event_jMenuItem6ActionPerformed
 
     public static void main(String args[]) {
         try {
@@ -377,6 +394,7 @@ public class MDI extends javax.swing.JFrame {
     private javax.swing.JMenuItem jMenuItem3;
     private javax.swing.JMenuItem jMenuItem4;
     private javax.swing.JMenuItem jMenuItem5;
+    private javax.swing.JMenuItem jMenuItem6;
     private javax.swing.JMenu menuAnaliticas;
     private javax.swing.JMenu menuArchivo;
     private javax.swing.JMenuBar menuBar;

@@ -16,49 +16,7 @@ public class FrmKardex extends javax.swing.JInternalFrame {
     public FrmKardex() {
         initComponents();
         
-        // Estilizar cabecera de tabla
-        tblKardex.getTableHeader().setBackground(Color.decode("#DCE6F2"));
-        tblKardex.getTableHeader().setForeground(Color.decode("#2D4A8A"));
-        tblKardex.getTableHeader().setFont(new java.awt.Font("Segoe UI", java.awt.Font.BOLD, 11));
-        tblKardex.getTableHeader().setBorder(javax.swing.BorderFactory.createMatteBorder(0, 0, 1, 0, Color.decode("#C5D8F5")));
-        ((DefaultTableCellRenderer) tblKardex.getTableHeader().getDefaultRenderer()).setHorizontalAlignment(JLabel.CENTER);
-
-        // Inicializar Fechas de Spinners
-        java.util.Calendar calendarInicio = java.util.Calendar.getInstance();
-        calendarInicio.add(java.util.Calendar.MONTH, -1);
-        spFechaInicio.setValue(calendarInicio.getTime());
-
-        java.util.Calendar calendarFin = java.util.Calendar.getInstance();
-        calendarFin.add(java.util.Calendar.DAY_OF_MONTH, 1);
-        spFechaFin.setValue(calendarFin.getTime());
-
-        JSpinner.DateEditor editorInicio = new JSpinner.DateEditor(spFechaInicio, "yyyy-MM-dd");
-        JSpinner.DateEditor editorFin = new JSpinner.DateEditor(spFechaFin, "yyyy-MM-dd");
-        
-        // Colorear el input del JSpinner a modo Claro
-        editorInicio.getTextField().setBackground(Color.WHITE);
-        editorInicio.getTextField().setForeground(Color.decode("#333333"));
-        editorFin.getTextField().setBackground(Color.WHITE);
-        editorFin.getTextField().setForeground(Color.decode("#333333"));
-
-        spFechaInicio.setEditor(editorInicio);
-        spFechaFin.setEditor(editorFin);
-
-        // Efectos Hover Legibles (Mantienen el texto Blanco #FFFFFF)
-        btnFiltrar.addMouseListener(new MouseAdapter() {
-            public void mouseEntered(MouseEvent e) { btnFiltrar.setBackground(Color.decode("#3A5AAA")); }
-            public void mouseExited(MouseEvent e)  { btnFiltrar.setBackground(Color.decode("#2D4A8A")); }
-        });
-        
-        btnLimpiar.addMouseListener(new MouseAdapter() {
-            public void mouseEntered(MouseEvent e) { btnLimpiar.setBackground(Color.decode("#DCE6F2")); }
-            public void mouseExited(MouseEvent e)  { btnLimpiar.setBackground(Color.WHITE); }
-        });
-        
-        btnExportar.addMouseListener(new MouseAdapter() {
-            public void mouseEntered(MouseEvent e) { btnExportar.setBackground(Color.decode("#218838")); } // Verde oscuro
-            public void mouseExited(MouseEvent e)  { btnExportar.setBackground(Color.decode("#28A745")); } // Verde base
-        });
+       
         
         // Inicializar Controlador
         new CtrlKardex(this);
@@ -170,16 +128,17 @@ public class FrmKardex extends javax.swing.JInternalFrame {
         btnFiltrar.setForeground(new java.awt.Color(255, 255, 255));
         btnFiltrar.setText("Filtrar / Buscar");
         btnFiltrar.setBorderPainted(false);
-        btnFiltrar.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
+        btnFiltrar.setCursor(new java.awt.Cursor(java.awt.Cursor.DEFAULT_CURSOR));
         btnFiltrar.setFocusPainted(false);
         panelFiltros.add(btnFiltrar);
         btnFiltrar.setBounds(20, 95, 150, 40);
 
+        btnLimpiar.setBackground(new java.awt.Color(255, 255, 255));
         btnLimpiar.setFont(new java.awt.Font("Segoe UI", 1, 13)); // NOI18N
         btnLimpiar.setForeground(new java.awt.Color(45, 74, 138));
         btnLimpiar.setText("Limpiar");
         btnLimpiar.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(197, 216, 245)));
-        btnLimpiar.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
+        btnLimpiar.setCursor(new java.awt.Cursor(java.awt.Cursor.DEFAULT_CURSOR));
         btnLimpiar.setFocusPainted(false);
         panelFiltros.add(btnLimpiar);
         btnLimpiar.setBounds(180, 95, 150, 40);
@@ -189,7 +148,7 @@ public class FrmKardex extends javax.swing.JInternalFrame {
         btnExportar.setForeground(new java.awt.Color(255, 255, 255));
         btnExportar.setText("📊 Exportar a Excel");
         btnExportar.setBorderPainted(false);
-        btnExportar.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
+        btnExportar.setCursor(new java.awt.Cursor(java.awt.Cursor.DEFAULT_CURSOR));
         btnExportar.setFocusPainted(false);
         panelFiltros.add(btnExportar);
         btnExportar.setBounds(340, 95, 160, 40);

@@ -92,6 +92,9 @@ public class CtrlMaestroDetalle {
         });
     }
 
+    // =========================================================================
+    // CARGA ASÍNCRONA DEL MAESTRO CON FEEDBACK VISUAL
+    // =========================================================================
     private void cargarMaestro() {
         cancelarWorker(maestroWorker);
         cancelarWorker(detalleWorker);
@@ -100,9 +103,22 @@ public class CtrlMaestroDetalle {
         final String tipo = vista.getTipo();
 
         cargando = true;
-        limpiarTabla(vista.getTblMaestro());
+        
+        // 1. Bloquear controles y mostrar estado de carga
+        vista.getBtnBuscar().setEnabled(false);
+        vista.getBtnActualizar().setEnabled(false);
+        vista.getBtnLimpiar().setEnabled(false);
+        vista.getTxtBuscar().setEnabled(false);
+        
         limpiarTabla(vista.getTblDetalle());
-        vista.getLblInfo().setText("Selecciona un registro maestro para ver su detalle.");
+        
+        DefaultTableModel modeloCargando = new DefaultTableModel(
+            new Object[][]{{"Cargando registros, por favor espere..."}}, 
+            new String[]{"Estado del Sistema"}
+        );
+        vista.getTblMaestro().setModel(modeloCargando);
+        
+        vista.getLblInfo().setText("Buscando información en la base de datos...");
 
         maestroWorker = new SwingWorker<DefaultTableModel, Void>() {
             @Override
@@ -126,11 +142,16 @@ public class CtrlMaestroDetalle {
                         cargarDetalle();
                     }
                 } catch (CancellationException ex) {
-                    // La carga anterior se canceló porque el usuario hizo otra búsqueda.
+                    // Cancelado por nueva búsqueda
                 } catch (Exception ex) {
                     cargando = false;
                     JOptionPane.showMessageDialog(obtenerComponenteVista(), "Error al cargar maestro: " + ex.getMessage());
                 } finally {
+                    // 2. Liberar controles al terminar
+                    vista.getBtnBuscar().setEnabled(true);
+                    vista.getBtnActualizar().setEnabled(true);
+                    vista.getBtnLimpiar().setEnabled(true);
+                    vista.getTxtBuscar().setEnabled(true);
                     maestroWorker = null;
                 }
             }
@@ -154,6 +175,9 @@ public class CtrlMaestroDetalle {
         }
     }
 
+    // =========================================================================
+    // CARGA ASÍNCRONA DEL DETALLE CON FEEDBACK VISUAL
+    // =========================================================================
     private void cargarDetalle() {
         int filaVista = vista.getTblMaestro().getSelectedRow();
         if (filaVista < 0 || vista.getTblMaestro().getColumnCount() == 0) {
@@ -172,8 +196,13 @@ public class CtrlMaestroDetalle {
         final String tipo = vista.getTipo();
         final int idMaestro = id;
 
-        limpiarTabla(vista.getTblDetalle());
-        vista.getLblInfo().setText("Selecciona un registro maestro para ver su detalle.");
+        // 1. Mostrar estado de carga en la tabla detalle
+        DefaultTableModel modeloCargandoDetalle = new DefaultTableModel(
+            new Object[][]{{"Cargando detalles..."}}, 
+            new String[]{"Estado"}
+        );
+        vista.getTblDetalle().setModel(modeloCargandoDetalle);
+        vista.getLblInfo().setText("Obteniendo los detalles del registro seleccionado...");
 
         detalleWorker = new SwingWorker<DefaultTableModel, Void>() {
             @Override
@@ -190,7 +219,7 @@ public class CtrlMaestroDetalle {
                     vista.getLblInfo().setText("Detalle cargado para el ID maestro: " + idMaestro
                             + " | Registros encontrados: " + detalle.getRowCount());
                 } catch (CancellationException ex) {
-                    // La carga anterior se canceló porque el usuario seleccionó otro registro.
+                    // Cancelado por nueva selección
                 } catch (Exception ex) {
                     JOptionPane.showMessageDialog(obtenerComponenteVista(), "Error al cargar detalle: " + ex.getMessage());
                 } finally {

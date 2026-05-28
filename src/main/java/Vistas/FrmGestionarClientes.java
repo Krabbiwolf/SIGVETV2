@@ -16,16 +16,6 @@ public class FrmGestionarClientes extends javax.swing.JInternalFrame {
     public FrmGestionarClientes() {
         initComponents();
         txtIdCliente.setVisible(false); // Ocultar ID
-btnEliminar.setOpaque(true);
-btnEliminar.setContentAreaFilled(true);
-btnEliminar.setBorderPainted(false);
-btnEliminar.setFocusPainted(false);
-
-btnEliminar.setBackground(new Color(230, 57, 70));
-btnEliminar.setForeground(Color.WHITE);
-
-tblClientes.setSelectionBackground(new Color(45, 74, 138));
-tblClientes.setSelectionForeground(Color.WHITE);
 
         // Inicializar Controlador Original
         Cliente cliente = new Cliente();
@@ -60,11 +50,11 @@ tblClientes.setSelectionForeground(Color.WHITE);
         txtIdCliente = new javax.swing.JTextField();
         btnGuardar = new javax.swing.JButton();
         btnActualizar = new javax.swing.JButton();
-        btnEliminar = new javax.swing.JButton();
         btnVerDetalle = new javax.swing.JButton();
         btnRefrescar = new javax.swing.JButton();
-        btnLimpiar = new javax.swing.JButton();
         btnExportarClientes = new javax.swing.JButton();
+        btnEliminar = new javax.swing.JButton();
+        btnLimpiar = new javax.swing.JButton();
 
         setBackground(new java.awt.Color(240, 244, 248));
         setClosable(true);
@@ -94,10 +84,11 @@ tblClientes.setSelectionForeground(Color.WHITE);
 
         lblTitulo.setFont(new java.awt.Font("Segoe UI", 1, 22)); // NOI18N
         lblTitulo.setForeground(new java.awt.Color(45, 74, 138));
-        lblTitulo.setText("Directorio y Gestión de Clientes");
+        lblTitulo.setText("Gestión de Clientes");
         getContentPane().add(lblTitulo);
         lblTitulo.setBounds(30, 15, 400, 30);
 
+        txtBuscarClientes.setBackground(new java.awt.Color(255, 255, 255));
         txtBuscarClientes.setFont(new java.awt.Font("Segoe UI", 0, 13)); // NOI18N
         txtBuscarClientes.setForeground(new java.awt.Color(51, 51, 51));
         txtBuscarClientes.setBorder(javax.swing.BorderFactory.createCompoundBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(197, 216, 245)), javax.swing.BorderFactory.createEmptyBorder(6, 10, 6, 10)));
@@ -111,22 +102,23 @@ tblClientes.setSelectionForeground(Color.WHITE);
         btnBuscarClientes.setForeground(new java.awt.Color(255, 255, 255));
         btnBuscarClientes.setText("Buscar");
         btnBuscarClientes.setBorderPainted(false);
-        btnBuscarClientes.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
+        btnBuscarClientes.setCursor(new java.awt.Cursor(java.awt.Cursor.DEFAULT_CURSOR));
         btnBuscarClientes.setFocusPainted(false);
         getContentPane().add(btnBuscarClientes);
         btnBuscarClientes.setBounds(240, 60, 130, 35);
 
+        cbFiltroClientes.setBackground(new java.awt.Color(255, 255, 255));
         cbFiltroClientes.setForeground(new java.awt.Color(51, 51, 51));
         cbFiltroClientes.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Todos", "ID", "Nombre", "Apellido", "DUI", "Teléfono", "Dirección", "Estado" }));
         cbFiltroClientes.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(197, 216, 245)));
         getContentPane().add(cbFiltroClientes);
         cbFiltroClientes.setBounds(380, 60, 150, 35);
 
+        btnLimpiarFiltroClientes.setBackground(new java.awt.Color(255, 255, 255));
         btnLimpiarFiltroClientes.setFont(new java.awt.Font("Segoe UI", 1, 13)); // NOI18N
         btnLimpiarFiltroClientes.setForeground(new java.awt.Color(45, 74, 138));
         btnLimpiarFiltroClientes.setText("Limpiar Filtros");
-        btnLimpiarFiltroClientes.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(197, 216, 245)));
-        btnLimpiarFiltroClientes.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
+        btnLimpiarFiltroClientes.setCursor(new java.awt.Cursor(java.awt.Cursor.DEFAULT_CURSOR));
         btnLimpiarFiltroClientes.setFocusPainted(false);
         getContentPane().add(btnLimpiarFiltroClientes);
         btnLimpiarFiltroClientes.setBounds(540, 60, 150, 35);
@@ -270,7 +262,7 @@ tblClientes.setSelectionForeground(Color.WHITE);
         btnGuardar.setForeground(new java.awt.Color(255, 255, 255));
         btnGuardar.setText("Guardar");
         btnGuardar.setBorderPainted(false);
-        btnGuardar.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
+        btnGuardar.setCursor(new java.awt.Cursor(java.awt.Cursor.DEFAULT_CURSOR));
         btnGuardar.setFocusPainted(false);
         getContentPane().add(btnGuardar);
         btnGuardar.setBounds(820, 110, 180, 40);
@@ -280,29 +272,17 @@ tblClientes.setSelectionForeground(Color.WHITE);
         btnActualizar.setForeground(new java.awt.Color(255, 255, 255));
         btnActualizar.setText("Actualizar");
         btnActualizar.setBorderPainted(false);
-        btnActualizar.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
+        btnActualizar.setCursor(new java.awt.Cursor(java.awt.Cursor.DEFAULT_CURSOR));
         btnActualizar.setFocusPainted(false);
         btnActualizar.addActionListener(this::btnActualizarActionPerformed);
         getContentPane().add(btnActualizar);
         btnActualizar.setBounds(820, 160, 180, 40);
 
-        btnEliminar.setBackground(new java.awt.Color(230, 57, 70));
-        btnEliminar.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
-        btnEliminar.setForeground(new java.awt.Color(255, 255, 255));
-        btnEliminar.setText("Eliminar");
-        btnEliminar.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(230, 57, 70)));
-        btnEliminar.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
-        btnEliminar.setFocusPainted(false);
-        btnEliminar.addActionListener(this::btnEliminarActionPerformed);
-        getContentPane().add(btnEliminar);
-        btnEliminar.setBounds(820, 210, 180, 40);
-
         btnVerDetalle.setBackground(new java.awt.Color(220, 230, 242));
         btnVerDetalle.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
         btnVerDetalle.setForeground(new java.awt.Color(45, 74, 138));
         btnVerDetalle.setText("Ver Detalle");
-        btnVerDetalle.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(197, 216, 245)));
-        btnVerDetalle.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
+        btnVerDetalle.setCursor(new java.awt.Cursor(java.awt.Cursor.DEFAULT_CURSOR));
         btnVerDetalle.setFocusPainted(false);
         getContentPane().add(btnVerDetalle);
         btnVerDetalle.setBounds(820, 260, 180, 40);
@@ -311,32 +291,40 @@ tblClientes.setSelectionForeground(Color.WHITE);
         btnRefrescar.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
         btnRefrescar.setForeground(new java.awt.Color(45, 74, 138));
         btnRefrescar.setText("Refrescar");
-        btnRefrescar.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(197, 216, 245)));
-        btnRefrescar.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
+        btnRefrescar.setCursor(new java.awt.Cursor(java.awt.Cursor.DEFAULT_CURSOR));
         btnRefrescar.setFocusPainted(false);
         btnRefrescar.addActionListener(this::btnRefrescarActionPerformed);
         getContentPane().add(btnRefrescar);
         btnRefrescar.setBounds(820, 310, 180, 40);
-
-        btnLimpiar.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
-        btnLimpiar.setForeground(new java.awt.Color(45, 74, 138));
-        btnLimpiar.setText("Limpiar");
-        btnLimpiar.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(197, 216, 245)));
-        btnLimpiar.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
-        btnLimpiar.setFocusPainted(false);
-        getContentPane().add(btnLimpiar);
-        btnLimpiar.setBounds(820, 360, 180, 40);
 
         btnExportarClientes.setBackground(new java.awt.Color(40, 167, 69));
         btnExportarClientes.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
         btnExportarClientes.setForeground(new java.awt.Color(255, 255, 255));
         btnExportarClientes.setText("Exportar a Excel");
         btnExportarClientes.setBorderPainted(false);
-        btnExportarClientes.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
+        btnExportarClientes.setCursor(new java.awt.Cursor(java.awt.Cursor.DEFAULT_CURSOR));
         btnExportarClientes.setFocusPainted(false);
         btnExportarClientes.addActionListener(this::btnExportarClientesActionPerformed);
         getContentPane().add(btnExportarClientes);
         btnExportarClientes.setBounds(820, 410, 180, 40);
+
+        btnEliminar.setBackground(new java.awt.Color(255, 255, 255));
+        btnEliminar.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
+        btnEliminar.setForeground(new java.awt.Color(255, 51, 51));
+        btnEliminar.setText("Eliminar");
+        btnEliminar.setCursor(new java.awt.Cursor(java.awt.Cursor.DEFAULT_CURSOR));
+        btnEliminar.setFocusPainted(false);
+        getContentPane().add(btnEliminar);
+        btnEliminar.setBounds(820, 210, 180, 40);
+
+        btnLimpiar.setBackground(new java.awt.Color(255, 255, 255));
+        btnLimpiar.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
+        btnLimpiar.setForeground(new java.awt.Color(45, 74, 138));
+        btnLimpiar.setText("Limpiar");
+        btnLimpiar.setCursor(new java.awt.Cursor(java.awt.Cursor.DEFAULT_CURSOR));
+        btnLimpiar.setFocusPainted(false);
+        getContentPane().add(btnLimpiar);
+        btnLimpiar.setBounds(820, 360, 180, 40);
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
@@ -376,10 +364,6 @@ tblClientes.setSelectionForeground(Color.WHITE);
     private void btnActualizarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnActualizarActionPerformed
         // TODO lógica del controlador original
     }//GEN-LAST:event_btnActualizarActionPerformed
-
-    private void btnEliminarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnEliminarActionPerformed
-        // TODO lógica del controlador original
-    }//GEN-LAST:event_btnEliminarActionPerformed
 
     private void btnRefrescarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnRefrescarActionPerformed
         // TODO lógica del controlador original
