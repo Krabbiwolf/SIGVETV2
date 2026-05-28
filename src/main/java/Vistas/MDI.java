@@ -94,6 +94,8 @@ public class MDI extends javax.swing.JFrame {
         jMenuItem5 = new javax.swing.JMenuItem();
         jMenuItem4 = new javax.swing.JMenuItem();
         jMenuItem2 = new javax.swing.JMenuItem();
+        menuConfiguracion = new javax.swing.JMenu();
+        itemConfiguracionSistema = new javax.swing.JMenuItem();
 
         jMenuItem1.setText("jMenuItem1");
 
@@ -217,6 +219,15 @@ public class MDI extends javax.swing.JFrame {
 
         menuBar.add(jMenu3);
 
+        menuConfiguracion.setText("Configuracion");
+        menuConfiguracion.addActionListener(this::menuConfiguracionActionPerformed);
+
+        itemConfiguracionSistema.setText("Configuracion del Sistema");
+        itemConfiguracionSistema.addActionListener(this::itemConfiguracionSistemaActionPerformed);
+        menuConfiguracion.add(itemConfiguracionSistema);
+
+        menuBar.add(menuConfiguracion);
+
         setJMenuBar(menuBar);
 
         pack();
@@ -337,6 +348,18 @@ public class MDI extends javax.swing.JFrame {
         abrirVentana(vista);
     }//GEN-LAST:event_jMenuItem5ActionPerformed
 
+    private void menuConfiguracionActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_menuConfiguracionActionPerformed
+        // TODO add your handling code here:
+        FrmConfiguracion vista = new FrmConfiguracion();
+        abrirVentana(vista);
+    }//GEN-LAST:event_menuConfiguracionActionPerformed
+
+    private void itemConfiguracionSistemaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_itemConfiguracionSistemaActionPerformed
+        // TODO add your handling code here:
+        FrmConfiguracion vista = new FrmConfiguracion();
+        abrirVentana(vista);
+    }//GEN-LAST:event_itemConfiguracionSistemaActionPerformed
+
     public static void main(String args[]) {
         try {
             UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
@@ -354,6 +377,7 @@ public class MDI extends javax.swing.JFrame {
     private javax.swing.JDesktopPane desktopPane;
     private javax.swing.JMenuItem itemAjusteInventario;
     private javax.swing.JMenuItem itemAnaliticas;
+    private javax.swing.JMenuItem itemConfiguracionSistema;
     private javax.swing.JMenuItem itemConsultarFactura;
     private javax.swing.JMenuItem itemDashboard;
     private javax.swing.JMenuItem itemGestionarCategorias;
@@ -379,6 +403,7 @@ public class MDI extends javax.swing.JFrame {
     private javax.swing.JMenu menuArchivo;
     private javax.swing.JMenuBar menuBar;
     private javax.swing.JMenu menuCompras;
+    private javax.swing.JMenu menuConfiguracion;
     private javax.swing.JMenu menuFacturacion;
     private javax.swing.JMenuItem menuItemSalir;
     private javax.swing.JMenu menuProductos;

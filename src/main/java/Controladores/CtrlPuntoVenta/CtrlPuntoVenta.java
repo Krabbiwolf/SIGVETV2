@@ -1,5 +1,6 @@
 package Controladores.CtrlPuntoVenta;
 
+import Modelos.ConfiguracionDAO;
 import Modelos.DetalleVenta;
 import Modelos.LoteDisponible;
 import Modelos.Venta;
@@ -21,11 +22,15 @@ public class CtrlPuntoVenta implements ActionListener {
 
     private FrmPuntoDeVenta form;
     private VentaDAO dao;
+    private ConfiguracionDAO configuracionDAO;
 
     private double subtotalGlobal = 0.0;
     private double ivaGlobal = 0.0;
     private double descuentoGlobal = 0.0;
     private double totalFinal = 0.0;
+
+    private double ivaDecimal = 0.13;
+    private double descuentoMaximo = 15.0;
 
     public CtrlPuntoVenta(
             FrmPuntoDeVenta form,
@@ -33,8 +38,18 @@ public class CtrlPuntoVenta implements ActionListener {
     ) {
         this.form = form;
         this.dao = dao;
+        this.configuracionDAO = new ConfiguracionDAO();
+
+        cargarConfiguracion();
         iniciarFormulario();
         asignarEventos();
+    }
+
+    private void cargarConfiguracion() {
+        double ivaPorcentaje = configuracionDAO.obtenerValor("iva_predeterminado", 13.00);
+        ivaDecimal = ivaPorcentaje / 100.0;
+
+        descuentoMaximo = configuracionDAO.obtenerValor("descuento_maximo", 15.00);
     }
 
     private void iniciarFormulario() {
@@ -44,16 +59,32 @@ public class CtrlPuntoVenta implements ActionListener {
                         .format(new Date())
         );
 
-        form.cmbDescuento.removeAllItems();
-        form.cmbDescuento.addItem("0%");
-        form.cmbDescuento.addItem("5%");
-        form.cmbDescuento.addItem("10%");
-        form.cmbDescuento.addItem("15%");
+        cargarComboDescuentos();
 
         configurarTabla();
         cargarClientes();
         cargarProductos();
         actualizarEtiquetasTotales();
+    }
+
+    private void cargarComboDescuentos() {
+        form.cmbDescuento.removeAllItems();
+
+        int max = (int) descuentoMaximo;
+
+        for (int i = 0; i <= max; i += 5) {
+            form.cmbDescuento.addItem(i + "%");
+        }
+
+        if (max % 5 != 0) {
+            form.cmbDescuento.addItem(max + "%");
+        }
+
+        if (form.cmbDescuento.getItemCount() == 0) {
+            form.cmbDescuento.addItem("0%");
+        }
+
+        form.cmbDescuento.setSelectedIndex(0);
     }
 
     private void configurarTabla() {
@@ -89,7 +120,6 @@ public class CtrlPuntoVenta implements ActionListener {
                 }
         );
 
-        // OCULTAR id_producto
         form.tblDetalleFactura
                 .getColumnModel().getColumn(7).setMinWidth(0);
         form.tblDetalleFactura
@@ -97,7 +127,6 @@ public class CtrlPuntoVenta implements ActionListener {
         form.tblDetalleFactura
                 .getColumnModel().getColumn(7).setWidth(0);
 
-        // OCULTAR id_lote
         form.tblDetalleFactura
                 .getColumnModel().getColumn(8).setMinWidth(0);
         form.tblDetalleFactura
@@ -134,7 +163,6 @@ public class CtrlPuntoVenta implements ActionListener {
                 e -> calcularTotalesGenerales()
         );
 
-        // ELIMINAR FILA
         form.tblDetalleFactura.addMouseListener(
                 new MouseAdapter() {
 
@@ -173,10 +201,9 @@ public class CtrlPuntoVenta implements ActionListener {
     @Override
     public void actionPerformed(ActionEvent e) {
 
-        // =====================================================
-        // AGREGAR PRODUCTO
-        // =====================================================
         if (e.getSource() == form.btnAgregarProducto) {
+
+            cargarConfiguracion();
 
             if (form.cmbProducto.getSelectedItem() == null) {
                 return;
@@ -193,18 +220,15 @@ public class CtrlPuntoVenta implements ActionListener {
 
             int cantidadSolicitada = Integer.parseInt(cantStr);
 
-            // DATOS PRODUCTO
             String[] partes = form.cmbProducto
                     .getSelectedItem().toString().split(" - ");
 
             int idProd = Integer.parseInt(partes[0].trim());
             String nombreProd = partes[1].trim();
 
-            // OBTENER LOTES
             ArrayList<LoteDisponible> lotes =
                     dao.obtenerLotesDisponibles(idProd);
 
-            // VALIDAR STOCK REAL
             int stockTotal = 0;
 
             for (LoteDisponible lote : lotes) {
@@ -229,7 +253,6 @@ public class CtrlPuntoVenta implements ActionListener {
                 return;
             }
 
-            // REPARTIR ENTRE LOTES
             int cantidadRestante = cantidadSolicitada;
 
             DefaultTableModel modelo =
@@ -259,7 +282,6 @@ public class CtrlPuntoVenta implements ActionListener {
                         idProd, lote.getIdLote()
                 );
 
-                // SI YA EXISTE ESA FILA
                 if (filaExistente >= 0) {
 
                     int cantidadActual = Integer.parseInt(
@@ -269,7 +291,7 @@ public class CtrlPuntoVenta implements ActionListener {
                     int nuevaCantidad = cantidadActual + cantidadTomada;
 
                     double subtotalFila = nuevaCantidad * precioUnidad;
-                    double ivaFila = subtotalFila * 0.13;
+                    double ivaFila = subtotalFila * ivaDecimal;
                     double totalFila = subtotalFila + ivaFila;
 
                     modelo.setValueAt(nuevaCantidad, filaExistente, 1);
@@ -288,9 +310,8 @@ public class CtrlPuntoVenta implements ActionListener {
 
                 } else {
 
-                    // NUEVA FILA
                     double subtotalFila = precioUnidad * cantidadTomada;
-                    double ivaFila = subtotalFila * 0.13;
+                    double ivaFila = subtotalFila * ivaDecimal;
                     double totalFila = subtotalFila + ivaFila;
 
                     modelo.addRow(new Object[]{
@@ -313,9 +334,6 @@ public class CtrlPuntoVenta implements ActionListener {
             calcularTotalesGenerales();
         }
 
-        // =====================================================
-        // FACTURAR
-        // =====================================================
         if (e.getSource() == form.btnFacturar) {
 
             DefaultTableModel modelo =
@@ -341,7 +359,6 @@ public class CtrlPuntoVenta implements ActionListener {
             nuevaVenta.setEstado("Completada");
             nuevaVenta.setIdUsuario(3);
 
-            // RECORRER TABLA
             for (int i = 0; i < modelo.getRowCount(); i++) {
 
                 DetalleVenta d = new DetalleVenta();
@@ -374,8 +391,9 @@ public class CtrlPuntoVenta implements ActionListener {
                 nuevaVenta.agregarDetalle(d);
             }
 
-            // GUARDAR
-            if (dao.guardarVenta(nuevaVenta)) {
+            double descuentoSeleccionado = obtenerDescuentoSeleccionado();
+
+            if (dao.guardarVenta(nuevaVenta, descuentoSeleccionado)) {
                 JOptionPane.showMessageDialog(
                         form, "Venta guardada correctamente."
                 );
@@ -387,17 +405,11 @@ public class CtrlPuntoVenta implements ActionListener {
             }
         }
 
-        // =====================================================
-        // LIMPIAR
-        // =====================================================
         if (e.getSource() == form.btnLimpiar) {
             limpiarTodo();
         }
     }
 
-    // =====================================================
-    // BUSCAR FILA EXISTENTE
-    // =====================================================
     private int buscarFilaExistente(int idProducto, int idLote) {
 
         DefaultTableModel modelo =
@@ -421,9 +433,6 @@ public class CtrlPuntoVenta implements ActionListener {
         return -1;
     }
 
-    // =====================================================
-    // OBTENER CANTIDAD EN FACTURA
-    // =====================================================
     private int obtenerCantidadEnFactura(int idProducto, int idLote) {
 
         int cantidad = 0;
@@ -451,9 +460,15 @@ public class CtrlPuntoVenta implements ActionListener {
         return cantidad;
     }
 
-    // =====================================================
-    // CALCULAR TOTALES
-    // =====================================================
+    private double obtenerDescuentoSeleccionado() {
+        String descStr =
+                form.cmbDescuento.getSelectedItem() != null
+                ? form.cmbDescuento.getSelectedItem().toString()
+                : "0%";
+
+        return Double.parseDouble(descStr.replace("%", ""));
+    }
+
     private void calcularTotalesGenerales() {
 
         DefaultTableModel modelo =
@@ -475,23 +490,19 @@ public class CtrlPuntoVenta implements ActionListener {
             );
         }
 
-        String descStr =
-                form.cmbDescuento.getSelectedItem() != null
-                ? form.cmbDescuento.getSelectedItem().toString()
-                : "0%";
+        double descuentoSeleccionado = obtenerDescuentoSeleccionado();
 
-        descuentoGlobal = subtotalGlobal * (
-                Double.parseDouble(descStr.replace("%", "")) / 100.0
-        );
+        if (descuentoSeleccionado > descuentoMaximo) {
+            descuentoSeleccionado = descuentoMaximo;
+        }
+
+        descuentoGlobal = subtotalGlobal * (descuentoSeleccionado / 100.0);
 
         totalFinal = (subtotalGlobal - descuentoGlobal) + ivaGlobal;
 
         actualizarEtiquetasTotales();
     }
 
-    // =====================================================
-    // ACTUALIZAR LABELS
-    // =====================================================
     private void actualizarEtiquetasTotales() {
 
         form.lblSubTotal.setText(
@@ -511,9 +522,6 @@ public class CtrlPuntoVenta implements ActionListener {
         );
     }
 
-    // =====================================================
-    // LIMPIAR
-    // =====================================================
     private void limpiarTodo() {
 
         ((DefaultTableModel) form.tblDetalleFactura.getModel())

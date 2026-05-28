@@ -157,8 +157,6 @@ public class FrmMDProductosLotes extends javax.swing.JInternalFrame implements M
         txtBuscar.setFont(new java.awt.Font("Segoe UI", 0, 13)); // NOI18N
         txtBuscar.setForeground(new java.awt.Color(240, 242, 255));
         txtBuscar.setToolTipText("Buscar por producto o código de barras");
-        txtBuscar.setCaretColor(new java.awt.Color(108, 99, 255));
-        txtBuscar.setBorder(javax.swing.BorderFactory.createCompoundBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(42, 48, 80)), javax.swing.BorderFactory.createEmptyBorder(6, 10, 6, 10)));
         panelFiltros.add(txtBuscar);
         txtBuscar.setBounds(20, 34, 520, 38);
 
@@ -166,9 +164,6 @@ public class FrmMDProductosLotes extends javax.swing.JInternalFrame implements M
         btnBuscar.setFont(new java.awt.Font("Segoe UI", 1, 13)); // NOI18N
         btnBuscar.setForeground(new java.awt.Color(255, 255, 255));
         btnBuscar.setText("Buscar");
-        btnBuscar.setBorderPainted(false);
-        btnBuscar.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
-        btnBuscar.setFocusPainted(false);
         panelFiltros.add(btnBuscar);
         btnBuscar.setBounds(560, 34, 130, 38);
 
@@ -176,9 +171,6 @@ public class FrmMDProductosLotes extends javax.swing.JInternalFrame implements M
         btnActualizar.setFont(new java.awt.Font("Segoe UI", 1, 13)); // NOI18N
         btnActualizar.setForeground(new java.awt.Color(240, 242, 255));
         btnActualizar.setText("Actualizar");
-        btnActualizar.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(42, 48, 80)));
-        btnActualizar.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
-        btnActualizar.setFocusPainted(false);
         panelFiltros.add(btnActualizar);
         btnActualizar.setBounds(700, 34, 130, 38);
 
@@ -186,9 +178,6 @@ public class FrmMDProductosLotes extends javax.swing.JInternalFrame implements M
         btnLimpiar.setFont(new java.awt.Font("Segoe UI", 1, 13)); // NOI18N
         btnLimpiar.setForeground(new java.awt.Color(255, 91, 122));
         btnLimpiar.setText("Limpiar");
-        btnLimpiar.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(80, 42, 58)));
-        btnLimpiar.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
-        btnLimpiar.setFocusPainted(false);
         panelFiltros.add(btnLimpiar);
         btnLimpiar.setBounds(840, 34, 130, 38);
 
@@ -205,23 +194,10 @@ public class FrmMDProductosLotes extends javax.swing.JInternalFrame implements M
         panelMaestro.add(lblMaestro);
         lblMaestro.setBounds(18, 10, 400, 22);
 
-        scrollMaestro.setBorder(javax.swing.BorderFactory.createEmptyBorder(1, 1, 1, 1));
-
         tblMaestro.setBackground(new java.awt.Color(14, 18, 25));
         tblMaestro.setFont(new java.awt.Font("Segoe UI", 0, 12)); // NOI18N
         tblMaestro.setForeground(new java.awt.Color(240, 242, 255));
-        tblMaestro.setModel(new javax.swing.table.DefaultTableModel(
-            new Object [][] {
-
-            },
-            new String [] {
-
-            }
-        ));
-        tblMaestro.setGridColor(new java.awt.Color(26, 31, 48));
         tblMaestro.setRowHeight(30);
-        tblMaestro.setSelectionBackground(new java.awt.Color(108, 99, 255));
-        tblMaestro.setSelectionForeground(new java.awt.Color(255, 255, 255));
         scrollMaestro.setViewportView(tblMaestro);
 
         panelMaestro.add(scrollMaestro);
@@ -240,23 +216,10 @@ public class FrmMDProductosLotes extends javax.swing.JInternalFrame implements M
         panelDetalle.add(lblDetalle);
         lblDetalle.setBounds(18, 10, 620, 22);
 
-        scrollDetalle.setBorder(javax.swing.BorderFactory.createEmptyBorder(1, 1, 1, 1));
-
         tblDetalle.setBackground(new java.awt.Color(14, 18, 25));
         tblDetalle.setFont(new java.awt.Font("Segoe UI", 0, 12)); // NOI18N
         tblDetalle.setForeground(new java.awt.Color(240, 242, 255));
-        tblDetalle.setModel(new javax.swing.table.DefaultTableModel(
-            new Object [][] {
-
-            },
-            new String [] {
-
-            }
-        ));
-        tblDetalle.setGridColor(new java.awt.Color(26, 31, 48));
         tblDetalle.setRowHeight(30);
-        tblDetalle.setSelectionBackground(new java.awt.Color(108, 99, 255));
-        tblDetalle.setSelectionForeground(new java.awt.Color(255, 255, 255));
         scrollDetalle.setViewportView(tblDetalle);
 
         panelDetalle.add(scrollDetalle);
