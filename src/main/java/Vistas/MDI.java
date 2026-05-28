@@ -22,6 +22,15 @@ public class MDI extends javax.swing.JFrame {
     public MDI() {
         configurarEstilo();
         initComponents();
+        
+        menuUsuarios.setVisible(SesionUsuario.tienePermiso("LECTURA_USUARIOS"));
+        menuProductos.setVisible(SesionUsuario.tienePermiso("LECTURA_PRODUCTOS"));
+        menuFacturacion.setVisible(SesionUsuario.tienePermiso("LECTURA_VENTAS"));
+        menuCompras.setVisible(SesionUsuario.tienePermiso("LECTURA_COMPRAS"));
+        menuAnaliticas.setVisible(SesionUsuario.tienePermiso("LECTURA_REPORTES"));
+        menuProveedores.setVisible(SesionUsuario.tienePermiso("LECTURA_TERCEROS"));
+        jMenu3.setVisible(SesionUsuario.tienePermiso("LECTURA_LOTES"));
+        
         this.setExtendedState(MAXIMIZED_BOTH);
     }
 
@@ -250,6 +259,10 @@ public class MDI extends javax.swing.JFrame {
         abrirVentana(vista);
     }//GEN-LAST:event_itemNuevoUsuarioActionPerformed
 
+    private void itemGestionarUsuariosActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_itemGestionarUsuariosActionPerformed
+        
+    }//GEN-LAST:event_itemGestionarUsuariosActionPerformed
+
     private void itemRolesActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_itemRolesActionPerformed
         FrmRolesPermisos vista = new FrmRolesPermisos();
         FrmNuevoUsuario vistaUsuario = new FrmNuevoUsuario();           
@@ -335,7 +348,7 @@ public class MDI extends javax.swing.JFrame {
         }
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
-                new MDI().setVisible(true);
+                new FrmLogin().setVisible(true);
             }
         });
     }

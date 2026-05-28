@@ -6,6 +6,7 @@ package Controladores.CtrlRoles;
 
 import Modelos.Roles;
 import Modelos.RolesDAO;
+import Modelos.SesionUsuario;
 import Vistas.FrmNuevoUsuario;
 import Vistas.FrmRolesPermisos;
 import java.awt.event.ActionEvent;
@@ -31,6 +32,11 @@ public class CtrlGestionarRoles implements ActionListener {
         this.form.btnGuardarRol.addActionListener(this);
 
         cargarRolesAsync(); // 🔥 asíncrono
+        
+        // Bloquear edición si no tiene permiso
+        if (!SesionUsuario.tienePermiso("EDICION_USUARIOS")) {
+            form.btnGuardarRol.setVisible(false);
+        }
     }
 
     public void limpiarCampos() {

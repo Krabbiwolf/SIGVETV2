@@ -2,6 +2,7 @@ package Controladores.CtrlProveedor;
 
 import Modelos.Proveedor;
 import Modelos.ProveedorDAO;
+import Modelos.SesionUsuario;
 import Vistas.FrmGestionarProveedores;
 import servicios.CloudinaryService; // Igual que en productos
 
@@ -47,6 +48,18 @@ public class CtrlGestionarProveedores implements ActionListener {
         asignarListeners();
         form.btnVerDetalle.setEnabled(false); // Deshabilitado hasta que se seleccione una fila
         cargarTabla();
+        
+        // Bloquear edición si no tiene permiso
+        if (!SesionUsuario.tienePermiso("EDICION_TERCEROS")) {
+            form.btnGuardar.setVisible(false);
+            form.btnActualizar.setVisible(false);
+            form.btnEliminar.setVisible(false);
+        }
+        
+        // Bloquear exportación
+        if (!SesionUsuario.tienePermiso("EXPORTAR_TERCEROS")) {
+            form.btnExportarCSV.setVisible(false);
+        }
     }
 
     // ══════════════════════════════════════════════════════════════════════════
