@@ -10,6 +10,7 @@ import java.util.ArrayList;
 public class CompraDAO {
 
     Conexion con = new Conexion();
+    private final ConfiguracionDAO configuracionDAO = new ConfiguracionDAO();
 
     // ============================
     // CARGAR PROVEEDORES
@@ -80,6 +81,14 @@ public class CompraDAO {
     }
 
     // ============================
+    // OBTENER IVA CONFIGURADO
+    // ============================
+    private double obtenerIvaDecimal() {
+        double ivaPorcentaje = configuracionDAO.obtenerValor("iva_predeterminado", 13.00);
+        return ivaPorcentaje / 100.0;
+    }
+
+    // ============================
     // GENERAR NÚMERO COMPROBANTE
     // ============================
     private String generarNumeroComprobante(Connection conexion) throws SQLException {
@@ -105,7 +114,11 @@ public class CompraDAO {
     // ============================
     // REGISTRAR COMPRA
     // El trigger LoteKardexTrigger se encarga
-    // de crear el LOTE y el KARDEX automáticamente
+    // de crear el LOTE y el KARDEX automáticamente.
+    //
+    // IMPORTANTE:
+    // El porcentaje de ganancia para precio_venta debe aplicarse
+    // en el trigger de BD si ahí se calcula el precio de venta.
     // ============================
     public boolean registrarCompra(
             Compra compra,
@@ -134,7 +147,7 @@ public class CompraDAO {
                 id_compra,
                 id_producto
             )
-            VALUES (?, ?, 0.13, ?, ?)
+            VALUES (?, ?, ?, ?, ?)
         """;
 
         Connection conexion = con.conectar();
@@ -143,9 +156,6 @@ public class CompraDAO {
 
             conexion.setAutoCommit(false);
 
-            // ============================
-            // INSERT COMPRAS
-            // ============================
             PreparedStatement psCompra = conexion.prepareStatement(
                 sqlCompra,
                 PreparedStatement.RETURN_GENERATED_KEYS
@@ -157,7 +167,6 @@ public class CompraDAO {
 
             psCompra.executeUpdate();
 
-            // OBTENER ID GENERADO
             ResultSet rsKeys = psCompra.getGeneratedKeys();
             int idCompraGenerada = 0;
 
@@ -167,17 +176,15 @@ public class CompraDAO {
                 throw new SQLException("No se pudo obtener el ID de la compra.");
             }
 
-            // ============================
-            // INSERT DETALLE
-            // (el trigger actúa aquí y crea
-            // el lote + kardex automáticamente)
-            // ============================
+            double ivaDecimal = obtenerIvaDecimal();
+
             PreparedStatement psDetalle = conexion.prepareStatement(sqlDetalle);
 
             psDetalle.setInt(1, cantidad);
             psDetalle.setDouble(2, precioCompra);
-            psDetalle.setInt(3, idCompraGenerada);
-            psDetalle.setInt(4, idProducto);
+            psDetalle.setDouble(3, ivaDecimal);
+            psDetalle.setInt(4, idCompraGenerada);
+            psDetalle.setInt(5, idProducto);
 
             psDetalle.executeUpdate();
 

@@ -11,6 +11,7 @@ import java.util.ArrayList;
 public class VentaDAO {
 
     Conexion con = new Conexion();
+    private final ConfiguracionDAO configuracionDAO = new ConfiguracionDAO();
 
     // ============================
     // CARGAR CLIENTES
@@ -54,7 +55,7 @@ public class VentaDAO {
         ArrayList<String> lista = new ArrayList<>();
 
         String sql = """
-            SELECT id_producto, nombre, precio
+            SELECT id_producto, nombre
             FROM PRODUCTOS
             WHERE estado = 'Activo'
         """;
@@ -70,8 +71,6 @@ public class VentaDAO {
                     rs.getInt("id_producto")
                     + " - "
                     + rs.getString("nombre")
-                    + " - $"
-                    + rs.getDouble("precio")
                 );
             }
 
@@ -80,6 +79,14 @@ public class VentaDAO {
         }
 
         return lista;
+    }
+
+    // ============================
+    // OBTENER IVA CONFIGURADO
+    // ============================
+    private double obtenerIvaDecimal() {
+        double ivaPorcentaje = configuracionDAO.obtenerValor("iva_predeterminado", 13.00);
+        return ivaPorcentaje / 100.0;
     }
 
     // ============================
@@ -146,12 +153,17 @@ public class VentaDAO {
         return lista;
     }
 
+    // Mantengo este método por compatibilidad con código viejo.
+    public boolean guardarVenta(Venta venta) {
+        return guardarVenta(venta, 0.0);
+    }
+
     // ============================
     // GUARDAR VENTA
     // El trigger VentaKardexTrigger se encarga
     // de descontar stock e insertar KARDEX
     // ============================
-    public boolean guardarVenta(Venta venta) {
+    public boolean guardarVenta(Venta venta, double porcentajeDescuento) {
 
         Connection conexion = con.conectar();
 
@@ -185,9 +197,6 @@ public class VentaDAO {
 
             conexion.setAutoCommit(false);
 
-            // ============================
-            // INSERT VENTAS
-            // ============================
             PreparedStatement psVenta = conexion.prepareStatement(
                 sqlVenta,
                 Statement.RETURN_GENERATED_KEYS
@@ -210,11 +219,9 @@ public class VentaDAO {
                 throw new SQLException("No se pudo obtener el ID de la venta.");
             }
 
-            // ============================
-            // INSERT DETALLES
-            // (el trigger actúa aquí y descuenta
-            // stock + inserta kardex automáticamente)
-            // ============================
+            double ivaDecimal = obtenerIvaDecimal();
+            double descuentoDecimal = porcentajeDescuento / 100.0;
+
             PreparedStatement psDetalle =
                 conexion.prepareStatement(sqlDetalle);
 
@@ -222,8 +229,8 @@ public class VentaDAO {
 
                 psDetalle.setInt(1, d.getCantidad());
                 psDetalle.setDouble(2, d.getPrecioUnitario());
-                psDetalle.setDouble(3, 0.0);
-                psDetalle.setDouble(4, 0.13);
+                psDetalle.setDouble(3, descuentoDecimal);
+                psDetalle.setDouble(4, ivaDecimal);
                 psDetalle.setInt(5, idVentaGenerada);
                 psDetalle.setInt(6, d.getIdProducto());
                 psDetalle.setInt(7, d.getIdLote());
