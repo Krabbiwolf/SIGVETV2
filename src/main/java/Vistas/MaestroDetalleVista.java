@@ -32,6 +32,8 @@ public interface MaestroDetalleVista {
 
     JButton getBtnLimpiar();
 
+    JButton getBtnExportarCSV();
+
     JTable getTblMaestro();
 
     JTable getTblDetalle();

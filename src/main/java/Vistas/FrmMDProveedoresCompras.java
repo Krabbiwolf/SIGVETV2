@@ -12,6 +12,47 @@ public class FrmMDProveedoresCompras extends javax.swing.JInternalFrame implemen
     public FrmMDProveedoresCompras() {
         initComponents();
         configurarComponentes();
+<<<<<<< Updated upstream
+=======
+        
+                            btnActualizar.setBackground(new Color(45, 74, 138));
+    btnActualizar.setForeground(Color.WHITE);
+
+    btnActualizar.setOpaque(true);
+    btnActualizar.setContentAreaFilled(true);
+
+    btnActualizar.setFocusPainted(false);
+    btnActualizar.setBorderPainted(false);
+
+    btnExportarCSV.setBackground(new Color(45, 74, 138));
+    btnExportarCSV.setForeground(Color.WHITE);
+    btnExportarCSV.setOpaque(true);
+    btnExportarCSV.setContentAreaFilled(true);
+    btnExportarCSV.setFocusPainted(false);
+    btnExportarCSV.setBorderPainted(false);
+        
+        // Agregar eventos Hover para botones (garantizando legibilidad con texto blanco y azul)
+        btnBuscar.addMouseListener(new MouseAdapter() {
+            public void mouseEntered(MouseEvent e) { btnBuscar.setBackground(Color.decode("#3A5AAA")); }
+            public void mouseExited(MouseEvent e)  { btnBuscar.setBackground(Color.decode("#2D4A8A")); }
+        });
+        
+        btnActualizar.addMouseListener(new MouseAdapter() {
+            public void mouseEntered(MouseEvent e) { btnActualizar.setBackground(Color.decode("#3A5AAA")); }
+            public void mouseExited(MouseEvent e)  { btnActualizar.setBackground(Color.decode("#2D4A8A")); }
+        });
+
+        btnExportarCSV.addMouseListener(new MouseAdapter() {
+            public void mouseEntered(MouseEvent e) { btnExportarCSV.setBackground(Color.decode("#3A5AAA")); }
+            public void mouseExited(MouseEvent e)  { btnExportarCSV.setBackground(Color.decode("#2D4A8A")); }
+        });
+        
+        btnLimpiar.addMouseListener(new MouseAdapter() {
+            public void mouseEntered(MouseEvent e) { btnLimpiar.setBackground(Color.decode("#DCE6F2")); }
+            public void mouseExited(MouseEvent e)  { btnLimpiar.setBackground(Color.WHITE); }
+        });
+
+>>>>>>> Stashed changes
         new CtrlMaestroDetalle(this, new MaestroDetalleDAO());
     }
 
@@ -98,6 +139,11 @@ public class FrmMDProveedoresCompras extends javax.swing.JInternalFrame implemen
     }
 
     @Override
+    public javax.swing.JButton getBtnExportarCSV() {
+        return btnExportarCSV;
+    }
+
+    @Override
     public javax.swing.JTable getTblMaestro() {
         return tblMaestro;
     }
@@ -118,6 +164,7 @@ public class FrmMDProveedoresCompras extends javax.swing.JInternalFrame implemen
         btnBuscar = new javax.swing.JButton();
         btnActualizar = new javax.swing.JButton();
         btnLimpiar = new javax.swing.JButton();
+        btnExportarCSV = new javax.swing.JButton();
         panelMaestro = new javax.swing.JPanel();
         lblMaestro = new javax.swing.JLabel();
         scrollMaestro = new javax.swing.JScrollPane();
@@ -160,7 +207,7 @@ public class FrmMDProveedoresCompras extends javax.swing.JInternalFrame implemen
         txtBuscar.setCaretColor(new java.awt.Color(108, 99, 255));
         txtBuscar.setBorder(javax.swing.BorderFactory.createCompoundBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(42, 48, 80)), javax.swing.BorderFactory.createEmptyBorder(6, 10, 6, 10)));
         panelFiltros.add(txtBuscar);
-        txtBuscar.setBounds(20, 34, 520, 38);
+        txtBuscar.setBounds(20, 34, 390, 38);
 
         btnBuscar.setBackground(new java.awt.Color(108, 99, 255));
         btnBuscar.setFont(new java.awt.Font("Segoe UI", 1, 13)); // NOI18N
@@ -170,7 +217,7 @@ public class FrmMDProveedoresCompras extends javax.swing.JInternalFrame implemen
         btnBuscar.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
         btnBuscar.setFocusPainted(false);
         panelFiltros.add(btnBuscar);
-        btnBuscar.setBounds(560, 34, 130, 38);
+        btnBuscar.setBounds(430, 34, 130, 38);
 
         btnActualizar.setBackground(new java.awt.Color(31, 38, 64));
         btnActualizar.setFont(new java.awt.Font("Segoe UI", 1, 13)); // NOI18N
@@ -180,7 +227,7 @@ public class FrmMDProveedoresCompras extends javax.swing.JInternalFrame implemen
         btnActualizar.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
         btnActualizar.setFocusPainted(false);
         panelFiltros.add(btnActualizar);
-        btnActualizar.setBounds(700, 34, 130, 38);
+        btnActualizar.setBounds(570, 34, 130, 38);
 
         btnLimpiar.setBackground(new java.awt.Color(30, 10, 16));
         btnLimpiar.setFont(new java.awt.Font("Segoe UI", 1, 13)); // NOI18N
@@ -190,7 +237,17 @@ public class FrmMDProveedoresCompras extends javax.swing.JInternalFrame implemen
         btnLimpiar.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
         btnLimpiar.setFocusPainted(false);
         panelFiltros.add(btnLimpiar);
-        btnLimpiar.setBounds(840, 34, 130, 38);
+        btnLimpiar.setBounds(710, 34, 130, 38);
+
+        btnExportarCSV.setBackground(new java.awt.Color(45, 74, 138));
+        btnExportarCSV.setFont(new java.awt.Font("Segoe UI", 1, 13)); // NOI18N
+        btnExportarCSV.setForeground(new java.awt.Color(255, 255, 255));
+        btnExportarCSV.setText("Exportar CSV");
+        btnExportarCSV.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(197, 216, 245)));
+        btnExportarCSV.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
+        btnExportarCSV.setFocusPainted(false);
+        panelFiltros.add(btnExportarCSV);
+        btnExportarCSV.setBounds(850, 34, 150, 38);
 
         getContentPane().add(panelFiltros);
         panelFiltros.setBounds(30, 65, 1020, 92);
@@ -277,6 +334,7 @@ public class FrmMDProveedoresCompras extends javax.swing.JInternalFrame implemen
     // Variables declaration - do not modify//GEN-BEGIN:variables
     public javax.swing.JButton btnActualizar;
     public javax.swing.JButton btnBuscar;
+    public javax.swing.JButton btnExportarCSV;
     public javax.swing.JButton btnLimpiar;
     private javax.swing.JLabel lblBuscar;
     public javax.swing.JLabel lblDetalle;
