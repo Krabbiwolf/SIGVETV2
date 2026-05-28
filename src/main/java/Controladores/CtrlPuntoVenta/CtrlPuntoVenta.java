@@ -2,6 +2,7 @@ package Controladores.CtrlPuntoVenta;
 
 import Modelos.DetalleVenta;
 import Modelos.LoteDisponible;
+import Modelos.SesionUsuario;
 import Modelos.Venta;
 import Modelos.VentaDAO;
 import Vistas.FrmPuntoDeVenta;
@@ -37,6 +38,16 @@ public class CtrlPuntoVenta implements ActionListener {
         this.dao = dao;
         iniciarFormulario();
         asignarEventos();
+        
+        // Bloquear edición si no tiene permiso
+        if (!SesionUsuario.tienePermiso("EDICION_VENTAS")) {
+            form.btnFacturar.setVisible(false);
+        }
+        
+        // Bloquear exportación
+        if (!SesionUsuario.tienePermiso("EXPORTAR_VENTAS")) {
+            form.btnImprimirFactura.setVisible(false);
+        }
     }
 
     private void iniciarFormulario() {

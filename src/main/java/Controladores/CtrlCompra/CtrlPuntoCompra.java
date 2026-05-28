@@ -2,6 +2,7 @@ package Controladores.CtrlCompra;
 
 import Modelos.CompraDAO;
 import Modelos.Compra;
+import Modelos.SesionUsuario;
 import Vistas.FrmPuntoDeCompra;
 
 import java.awt.event.ActionEvent;
@@ -26,6 +27,16 @@ public class CtrlPuntoCompra implements ActionListener {
         this.dao = dao;
         iniciarFormulario();
         asignarEventos();
+        
+        // Bloquear edición si no tiene permiso
+        if (!SesionUsuario.tienePermiso("EDICION_COMPRAS")) {
+            form.btnRegistrarCompra.setVisible(false);
+        }
+        
+        // Bloquear exportación
+        if (!SesionUsuario.tienePermiso("EXPORTAR_COMPRAS")) {
+            form.btnImprimirFactura.setVisible(false);
+        }
     }
 
     private void iniciarFormulario() {

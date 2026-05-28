@@ -14,10 +14,63 @@ public class FrmGestionarCategorias extends javax.swing.JInternalFrame {
     public FrmGestionarCategorias() {
         initComponents();
 
+        // Estilizar cabecera de tabla al tema Azul Corporativo
+        tblCategorias.getTableHeader().setBackground(Color.decode("#DCE6F2"));
+        tblCategorias.getTableHeader().setForeground(Color.decode("#2D4A8A"));
+        tblCategorias.getTableHeader().setFont(new java.awt.Font("Segoe UI", java.awt.Font.BOLD, 12));
+        tblCategorias.getTableHeader().setBorder(
+            javax.swing.BorderFactory.createMatteBorder(0, 0, 1, 0, Color.decode("#C5D8F5"))
+        );
+        ((DefaultTableCellRenderer) tblCategorias.getTableHeader().getDefaultRenderer()).setHorizontalAlignment(JLabel.CENTER);
+
+        txtId.setEnabled(false);
+        chkEstado.setSelected(true);
+        chkEstado.setOpaque(false);
+
+        // Efectos Hover a Botones
+        btnGuardar.addMouseListener(new MouseAdapter() {
+            public void mouseEntered(MouseEvent e) { btnGuardar.setBackground(Color.decode("#3A5AAA")); }
+            public void mouseExited(MouseEvent e)  { btnGuardar.setBackground(Color.decode("#2D4A8A")); }
+        });
+
+        btnActualizar.addMouseListener(new MouseAdapter() {
+            public void mouseEntered(MouseEvent e) { btnActualizar.setBackground(Color.decode("#3A5AAA")); }
+            public void mouseExited(MouseEvent e)  { btnActualizar.setBackground(Color.decode("#2D4A8A")); }
+        });
+
+        btnEliminar.addMouseListener(new MouseAdapter() {
+            public void mouseEntered(MouseEvent e) { btnEliminar.setBackground(Color.decode("#C52835")); }
+            public void mouseExited(MouseEvent e)  { btnEliminar.setBackground(Color.decode("#E63946")); }
+        });
+
+        btnLimpiar.addMouseListener(new MouseAdapter() {
+            public void mouseEntered(MouseEvent e) { btnLimpiar.setBackground(Color.decode("#DCE6F2")); }
+            public void mouseExited(MouseEvent e)  { btnLimpiar.setBackground(Color.WHITE); }
+        });
+
+        btnRefrescar.addMouseListener(new MouseAdapter() {
+            public void mouseEntered(MouseEvent e) { btnRefrescar.setBackground(Color.decode("#C5D8F5")); }
+            public void mouseExited(MouseEvent e)  { btnRefrescar.setBackground(Color.decode("#DCE6F2")); }
+        });
+
+        btnBuscarCategorias.addMouseListener(new MouseAdapter() {
+            public void mouseEntered(MouseEvent e) { btnBuscarCategorias.setBackground(Color.decode("#3A5AAA")); }
+            public void mouseExited(MouseEvent e)  { btnBuscarCategorias.setBackground(Color.decode("#2D4A8A")); }
+        });
+
+        btnLimpiarFiltroCategorias.addMouseListener(new MouseAdapter() {
+            public void mouseEntered(MouseEvent e) { btnLimpiarFiltroCategorias.setBackground(Color.decode("#DCE6F2")); }
+            public void mouseExited(MouseEvent e)  { btnLimpiarFiltroCategorias.setBackground(Color.WHITE); }
+        });
+
+        btnExportarCategorias.addMouseListener(new MouseAdapter() {
+            public void mouseEntered(MouseEvent e) { btnExportarCategorias.setBackground(Color.decode("#218838")); }
+            public void mouseExited(MouseEvent e)  { btnExportarCategorias.setBackground(Color.decode("#28A745")); }
+        });
+
         Categoria categoria = new Categoria();
         CategoriaDAO categoriaDAO = new CategoriaDAO();
         new CtrlGestionarCategoria(categoria, categoriaDAO, this);
-        
     }
 
     @SuppressWarnings("unchecked")
@@ -53,7 +106,7 @@ public class FrmGestionarCategorias extends javax.swing.JInternalFrame {
         setResizable(true);
         setTitle("Gestionar Categorías");
         setPreferredSize(new java.awt.Dimension(850, 520));
-        getContentPane().setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
+        getContentPane().setLayout(null);
 
         lblTitulo.setFont(new java.awt.Font("Segoe UI", 1, 20)); // NOI18N
         lblTitulo.setForeground(new java.awt.Color(32, 56, 100));
@@ -66,16 +119,18 @@ public class FrmGestionarCategorias extends javax.swing.JInternalFrame {
         txtBuscarCategorias.setBorder(javax.swing.BorderFactory.createCompoundBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(209, 217, 230)), javax.swing.BorderFactory.createEmptyBorder(6, 10, 6, 10)));
         txtBuscarCategorias.setCaretColor(new java.awt.Color(43, 68, 122));
         txtBuscarCategorias.addActionListener(this::txtBuscarCategoriasActionPerformed);
-        getContentPane().add(txtBuscarCategorias, new org.netbeans.lib.awtextra.AbsoluteConstraints(25, 55, 200, 35));
+        getContentPane().add(txtBuscarCategorias);
+        txtBuscarCategorias.setBounds(25, 55, 200, 35);
 
         btnBuscarCategorias.setBackground(new java.awt.Color(43, 68, 122));
         btnBuscarCategorias.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
         btnBuscarCategorias.setForeground(new java.awt.Color(255, 255, 255));
         btnBuscarCategorias.setText("Buscar");
         btnBuscarCategorias.setBorderPainted(false);
-        btnBuscarCategorias.setCursor(new java.awt.Cursor(java.awt.Cursor.DEFAULT_CURSOR));
+        btnBuscarCategorias.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
         btnBuscarCategorias.setFocusPainted(false);
-        getContentPane().add(btnBuscarCategorias, new org.netbeans.lib.awtextra.AbsoluteConstraints(235, 55, 140, 35));
+        getContentPane().add(btnBuscarCategorias);
+        btnBuscarCategorias.setBounds(235, 55, 140, 35);
 
         cbFiltroCategorias.setBackground(new java.awt.Color(255, 255, 255));
         cbFiltroCategorias.setForeground(new java.awt.Color(51, 51, 51));
@@ -89,7 +144,8 @@ public class FrmGestionarCategorias extends javax.swing.JInternalFrame {
         btnLimpiarFiltroCategorias.setText("Limpiar Filtros");
         btnLimpiarFiltroCategorias.setCursor(new java.awt.Cursor(java.awt.Cursor.DEFAULT_CURSOR));
         btnLimpiarFiltroCategorias.setFocusPainted(false);
-        getContentPane().add(btnLimpiarFiltroCategorias, new org.netbeans.lib.awtextra.AbsoluteConstraints(580, 55, 230, 35));
+        getContentPane().add(btnLimpiarFiltroCategorias);
+        btnLimpiarFiltroCategorias.setBounds(580, 55, 230, 35);
 
         jScrollPane1.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(209, 217, 230)));
 
@@ -109,7 +165,8 @@ public class FrmGestionarCategorias extends javax.swing.JInternalFrame {
         tblCategorias.setSelectionForeground(new java.awt.Color(0, 0, 0));
         jScrollPane1.setViewportView(tblCategorias);
 
-        getContentPane().add(jScrollPane1, new org.netbeans.lib.awtextra.AbsoluteConstraints(25, 100, 530, 240));
+        getContentPane().add(jScrollPane1);
+        jScrollPane1.setBounds(25, 100, 530, 240);
 
         panelEdit.setBackground(new java.awt.Color(255, 255, 255));
         panelEdit.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(209, 217, 230)));
@@ -161,16 +218,18 @@ public class FrmGestionarCategorias extends javax.swing.JInternalFrame {
         chkEstado.setForeground(new java.awt.Color(51, 51, 51));
         panelEdit.add(chkEstado, new org.netbeans.lib.awtextra.AbsoluteConstraints(445, 35, 70, 35));
 
-        getContentPane().add(panelEdit, new org.netbeans.lib.awtextra.AbsoluteConstraints(25, 355, 530, 100));
+        getContentPane().add(panelEdit);
+        panelEdit.setBounds(25, 355, 530, 100);
 
         btnGuardar.setBackground(new java.awt.Color(43, 68, 122));
         btnGuardar.setFont(new java.awt.Font("Segoe UI", 1, 13)); // NOI18N
         btnGuardar.setForeground(new java.awt.Color(255, 255, 255));
         btnGuardar.setText("Guardar Nueva Categoría");
         btnGuardar.setBorderPainted(false);
-        btnGuardar.setCursor(new java.awt.Cursor(java.awt.Cursor.DEFAULT_CURSOR));
+        btnGuardar.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
         btnGuardar.setFocusPainted(false);
-        getContentPane().add(btnGuardar, new org.netbeans.lib.awtextra.AbsoluteConstraints(580, 100, 230, 42));
+        getContentPane().add(btnGuardar);
+        btnGuardar.setBounds(580, 100, 230, 42);
 
         btnActualizar.setBackground(new java.awt.Color(248, 249, 250));
         btnActualizar.setFont(new java.awt.Font("Segoe UI", 1, 13)); // NOI18N
@@ -179,7 +238,8 @@ public class FrmGestionarCategorias extends javax.swing.JInternalFrame {
         btnActualizar.setCursor(new java.awt.Cursor(java.awt.Cursor.DEFAULT_CURSOR));
         btnActualizar.setFocusPainted(false);
         btnActualizar.addActionListener(this::btnActualizarActionPerformed);
-        getContentPane().add(btnActualizar, new org.netbeans.lib.awtextra.AbsoluteConstraints(580, 155, 230, 42));
+        getContentPane().add(btnActualizar);
+        btnActualizar.setBounds(580, 155, 230, 42);
 
         btnEliminar.setBackground(new java.awt.Color(255, 245, 245));
         btnEliminar.setFont(new java.awt.Font("Segoe UI", 1, 13)); // NOI18N
@@ -188,7 +248,8 @@ public class FrmGestionarCategorias extends javax.swing.JInternalFrame {
         btnEliminar.setCursor(new java.awt.Cursor(java.awt.Cursor.DEFAULT_CURSOR));
         btnEliminar.setFocusPainted(false);
         btnEliminar.addActionListener(this::btnEliminarActionPerformed);
-        getContentPane().add(btnEliminar, new org.netbeans.lib.awtextra.AbsoluteConstraints(580, 210, 230, 42));
+        getContentPane().add(btnEliminar);
+        btnEliminar.setBounds(580, 210, 230, 42);
 
         btnLimpiar.setBackground(new java.awt.Color(248, 249, 250));
         btnLimpiar.setFont(new java.awt.Font("Segoe UI", 1, 13)); // NOI18N
@@ -197,7 +258,8 @@ public class FrmGestionarCategorias extends javax.swing.JInternalFrame {
         btnLimpiar.setCursor(new java.awt.Cursor(java.awt.Cursor.DEFAULT_CURSOR));
         btnLimpiar.setFocusPainted(false);
         btnLimpiar.addActionListener(this::btnLimpiarActionPerformed);
-        getContentPane().add(btnLimpiar, new org.netbeans.lib.awtextra.AbsoluteConstraints(580, 265, 230, 42));
+        getContentPane().add(btnLimpiar);
+        btnLimpiar.setBounds(580, 265, 230, 42);
 
         btnRefrescar.setBackground(new java.awt.Color(248, 249, 250));
         btnRefrescar.setFont(new java.awt.Font("Segoe UI", 1, 13)); // NOI18N
@@ -205,7 +267,8 @@ public class FrmGestionarCategorias extends javax.swing.JInternalFrame {
         btnRefrescar.setText("Refrescar Tabla");
         btnRefrescar.setCursor(new java.awt.Cursor(java.awt.Cursor.DEFAULT_CURSOR));
         btnRefrescar.setFocusPainted(false);
-        getContentPane().add(btnRefrescar, new org.netbeans.lib.awtextra.AbsoluteConstraints(580, 320, 230, 42));
+        getContentPane().add(btnRefrescar);
+        btnRefrescar.setBounds(580, 320, 230, 42);
 
         btnExportarCategorias.setBackground(new java.awt.Color(248, 249, 250));
         btnExportarCategorias.setFont(new java.awt.Font("Segoe UI", 1, 13)); // NOI18N
@@ -214,29 +277,25 @@ public class FrmGestionarCategorias extends javax.swing.JInternalFrame {
         btnExportarCategorias.setCursor(new java.awt.Cursor(java.awt.Cursor.DEFAULT_CURSOR));
         btnExportarCategorias.setFocusPainted(false);
         btnExportarCategorias.addActionListener(this::btnExportarCategoriasActionPerformed);
-        getContentPane().add(btnExportarCategorias, new org.netbeans.lib.awtextra.AbsoluteConstraints(580, 413, 230, 42));
+        getContentPane().add(btnExportarCategorias);
+        btnExportarCategorias.setBounds(580, 413, 230, 42);
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
     private void btnActualizarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnActualizarActionPerformed
-        // TODO lógica del controlador
     }//GEN-LAST:event_btnActualizarActionPerformed
 
     private void btnEliminarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnEliminarActionPerformed
-        // TODO lógica del controlador
     }//GEN-LAST:event_btnEliminarActionPerformed
 
     private void btnLimpiarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnLimpiarActionPerformed
-        // TODO add your handling code here:
     }//GEN-LAST:event_btnLimpiarActionPerformed
 
     private void txtBuscarCategoriasActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtBuscarCategoriasActionPerformed
-        // TODO add your handling code here:
     }//GEN-LAST:event_txtBuscarCategoriasActionPerformed
 
     private void btnExportarCategoriasActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnExportarCategoriasActionPerformed
-        // TODO add your handling code here:
     }//GEN-LAST:event_btnExportarCategoriasActionPerformed
 
     // Variables declaration - do not modify//GEN-BEGIN:variables

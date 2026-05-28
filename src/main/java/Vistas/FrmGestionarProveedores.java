@@ -12,10 +12,66 @@ public class FrmGestionarProveedores extends javax.swing.JInternalFrame {
 
     public FrmGestionarProveedores() {
         initComponents();
+        
+        btnEliminar.setOpaque(true);
+btnEliminar.setContentAreaFilled(true);
+btnEliminar.setBorderPainted(false);
+btnEliminar.setFocusPainted(false);
+
+btnEliminar.setBackground(new Color(220, 53, 69)); // rojo
+btnEliminar.setForeground(Color.WHITE);
+
+// color cuando está deshabilitado
+btnEliminar.setDisabledIcon(null);
+btnEliminar.setEnabled(true);
+btnEliminar.setUI(new javax.swing.plaf.basic.BasicButtonUI());
+
         TableProveedores = tableProveedores; 
         
-        
+        // Estilizar cabecera de tabla al tema Azul Corporativo
+        tableProveedores.getTableHeader().setBackground(Color.decode("#DCE6F2"));
+        tableProveedores.getTableHeader().setForeground(Color.decode("#2D4A8A"));
+        tableProveedores.getTableHeader().setFont(new java.awt.Font("Segoe UI", java.awt.Font.BOLD, 12));
+        tableProveedores.getTableHeader().setBorder(
+            javax.swing.BorderFactory.createMatteBorder(0, 0, 1, 0, Color.decode("#C5D8F5"))
+        );
+        ((DefaultTableCellRenderer) tableProveedores.getTableHeader().getDefaultRenderer()).setHorizontalAlignment(JLabel.CENTER);
 
+        // Efectos Hover a Botones
+        btnGuardar.addMouseListener(new MouseAdapter() {
+            public void mouseEntered(MouseEvent e) { btnGuardar.setBackground(Color.decode("#3A5AAA")); }
+            public void mouseExited(MouseEvent e)  { btnGuardar.setBackground(Color.decode("#2D4A8A")); }
+        });
+
+        btnActualizar.addMouseListener(new MouseAdapter() {
+            public void mouseEntered(MouseEvent e) { btnActualizar.setBackground(Color.decode("#3A5AAA")); }
+            public void mouseExited(MouseEvent e)  { btnActualizar.setBackground(Color.decode("#2D4A8A")); }
+        });
+
+        btnEliminar.addMouseListener(new MouseAdapter() {
+            public void mouseEntered(MouseEvent e) { btnEliminar.setBackground(Color.decode("#C52835")); }
+            public void mouseExited(MouseEvent e)  { btnEliminar.setBackground(Color.decode("#E63946")); }
+        });
+
+        btnLimpiar.addMouseListener(new MouseAdapter() {
+            public void mouseEntered(MouseEvent e) { btnLimpiar.setBackground(Color.decode("#DCE6F2")); }
+            public void mouseExited(MouseEvent e)  { btnLimpiar.setBackground(Color.WHITE); }
+        });
+
+        btnVerDetalle.addMouseListener(new MouseAdapter() {
+            public void mouseEntered(MouseEvent e) { btnVerDetalle.setBackground(Color.decode("#C5D8F5")); }
+            public void mouseExited(MouseEvent e)  { btnVerDetalle.setBackground(Color.decode("#DCE6F2")); }
+        });
+
+        btnAgregarImagen.addMouseListener(new MouseAdapter() {
+            public void mouseEntered(MouseEvent e) { btnAgregarImagen.setBackground(Color.decode("#3A5AAA")); }
+            public void mouseExited(MouseEvent e)  { btnAgregarImagen.setBackground(Color.decode("#2D4A8A")); }
+        });
+
+        btnExportarCSV.addMouseListener(new MouseAdapter() {
+            public void mouseEntered(MouseEvent e) { btnExportarCSV.setBackground(Color.decode("#218838")); }
+            public void mouseExited(MouseEvent e)  { btnExportarCSV.setBackground(Color.decode("#28A745")); }
+        });
     }
 
     @SuppressWarnings("unchecked")
@@ -40,7 +96,7 @@ public class FrmGestionarProveedores extends javax.swing.JInternalFrame {
         tableProveedores = new javax.swing.JTable();
         btnExportarCSV = new javax.swing.JButton();
 
-        setBackground(new java.awt.Color(244, 246, 249));
+        setBackground(new java.awt.Color(240, 244, 248));
         setClosable(true);
         setIconifiable(true);
         setMaximizable(true);
@@ -49,108 +105,119 @@ public class FrmGestionarProveedores extends javax.swing.JInternalFrame {
         setPreferredSize(new java.awt.Dimension(1100, 720));
         getContentPane().setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
 
-        lblTitulo.setFont(new java.awt.Font("Segoe UI", 1, 18)); // NOI18N
-        lblTitulo.setForeground(new java.awt.Color(32, 56, 100));
-        lblTitulo.setHorizontalAlignment(javax.swing.SwingConstants.LEFT);
-        lblTitulo.setText("Gestionar Proveedores");
-        getContentPane().add(lblTitulo, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 20, 260, 28));
+        lblTitulo.setFont(new java.awt.Font("Segoe UI", 1, 20)); // NOI18N
+        lblTitulo.setForeground(new java.awt.Color(45, 74, 138));
+        lblTitulo.setText("Gestión de Proveedores");
+        getContentPane().add(lblTitulo);
+        lblTitulo.setBounds(20, 20, 300, 30);
 
         lblNombre.setFont(new java.awt.Font("Segoe UI", 1, 11)); // NOI18N
-        lblNombre.setForeground(new java.awt.Color(51, 51, 51));
-        lblNombre.setText("NOMBRE");
-        getContentPane().add(lblNombre, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 70, 240, 16));
+        lblNombre.setForeground(new java.awt.Color(45, 74, 138));
+        lblNombre.setText("NOMBRE DEL PROVEEDOR");
+        getContentPane().add(lblNombre);
+        lblNombre.setBounds(20, 70, 260, 16);
 
-        txtNombre.setBackground(new java.awt.Color(255, 255, 255));
         txtNombre.setFont(new java.awt.Font("Segoe UI", 0, 13)); // NOI18N
         txtNombre.setForeground(new java.awt.Color(51, 51, 51));
-        txtNombre.setBorder(javax.swing.BorderFactory.createCompoundBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(209, 217, 230)), javax.swing.BorderFactory.createEmptyBorder(6, 10, 6, 10)));
-        txtNombre.setCaretColor(new java.awt.Color(43, 68, 122));
-        getContentPane().add(txtNombre, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 90, 240, 30));
+        txtNombre.setBorder(javax.swing.BorderFactory.createCompoundBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(197, 216, 245)), javax.swing.BorderFactory.createEmptyBorder(6, 10, 6, 10)));
+        getContentPane().add(txtNombre);
+        txtNombre.setBounds(20, 90, 260, 38);
 
         lblTelefono.setFont(new java.awt.Font("Segoe UI", 1, 11)); // NOI18N
-        lblTelefono.setForeground(new java.awt.Color(51, 51, 51));
+        lblTelefono.setForeground(new java.awt.Color(45, 74, 138));
         lblTelefono.setText("TELÉFONO");
-        getContentPane().add(lblTelefono, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 130, 240, 16));
+        getContentPane().add(lblTelefono);
+        lblTelefono.setBounds(20, 140, 260, 16);
 
-        txtTelefono.setBackground(new java.awt.Color(255, 255, 255));
         txtTelefono.setFont(new java.awt.Font("Segoe UI", 0, 13)); // NOI18N
         txtTelefono.setForeground(new java.awt.Color(51, 51, 51));
-        txtTelefono.setBorder(javax.swing.BorderFactory.createCompoundBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(209, 217, 230)), javax.swing.BorderFactory.createEmptyBorder(6, 10, 6, 10)));
-        txtTelefono.setCaretColor(new java.awt.Color(43, 68, 122));
-        getContentPane().add(txtTelefono, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 150, 240, 30));
+        txtTelefono.setBorder(javax.swing.BorderFactory.createCompoundBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(197, 216, 245)), javax.swing.BorderFactory.createEmptyBorder(6, 10, 6, 10)));
+        getContentPane().add(txtTelefono);
+        txtTelefono.setBounds(20, 160, 260, 38);
 
         lblEstado.setFont(new java.awt.Font("Segoe UI", 1, 11)); // NOI18N
-        lblEstado.setForeground(new java.awt.Color(51, 51, 51));
+        lblEstado.setForeground(new java.awt.Color(45, 74, 138));
         lblEstado.setText("ESTADO");
-        getContentPane().add(lblEstado, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 190, 240, 16));
+        getContentPane().add(lblEstado);
+        lblEstado.setBounds(20, 210, 260, 16);
 
-        cmbEstado.setBackground(new java.awt.Color(255, 255, 255));
         cmbEstado.setForeground(new java.awt.Color(51, 51, 51));
-        cmbEstado.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "ACTIVO", "INACTIVO" }));
-        cmbEstado.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(209, 217, 230)));
-        getContentPane().add(cmbEstado, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 210, 240, 30));
+        cmbEstado.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Activo", "Inactivo" }));
+        cmbEstado.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(197, 216, 245)));
+        getContentPane().add(cmbEstado);
+        cmbEstado.setBounds(20, 230, 260, 38);
 
-        btnAgregarImagen.setBackground(new java.awt.Color(248, 249, 250));
+        btnAgregarImagen.setBackground(new java.awt.Color(45, 74, 138));
         btnAgregarImagen.setFont(new java.awt.Font("Segoe UI", 1, 13)); // NOI18N
-        btnAgregarImagen.setForeground(new java.awt.Color(43, 68, 122));
-        btnAgregarImagen.setText("Cargar Foto");
-        btnAgregarImagen.setCursor(new java.awt.Cursor(java.awt.Cursor.DEFAULT_CURSOR));
+        btnAgregarImagen.setForeground(new java.awt.Color(255, 255, 255));
+        btnAgregarImagen.setText("📁 Cargar Foto");
+        btnAgregarImagen.setBorderPainted(false);
+        btnAgregarImagen.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
         btnAgregarImagen.setFocusPainted(false);
         btnAgregarImagen.addActionListener(this::btnAgregarImagenActionPerformed);
-        getContentPane().add(btnAgregarImagen, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 260, 145, 30));
+        getContentPane().add(btnAgregarImagen);
+        btnAgregarImagen.setBounds(20, 280, 260, 38);
 
         lblMostrarImagen.setBackground(new java.awt.Color(255, 255, 255));
         lblMostrarImagen.setForeground(new java.awt.Color(51, 51, 51));
         lblMostrarImagen.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         lblMostrarImagen.setText("Sin imagen");
-        lblMostrarImagen.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(209, 217, 230)));
-        getContentPane().add(lblMostrarImagen, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 300, 240, 200));
+        lblMostrarImagen.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(197, 216, 245)));
+        getContentPane().add(lblMostrarImagen);
+        lblMostrarImagen.setBounds(20, 330, 260, 200);
 
-        btnGuardar.setBackground(new java.awt.Color(43, 68, 122));
+        btnGuardar.setBackground(new java.awt.Color(45, 74, 138));
         btnGuardar.setFont(new java.awt.Font("Segoe UI", 1, 13)); // NOI18N
         btnGuardar.setForeground(new java.awt.Color(255, 255, 255));
-        btnGuardar.setText("Guardar Proveedor");
+        btnGuardar.setText("Guardar");
         btnGuardar.setBorderPainted(false);
-        btnGuardar.setCursor(new java.awt.Cursor(java.awt.Cursor.DEFAULT_CURSOR));
+        btnGuardar.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
         btnGuardar.setFocusPainted(false);
-        getContentPane().add(btnGuardar, new org.netbeans.lib.awtextra.AbsoluteConstraints(290, 20, 770, 40));
+        getContentPane().add(btnGuardar);
+        btnGuardar.setBounds(300, 90, 130, 42);
 
-        btnActualizar.setBackground(new java.awt.Color(248, 249, 250));
+        btnActualizar.setBackground(new java.awt.Color(45, 74, 138));
         btnActualizar.setFont(new java.awt.Font("Segoe UI", 1, 13)); // NOI18N
-        btnActualizar.setForeground(new java.awt.Color(43, 68, 122));
+        btnActualizar.setForeground(new java.awt.Color(255, 255, 255));
         btnActualizar.setText("Actualizar");
-        btnActualizar.setCursor(new java.awt.Cursor(java.awt.Cursor.DEFAULT_CURSOR));
+        btnActualizar.setBorderPainted(false);
+        btnActualizar.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
         btnActualizar.setFocusPainted(false);
         btnActualizar.addActionListener(this::btnActualizarActionPerformed);
-        getContentPane().add(btnActualizar, new org.netbeans.lib.awtextra.AbsoluteConstraints(290, 70, 380, 35));
+        getContentPane().add(btnActualizar);
+        btnActualizar.setBounds(440, 90, 130, 42);
 
-        btnLimpiar.setBackground(new java.awt.Color(248, 249, 250));
         btnLimpiar.setFont(new java.awt.Font("Segoe UI", 1, 13)); // NOI18N
-        btnLimpiar.setForeground(new java.awt.Color(43, 68, 122));
-        btnLimpiar.setText("Limpiar Campos");
-        btnLimpiar.setCursor(new java.awt.Cursor(java.awt.Cursor.DEFAULT_CURSOR));
+        btnLimpiar.setForeground(new java.awt.Color(45, 74, 138));
+        btnLimpiar.setText("Limpiar");
+        btnLimpiar.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(197, 216, 245)));
+        btnLimpiar.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
         btnLimpiar.setFocusPainted(false);
-        getContentPane().add(btnLimpiar, new org.netbeans.lib.awtextra.AbsoluteConstraints(680, 70, 380, 35));
+        getContentPane().add(btnLimpiar);
+        btnLimpiar.setBounds(580, 90, 130, 42);
 
-        btnEliminar.setBackground(new java.awt.Color(255, 245, 245));
+        btnEliminar.setBackground(new java.awt.Color(230, 57, 70));
         btnEliminar.setFont(new java.awt.Font("Segoe UI", 1, 13)); // NOI18N
-        btnEliminar.setForeground(new java.awt.Color(220, 53, 69));
-        btnEliminar.setText("Eliminar Seleccionados");
-        btnEliminar.setCursor(new java.awt.Cursor(java.awt.Cursor.DEFAULT_CURSOR));
+        btnEliminar.setForeground(new java.awt.Color(255, 255, 255));
+        btnEliminar.setText("Desactivar");
+        btnEliminar.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(230, 57, 70)));
+        btnEliminar.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
         btnEliminar.setFocusPainted(false);
-        getContentPane().add(btnEliminar, new org.netbeans.lib.awtextra.AbsoluteConstraints(290, 115, 770, 35));
+        getContentPane().add(btnEliminar);
+        btnEliminar.setBounds(720, 90, 130, 42);
 
-        btnVerDetalle.setBackground(new java.awt.Color(248, 249, 250));
+        btnVerDetalle.setBackground(new java.awt.Color(220, 230, 242));
         btnVerDetalle.setFont(new java.awt.Font("Segoe UI", 1, 13)); // NOI18N
-        btnVerDetalle.setForeground(new java.awt.Color(43, 68, 122));
+        btnVerDetalle.setForeground(new java.awt.Color(45, 74, 138));
         btnVerDetalle.setText("Ver Detalle");
-        btnVerDetalle.setCursor(new java.awt.Cursor(java.awt.Cursor.DEFAULT_CURSOR));
+        btnVerDetalle.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(197, 216, 245)));
+        btnVerDetalle.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
         btnVerDetalle.setFocusPainted(false);
-        getContentPane().add(btnVerDetalle, new org.netbeans.lib.awtextra.AbsoluteConstraints(290, 160, 770, 35));
+        getContentPane().add(btnVerDetalle);
+        btnVerDetalle.setBounds(860, 90, 130, 42);
 
         scrollTabla.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(209, 217, 230)));
 
-        tableProveedores.setBackground(new java.awt.Color(255, 255, 255));
         tableProveedores.setForeground(new java.awt.Color(51, 51, 51));
         tableProveedores.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
@@ -166,22 +233,23 @@ public class FrmGestionarProveedores extends javax.swing.JInternalFrame {
         tableProveedores.setSelectionForeground(new java.awt.Color(0, 0, 0));
         scrollTabla.setViewportView(tableProveedores);
 
-        getContentPane().add(scrollTabla, new org.netbeans.lib.awtextra.AbsoluteConstraints(290, 210, 770, 380));
+        getContentPane().add(scrollTabla);
+        scrollTabla.setBounds(300, 140, 760, 440);
 
-        btnExportarCSV.setBackground(new java.awt.Color(43, 68, 122));
+        btnExportarCSV.setBackground(new java.awt.Color(40, 167, 69));
         btnExportarCSV.setFont(new java.awt.Font("Segoe UI", 1, 13)); // NOI18N
         btnExportarCSV.setForeground(new java.awt.Color(255, 255, 255));
         btnExportarCSV.setText("Exportar CSV");
         btnExportarCSV.setBorderPainted(false);
-        btnExportarCSV.setCursor(new java.awt.Cursor(java.awt.Cursor.DEFAULT_CURSOR));
+        btnExportarCSV.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
         btnExportarCSV.setFocusPainted(false);
-        getContentPane().add(btnExportarCSV, new org.netbeans.lib.awtextra.AbsoluteConstraints(930, 600, 130, 30));
+        getContentPane().add(btnExportarCSV);
+        btnExportarCSV.setBounds(930, 600, 130, 30);
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
     private void btnActualizarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnActualizarActionPerformed
-        // TODO lógica aquí
     }//GEN-LAST:event_btnActualizarActionPerformed
 
     private void btnAgregarImagenActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAgregarImagenActionPerformed

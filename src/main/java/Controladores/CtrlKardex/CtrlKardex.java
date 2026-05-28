@@ -6,6 +6,7 @@ package Controladores.CtrlKardex;
 
 import Modelos.Kardex;
 import Modelos.KardexDAO;
+import Modelos.SesionUsuario;
 import Vistas.FrmKardex;
 import java.io.FileWriter;
 import java.util.ArrayList;
@@ -26,7 +27,11 @@ public class CtrlKardex {
         this.dao = new KardexDAO();
         configurarTabla();
         agregarEventos();
-        cargarTabla(); // asíncrono
+        cargarTabla(); // asíncrono     
+
+        if (!SesionUsuario.tienePermiso("EXPORTAR_PRODUCTOS")) {
+            vista.btnExportar.setVisible(false);
+        }
     }
 
     private void configurarTabla() {

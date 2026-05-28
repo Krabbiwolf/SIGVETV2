@@ -2,6 +2,7 @@ package Controladores.ctrlProductos;
 
 import Modelos.Producto;
 import Modelos.ProductosDAO;
+import Modelos.SesionUsuario;
 import Vistas.FrmGestionarProductos;
 import java.awt.BorderLayout;
 import java.awt.Dimension;
@@ -54,6 +55,16 @@ public class GestionProductosController {
         listarProductosEnTabla();
         agregarEventos();
         modoNuevo();
+        
+        if (!SesionUsuario.tienePermiso("EDICION_PRODUCTOS")) {
+            vista.btnGuardar.setVisible(false);
+            vista.btnActualizar.setVisible(false);
+            vista.btnEliminar.setVisible(false);
+        }
+
+        if (!SesionUsuario.tienePermiso("EXPORTAR_PRODUCTOS")) {
+            vista.btnExportarCSV.setVisible(false);
+        }
     }
 
     private void configurarVista() {

@@ -24,6 +24,15 @@ public class MDI extends javax.swing.JFrame {
     public MDI() {
         configurarEstilo();
         initComponents();
+        
+        menuUsuarios.setVisible(SesionUsuario.tienePermiso("LECTURA_USUARIOS"));
+        menuProductos.setVisible(SesionUsuario.tienePermiso("LECTURA_PRODUCTOS"));
+        menuFacturacion.setVisible(SesionUsuario.tienePermiso("LECTURA_VENTAS"));
+        menuCompras.setVisible(SesionUsuario.tienePermiso("LECTURA_COMPRAS"));
+        menuAnaliticas.setVisible(SesionUsuario.tienePermiso("LECTURA_REPORTES"));
+        menuProveedores.setVisible(SesionUsuario.tienePermiso("LECTURA_TERCEROS"));
+        jMenu3.setVisible(SesionUsuario.tienePermiso("LECTURA_LOTES"));
+        
         this.setExtendedState(MAXIMIZED_BOTH);
     }
 
@@ -57,6 +66,7 @@ public class MDI extends javax.swing.JFrame {
             ventana.setSelected(true);
         } catch (Exception e) {
         }
+        
     }
 
     @SuppressWarnings("unchecked")
@@ -81,7 +91,6 @@ public class MDI extends javax.swing.JFrame {
         itemKardex = new javax.swing.JMenuItem();
         menuUsuarios = new javax.swing.JMenu();
         itemNuevoUsuario = new javax.swing.JMenuItem();
-        itemGestionarUsuarios = new javax.swing.JMenuItem();
         itemRoles = new javax.swing.JMenuItem();
         menuCompras = new javax.swing.JMenu();
         itemNuevaCompra = new javax.swing.JMenuItem();
@@ -157,10 +166,6 @@ public class MDI extends javax.swing.JFrame {
         itemNuevoUsuario.setText("Nuevo Usuario");
         itemNuevoUsuario.addActionListener(this::itemNuevoUsuarioActionPerformed);
         menuUsuarios.add(itemNuevoUsuario);
-
-        itemGestionarUsuarios.setText("Gestionar Usuarios");
-        itemGestionarUsuarios.addActionListener(this::itemGestionarUsuariosActionPerformed);
-        menuUsuarios.add(itemGestionarUsuarios);
 
         itemRoles.setText("Roles y Permisos");
         itemRoles.addActionListener(this::itemRolesActionPerformed);
@@ -256,15 +261,13 @@ public class MDI extends javax.swing.JFrame {
 
     private void itemNuevoUsuarioActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_itemNuevoUsuarioActionPerformed
         FrmNuevoUsuario vista = new FrmNuevoUsuario();
-        new CtrlNuevoUsuario(new Usuario(), vista, new UsuarioDAO());
+        CtrlNuevoUsuario ctrl = new CtrlNuevoUsuario(new Usuario(), vista, new UsuarioDAO());
+        ctrl.cargarTabla();
         abrirVentana(vista);
     }//GEN-LAST:event_itemNuevoUsuarioActionPerformed
 
     private void itemGestionarUsuariosActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_itemGestionarUsuariosActionPerformed
-        FrmGestionarUsuarios vista = new FrmGestionarUsuarios();
-        CtrlGestionarUsuarios ctrl = new CtrlGestionarUsuarios(new Usuario(), vista, new UsuarioDAO());
-        ctrl.cargarTabla();
-        abrirVentana(vista);
+        
     }//GEN-LAST:event_itemGestionarUsuariosActionPerformed
 
     private void itemRolesActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_itemRolesActionPerformed
@@ -362,7 +365,7 @@ public class MDI extends javax.swing.JFrame {
         }
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
-                new MDI().setVisible(true);
+                new FrmLogin().setVisible(true);
             }
         });
     }
@@ -377,7 +380,6 @@ public class MDI extends javax.swing.JFrame {
     private javax.swing.JMenuItem itemGestionarClientes;
     private javax.swing.JMenuItem itemGestionarProductos;
     private javax.swing.JMenuItem itemGestionarProveedores;
-    private javax.swing.JMenuItem itemGestionarUsuarios;
     private javax.swing.JMenuItem itemKardex;
     private javax.swing.JMenuItem itemNuevaCompra;
     private javax.swing.JMenuItem itemNuevoUsuario;

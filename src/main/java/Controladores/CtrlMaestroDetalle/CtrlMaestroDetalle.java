@@ -1,6 +1,7 @@
 package Controladores.CtrlMaestroDetalle;
 
 import Modelos.MaestroDetalleDAO;
+import Modelos.SesionUsuario;
 import Vistas.MaestroDetalleVista;
 import java.awt.Component;
 import java.awt.event.ActionEvent;
@@ -27,7 +28,7 @@ public class CtrlMaestroDetalle {
         this.dao = dao;
         configurarTitulos();
         configurarEventos();
-        cargarMaestro();
+        cargarMaestro();                
     }
 
     private void configurarTitulos() {
