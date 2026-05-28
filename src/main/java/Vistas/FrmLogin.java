@@ -6,6 +6,7 @@ import Modelos.SesionUsuario;
 import java.awt.Color;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+import java.util.ArrayList;
 import javax.swing.JOptionPane;
 import javax.swing.UIManager;
 
@@ -39,7 +40,9 @@ public class FrmLogin extends javax.swing.JFrame {
         Usuario u = dao.login(user, pass);
 
         if (u != null) {
-            SesionUsuario.iniciarSesion(u);
+            ArrayList<String> permisos = dao.obtenerPermisosDeRol(u.getIdRol());
+            
+            SesionUsuario.iniciarSesion(u, permisos);
             this.dispose();
             new MDI(SesionUsuario.getNombreUsuarioActual(), SesionUsuario.getRolUsuarioActual()).setVisible(true);
         } else {

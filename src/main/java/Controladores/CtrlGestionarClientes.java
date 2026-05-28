@@ -2,6 +2,7 @@ package Controladores;
 
 import Modelos.Cliente;
 import Modelos.ClienteDAO;
+import Modelos.SesionUsuario;
 import Vistas.FrmGestionarClientes;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -53,6 +54,18 @@ public class CtrlGestionarClientes implements ActionListener {
         agregarValidacionesDeTeclado();
         estadoInicial();
         cargarTabla();
+        
+        // Bloquear edición si no tiene permiso
+        if (!SesionUsuario.tienePermiso("EDICION_TERCEROS")) {
+            form.btnGuardar.setVisible(false);
+            form.btnActualizar.setVisible(false);
+            form.btnEliminar.setVisible(false);
+        }
+        
+        // Bloquear exportación
+        if (!SesionUsuario.tienePermiso("EXPORTAR_TERCEROS")) {
+            form.btnExportarClientes.setVisible(false);
+        }
     }
 
     private void estadoInicial() {

@@ -37,6 +37,14 @@ public class AjusteInventarioController {
         listarAjustesTabla();   // asíncrono
         agregarEventos();
         actualizarStockActual(); // este es rápido
+        
+        if (!SesionUsuario.tienePermiso("EDICION_PRODUCTOS")) {
+            vista.btnRegistrarAjuste.setVisible(false);
+        }
+
+        if (!SesionUsuario.tienePermiso("EXPORTAR_PRODUCTOS")) {
+            vista.btnExportarCSV.setVisible(false);
+        }
     }
 
     private void configurarVista() {
