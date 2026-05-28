@@ -55,6 +55,7 @@ public class MDI extends javax.swing.JFrame {
             ventana.setSelected(true);
         } catch (Exception e) {
         }
+        
     }
 
     @SuppressWarnings("unchecked")
@@ -79,7 +80,6 @@ public class MDI extends javax.swing.JFrame {
         itemKardex = new javax.swing.JMenuItem();
         menuUsuarios = new javax.swing.JMenu();
         itemNuevoUsuario = new javax.swing.JMenuItem();
-        itemGestionarUsuarios = new javax.swing.JMenuItem();
         itemRoles = new javax.swing.JMenuItem();
         menuCompras = new javax.swing.JMenu();
         itemNuevaCompra = new javax.swing.JMenuItem();
@@ -154,10 +154,6 @@ public class MDI extends javax.swing.JFrame {
         itemNuevoUsuario.setText("Nuevo Usuario");
         itemNuevoUsuario.addActionListener(this::itemNuevoUsuarioActionPerformed);
         menuUsuarios.add(itemNuevoUsuario);
-
-        itemGestionarUsuarios.setText("Gestionar Usuarios");
-        itemGestionarUsuarios.addActionListener(this::itemGestionarUsuariosActionPerformed);
-        menuUsuarios.add(itemGestionarUsuarios);
 
         itemRoles.setText("Roles y Permisos");
         itemRoles.addActionListener(this::itemRolesActionPerformed);
@@ -249,16 +245,10 @@ public class MDI extends javax.swing.JFrame {
 
     private void itemNuevoUsuarioActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_itemNuevoUsuarioActionPerformed
         FrmNuevoUsuario vista = new FrmNuevoUsuario();
-        new CtrlNuevoUsuario(new Usuario(), vista, new UsuarioDAO());
-        abrirVentana(vista);
-    }//GEN-LAST:event_itemNuevoUsuarioActionPerformed
-
-    private void itemGestionarUsuariosActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_itemGestionarUsuariosActionPerformed
-        FrmGestionarUsuarios vista = new FrmGestionarUsuarios();
-        CtrlGestionarUsuarios ctrl = new CtrlGestionarUsuarios(new Usuario(), vista, new UsuarioDAO());
+        CtrlNuevoUsuario ctrl = new CtrlNuevoUsuario(new Usuario(), vista, new UsuarioDAO());
         ctrl.cargarTabla();
         abrirVentana(vista);
-    }//GEN-LAST:event_itemGestionarUsuariosActionPerformed
+    }//GEN-LAST:event_itemNuevoUsuarioActionPerformed
 
     private void itemRolesActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_itemRolesActionPerformed
         FrmRolesPermisos vista = new FrmRolesPermisos();
@@ -360,7 +350,6 @@ public class MDI extends javax.swing.JFrame {
     private javax.swing.JMenuItem itemGestionarClientes;
     private javax.swing.JMenuItem itemGestionarProductos;
     private javax.swing.JMenuItem itemGestionarProveedores;
-    private javax.swing.JMenuItem itemGestionarUsuarios;
     private javax.swing.JMenuItem itemKardex;
     private javax.swing.JMenuItem itemNuevaCompra;
     private javax.swing.JMenuItem itemNuevoUsuario;

@@ -11,8 +11,8 @@ public class FrmRolesPermisos extends javax.swing.JInternalFrame {
         
         // Efecto Hover al botón Guardar
         btnGuardarRol.addMouseListener(new MouseAdapter() {
-            public void mouseEntered(MouseEvent e) { btnGuardarRol.setBackground(Color.decode("#5850DC")); }
-            public void mouseExited(MouseEvent e)  { btnGuardarRol.setBackground(Color.decode("#6C63FF")); }
+            public void mouseEntered(MouseEvent e) { btnGuardarRol.setBackground(Color.decode("#3A5AAA")); }
+            public void mouseExited(MouseEvent e)  { btnGuardarRol.setBackground(Color.decode("#2D4A8A")); }
         });
     }
 
@@ -58,126 +58,118 @@ public class FrmRolesPermisos extends javax.swing.JInternalFrame {
         checkGestionReportes = new javax.swing.JCheckBox();
         checkExportarReportes = new javax.swing.JCheckBox();
 
-        setBackground(new java.awt.Color(10, 12, 16));
+        setBackground(new java.awt.Color(240, 244, 248));
         setClosable(true);
         setMaximizable(true);
         setTitle("Gestión de Roles");
         setPreferredSize(new java.awt.Dimension(500, 600));
         getContentPane().setLayout(null);
 
-        panelDatos.setBackground(new java.awt.Color(17, 21, 32));
-        panelDatos.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(42, 48, 80)));
+        panelDatos.setBackground(new java.awt.Color(240, 244, 248));
+        panelDatos.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(197, 216, 245)));
         panelDatos.setPreferredSize(new java.awt.Dimension(490, 600));
         panelDatos.setLayout(null);
 
         jLabel2.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
-        jLabel2.setForeground(new java.awt.Color(155, 163, 196));
+        jLabel2.setForeground(new java.awt.Color(45, 74, 138));
         jLabel2.setText("NOMBRE DEL ROL");
         panelDatos.add(jLabel2);
         jLabel2.setBounds(20, 50, 390, 16);
 
-        txtRol.setBackground(new java.awt.Color(24, 29, 46));
         txtRol.setFont(new java.awt.Font("Segoe UI", 0, 13)); // NOI18N
-        txtRol.setForeground(new java.awt.Color(240, 242, 255));
-        txtRol.setBorder(javax.swing.BorderFactory.createCompoundBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(42, 48, 80)), javax.swing.BorderFactory.createEmptyBorder(6, 10, 6, 10)));
+        txtRol.setForeground(new java.awt.Color(51, 51, 51));
+        txtRol.setBorder(javax.swing.BorderFactory.createCompoundBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(197, 216, 245)), javax.swing.BorderFactory.createEmptyBorder(6, 10, 6, 10)));
         panelDatos.add(txtRol);
         txtRol.setBounds(20, 70, 390, 38);
 
         jLabel3.setFont(new java.awt.Font("Segoe UI", 1, 10)); // NOI18N
-        jLabel3.setForeground(new java.awt.Color(155, 163, 196));
+        jLabel3.setForeground(new java.awt.Color(45, 74, 138));
         jLabel3.setText("GESTIÓN REPORTES");
         panelDatos.add(jLabel3);
         jLabel3.setBounds(30, 330, 120, 20);
 
-        checkGestionProductos.setBackground(new java.awt.Color(17, 21, 32));
-        checkGestionProductos.setForeground(new java.awt.Color(240, 242, 255));
+        checkGestionProductos.setForeground(new java.awt.Color(51, 51, 51));
         checkGestionProductos.setText("Edición");
         checkGestionProductos.setFocusPainted(false);
         checkGestionProductos.addActionListener(this::checkGestionProductosActionPerformed);
         panelDatos.add(checkGestionProductos);
         checkGestionProductos.setBounds(220, 180, 70, 20);
 
-        checkRegistroCompraVenta.setBackground(new java.awt.Color(17, 21, 32));
-        checkRegistroCompraVenta.setForeground(new java.awt.Color(240, 242, 255));
+        checkRegistroCompraVenta.setForeground(new java.awt.Color(51, 51, 51));
         checkRegistroCompraVenta.setText("Edición");
         checkRegistroCompraVenta.setFocusPainted(false);
         checkRegistroCompraVenta.addActionListener(this::checkRegistroCompraVentaActionPerformed);
         panelDatos.add(checkRegistroCompraVenta);
         checkRegistroCompraVenta.setBounds(220, 210, 70, 20);
 
-        checkGestionUsuarios.setBackground(new java.awt.Color(17, 21, 32));
-        checkGestionUsuarios.setForeground(new java.awt.Color(240, 242, 255));
+        checkGestionUsuarios.setForeground(new java.awt.Color(51, 51, 51));
         checkGestionUsuarios.setText("Edición");
         checkGestionUsuarios.setFocusPainted(false);
         checkGestionUsuarios.addActionListener(this::checkGestionUsuariosActionPerformed);
         panelDatos.add(checkGestionUsuarios);
         checkGestionUsuarios.setBounds(220, 150, 70, 20);
 
-        checkVerProductos.setBackground(new java.awt.Color(17, 21, 32));
-        checkVerProductos.setForeground(new java.awt.Color(240, 242, 255));
+        checkVerProductos.setForeground(new java.awt.Color(51, 51, 51));
         checkVerProductos.setText("Lectura");
         checkVerProductos.setFocusPainted(false);
         panelDatos.add(checkVerProductos);
         checkVerProductos.setBounds(150, 180, 70, 20);
 
-        checkVerVentas.setBackground(new java.awt.Color(17, 21, 32));
-        checkVerVentas.setForeground(new java.awt.Color(240, 242, 255));
+        checkVerVentas.setForeground(new java.awt.Color(51, 51, 51));
         checkVerVentas.setText("Lectura");
         checkVerVentas.setFocusPainted(false);
         panelDatos.add(checkVerVentas);
         checkVerVentas.setBounds(150, 210, 70, 20);
 
-        checkVerUsuarios.setBackground(new java.awt.Color(17, 21, 32));
-        checkVerUsuarios.setForeground(new java.awt.Color(240, 242, 255));
+        checkVerUsuarios.setForeground(new java.awt.Color(51, 51, 51));
         checkVerUsuarios.setText("Lectura");
         checkVerUsuarios.setFocusPainted(false);
         panelDatos.add(checkVerUsuarios);
         checkVerUsuarios.setBounds(150, 150, 70, 20);
 
         jLabel4.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
-        jLabel4.setForeground(new java.awt.Color(155, 163, 196));
+        jLabel4.setForeground(new java.awt.Color(45, 74, 138));
         jLabel4.setText("DESCRIPCIÓN");
         panelDatos.add(jLabel4);
         jLabel4.setBounds(20, 370, 390, 16);
 
-        jScrollPane1.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(42, 48, 80)));
+        jScrollPane1.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(197, 216, 245)));
 
-        txtDescripcion.setBackground(new java.awt.Color(24, 29, 46));
         txtDescripcion.setColumns(20);
         txtDescripcion.setFont(new java.awt.Font("Segoe UI", 0, 13)); // NOI18N
-        txtDescripcion.setForeground(new java.awt.Color(240, 242, 255));
+        txtDescripcion.setForeground(new java.awt.Color(51, 51, 51));
         txtDescripcion.setRows(5);
-        txtDescripcion.setCaretColor(new java.awt.Color(108, 99, 255));
+        txtDescripcion.setCaretColor(new java.awt.Color(45, 74, 138));
+        txtDescripcion.setBorder(javax.swing.BorderFactory.createEmptyBorder(6, 10, 6, 10));
         jScrollPane1.setViewportView(txtDescripcion);
 
         panelDatos.add(jScrollPane1);
         jScrollPane1.setBounds(20, 390, 390, 100);
 
-        btnGuardarRol.setBackground(new java.awt.Color(108, 99, 255));
+        btnGuardarRol.setBackground(new java.awt.Color(45, 74, 138));
         btnGuardarRol.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
         btnGuardarRol.setForeground(new java.awt.Color(255, 255, 255));
         btnGuardarRol.setText("Guardar Rol");
         btnGuardarRol.setBorderPainted(false);
-        btnGuardarRol.setCursor(new java.awt.Cursor(java.awt.Cursor.DEFAULT_CURSOR));
+        btnGuardarRol.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
         btnGuardarRol.setFocusPainted(false);
         panelDatos.add(btnGuardarRol);
         btnGuardarRol.setBounds(20, 510, 390, 45);
 
         jLabel1.setFont(new java.awt.Font("Segoe UI", 1, 20)); // NOI18N
-        jLabel1.setForeground(new java.awt.Color(240, 242, 255));
+        jLabel1.setForeground(new java.awt.Color(45, 74, 138));
         jLabel1.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        jLabel1.setText("✦ Agregar Rol");
+        jLabel1.setText("Agregar Rol");
         panelDatos.add(jLabel1);
         jLabel1.setBounds(-20, 10, 500, 30);
 
         jLabel5.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
-        jLabel5.setForeground(new java.awt.Color(155, 163, 196));
+        jLabel5.setForeground(new java.awt.Color(45, 74, 138));
         jLabel5.setText("PERMISOS ASIGNADOS");
         panelDatos.add(jLabel5);
         jLabel5.setBounds(20, 120, 390, 16);
 
-        checkExportarProductos.setBackground(new java.awt.Color(17, 21, 32));
-        checkExportarProductos.setForeground(new java.awt.Color(240, 242, 255));
+        checkExportarProductos.setForeground(new java.awt.Color(51, 51, 51));
         checkExportarProductos.setText("Exportar");
         checkExportarProductos.setFocusPainted(false);
         checkExportarProductos.addActionListener(this::checkExportarProductosActionPerformed);
@@ -185,13 +177,12 @@ public class FrmRolesPermisos extends javax.swing.JInternalFrame {
         checkExportarProductos.setBounds(290, 180, 70, 20);
 
         jLabel6.setFont(new java.awt.Font("Segoe UI", 1, 10)); // NOI18N
-        jLabel6.setForeground(new java.awt.Color(155, 163, 196));
+        jLabel6.setForeground(new java.awt.Color(45, 74, 138));
         jLabel6.setText("GESTIÓN USUARIOS");
         panelDatos.add(jLabel6);
         jLabel6.setBounds(30, 150, 120, 20);
 
-        checkExportarUsuarios.setBackground(new java.awt.Color(17, 21, 32));
-        checkExportarUsuarios.setForeground(new java.awt.Color(240, 242, 255));
+        checkExportarUsuarios.setForeground(new java.awt.Color(51, 51, 51));
         checkExportarUsuarios.setText("Exportar");
         checkExportarUsuarios.setFocusPainted(false);
         checkExportarUsuarios.addActionListener(this::checkExportarUsuariosActionPerformed);
@@ -199,13 +190,12 @@ public class FrmRolesPermisos extends javax.swing.JInternalFrame {
         checkExportarUsuarios.setBounds(290, 150, 70, 20);
 
         jLabel7.setFont(new java.awt.Font("Segoe UI", 1, 10)); // NOI18N
-        jLabel7.setForeground(new java.awt.Color(155, 163, 196));
+        jLabel7.setForeground(new java.awt.Color(45, 74, 138));
         jLabel7.setText("GESTIÓN PRODUCTOS");
         panelDatos.add(jLabel7);
         jLabel7.setBounds(30, 180, 120, 20);
 
-        checkExportarVentas.setBackground(new java.awt.Color(17, 21, 32));
-        checkExportarVentas.setForeground(new java.awt.Color(240, 242, 255));
+        checkExportarVentas.setForeground(new java.awt.Color(51, 51, 51));
         checkExportarVentas.setText("Exportar");
         checkExportarVentas.setFocusPainted(false);
         checkExportarVentas.addActionListener(this::checkExportarVentasActionPerformed);
@@ -213,28 +203,25 @@ public class FrmRolesPermisos extends javax.swing.JInternalFrame {
         checkExportarVentas.setBounds(290, 210, 70, 20);
 
         jLabel8.setFont(new java.awt.Font("Segoe UI", 1, 10)); // NOI18N
-        jLabel8.setForeground(new java.awt.Color(155, 163, 196));
+        jLabel8.setForeground(new java.awt.Color(45, 74, 138));
         jLabel8.setText("GESTIÓN VENTAS");
         panelDatos.add(jLabel8);
         jLabel8.setBounds(30, 210, 120, 20);
 
-        checkVerCompras.setBackground(new java.awt.Color(17, 21, 32));
-        checkVerCompras.setForeground(new java.awt.Color(240, 242, 255));
+        checkVerCompras.setForeground(new java.awt.Color(51, 51, 51));
         checkVerCompras.setText("Lectura");
         checkVerCompras.setFocusPainted(false);
         panelDatos.add(checkVerCompras);
         checkVerCompras.setBounds(150, 240, 70, 20);
 
-        checkGestionCompra.setBackground(new java.awt.Color(17, 21, 32));
-        checkGestionCompra.setForeground(new java.awt.Color(240, 242, 255));
+        checkGestionCompra.setForeground(new java.awt.Color(51, 51, 51));
         checkGestionCompra.setText("Edición");
         checkGestionCompra.setFocusPainted(false);
         checkGestionCompra.addActionListener(this::checkGestionCompraActionPerformed);
         panelDatos.add(checkGestionCompra);
         checkGestionCompra.setBounds(220, 240, 70, 20);
 
-        checkExportarCompras.setBackground(new java.awt.Color(17, 21, 32));
-        checkExportarCompras.setForeground(new java.awt.Color(240, 242, 255));
+        checkExportarCompras.setForeground(new java.awt.Color(51, 51, 51));
         checkExportarCompras.setText("Exportar");
         checkExportarCompras.setFocusPainted(false);
         checkExportarCompras.addActionListener(this::checkExportarComprasActionPerformed);
@@ -242,28 +229,25 @@ public class FrmRolesPermisos extends javax.swing.JInternalFrame {
         checkExportarCompras.setBounds(290, 240, 70, 20);
 
         jLabel9.setFont(new java.awt.Font("Segoe UI", 1, 10)); // NOI18N
-        jLabel9.setForeground(new java.awt.Color(155, 163, 196));
+        jLabel9.setForeground(new java.awt.Color(45, 74, 138));
         jLabel9.setText("GESTIÓN COMPRAS");
         panelDatos.add(jLabel9);
         jLabel9.setBounds(30, 240, 120, 20);
 
-        checkVerLotes.setBackground(new java.awt.Color(17, 21, 32));
-        checkVerLotes.setForeground(new java.awt.Color(240, 242, 255));
+        checkVerLotes.setForeground(new java.awt.Color(51, 51, 51));
         checkVerLotes.setText("Lectura");
         checkVerLotes.setFocusPainted(false);
         panelDatos.add(checkVerLotes);
         checkVerLotes.setBounds(150, 270, 70, 20);
 
-        checkGestionLotes.setBackground(new java.awt.Color(17, 21, 32));
-        checkGestionLotes.setForeground(new java.awt.Color(240, 242, 255));
+        checkGestionLotes.setForeground(new java.awt.Color(51, 51, 51));
         checkGestionLotes.setText("Edición");
         checkGestionLotes.setFocusPainted(false);
         checkGestionLotes.addActionListener(this::checkGestionLotesActionPerformed);
         panelDatos.add(checkGestionLotes);
         checkGestionLotes.setBounds(220, 270, 70, 20);
 
-        checkExportarLotes.setBackground(new java.awt.Color(17, 21, 32));
-        checkExportarLotes.setForeground(new java.awt.Color(240, 242, 255));
+        checkExportarLotes.setForeground(new java.awt.Color(51, 51, 51));
         checkExportarLotes.setText("Exportar");
         checkExportarLotes.setFocusPainted(false);
         checkExportarLotes.addActionListener(this::checkExportarLotesActionPerformed);
@@ -271,28 +255,25 @@ public class FrmRolesPermisos extends javax.swing.JInternalFrame {
         checkExportarLotes.setBounds(290, 270, 70, 20);
 
         jLabel10.setFont(new java.awt.Font("Segoe UI", 1, 10)); // NOI18N
-        jLabel10.setForeground(new java.awt.Color(155, 163, 196));
+        jLabel10.setForeground(new java.awt.Color(45, 74, 138));
         jLabel10.setText("GESTIÓN LOTES");
         panelDatos.add(jLabel10);
         jLabel10.setBounds(30, 270, 120, 20);
 
-        checkVerTerceros.setBackground(new java.awt.Color(17, 21, 32));
-        checkVerTerceros.setForeground(new java.awt.Color(240, 242, 255));
+        checkVerTerceros.setForeground(new java.awt.Color(51, 51, 51));
         checkVerTerceros.setText("Lectura");
         checkVerTerceros.setFocusPainted(false);
         panelDatos.add(checkVerTerceros);
         checkVerTerceros.setBounds(150, 300, 70, 20);
 
-        checkGestionTerceros.setBackground(new java.awt.Color(17, 21, 32));
-        checkGestionTerceros.setForeground(new java.awt.Color(240, 242, 255));
+        checkGestionTerceros.setForeground(new java.awt.Color(51, 51, 51));
         checkGestionTerceros.setText("Edición");
         checkGestionTerceros.setFocusPainted(false);
         checkGestionTerceros.addActionListener(this::checkGestionTercerosActionPerformed);
         panelDatos.add(checkGestionTerceros);
         checkGestionTerceros.setBounds(220, 300, 70, 20);
 
-        checkExportarTerceros.setBackground(new java.awt.Color(17, 21, 32));
-        checkExportarTerceros.setForeground(new java.awt.Color(240, 242, 255));
+        checkExportarTerceros.setForeground(new java.awt.Color(51, 51, 51));
         checkExportarTerceros.setText("Exportar");
         checkExportarTerceros.setFocusPainted(false);
         checkExportarTerceros.addActionListener(this::checkExportarTercerosActionPerformed);
@@ -300,28 +281,25 @@ public class FrmRolesPermisos extends javax.swing.JInternalFrame {
         checkExportarTerceros.setBounds(290, 300, 70, 20);
 
         jLabel11.setFont(new java.awt.Font("Segoe UI", 1, 10)); // NOI18N
-        jLabel11.setForeground(new java.awt.Color(155, 163, 196));
+        jLabel11.setForeground(new java.awt.Color(45, 74, 138));
         jLabel11.setText("GESTIÓN TERCEROS");
         panelDatos.add(jLabel11);
         jLabel11.setBounds(30, 300, 120, 20);
 
-        checkVerReportes.setBackground(new java.awt.Color(17, 21, 32));
-        checkVerReportes.setForeground(new java.awt.Color(240, 242, 255));
+        checkVerReportes.setForeground(new java.awt.Color(51, 51, 51));
         checkVerReportes.setText("Lectura");
         checkVerReportes.setFocusPainted(false);
         panelDatos.add(checkVerReportes);
         checkVerReportes.setBounds(150, 330, 70, 20);
 
-        checkGestionReportes.setBackground(new java.awt.Color(17, 21, 32));
-        checkGestionReportes.setForeground(new java.awt.Color(240, 242, 255));
+        checkGestionReportes.setForeground(new java.awt.Color(51, 51, 51));
         checkGestionReportes.setText("Edición");
         checkGestionReportes.setFocusPainted(false);
         checkGestionReportes.addActionListener(this::checkGestionReportesActionPerformed);
         panelDatos.add(checkGestionReportes);
         checkGestionReportes.setBounds(220, 330, 70, 20);
 
-        checkExportarReportes.setBackground(new java.awt.Color(17, 21, 32));
-        checkExportarReportes.setForeground(new java.awt.Color(240, 242, 255));
+        checkExportarReportes.setForeground(new java.awt.Color(51, 51, 51));
         checkExportarReportes.setText("Exportar");
         checkExportarReportes.setFocusPainted(false);
         checkExportarReportes.addActionListener(this::checkExportarReportesActionPerformed);
@@ -359,19 +337,15 @@ public class FrmRolesPermisos extends javax.swing.JInternalFrame {
     }//GEN-LAST:event_checkGestionUsuariosActionPerformed
 
     private void checkExportarProductosActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_checkExportarProductosActionPerformed
-        // TODO add your handling code here:
     }//GEN-LAST:event_checkExportarProductosActionPerformed
 
     private void checkExportarUsuariosActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_checkExportarUsuariosActionPerformed
-        // TODO add your handling code here:
     }//GEN-LAST:event_checkExportarUsuariosActionPerformed
 
     private void checkExportarVentasActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_checkExportarVentasActionPerformed
-        // TODO add your handling code here:
     }//GEN-LAST:event_checkExportarVentasActionPerformed
 
     private void checkGestionCompraActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_checkGestionCompraActionPerformed
-        // TODO add your handling code here:
         if(checkGestionCompra.isSelected()){
             checkVerCompras.setSelected(true);
         }else if(!checkGestionCompra.isSelected()){
@@ -380,11 +354,9 @@ public class FrmRolesPermisos extends javax.swing.JInternalFrame {
     }//GEN-LAST:event_checkGestionCompraActionPerformed
 
     private void checkExportarComprasActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_checkExportarComprasActionPerformed
-        // TODO add your handling code here:
     }//GEN-LAST:event_checkExportarComprasActionPerformed
 
     private void checkGestionLotesActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_checkGestionLotesActionPerformed
-        // TODO add your handling code here:
         if(checkGestionLotes.isSelected()){
             checkVerLotes.setSelected(true);
         }else if(!checkGestionLotes.isSelected()){
@@ -393,11 +365,9 @@ public class FrmRolesPermisos extends javax.swing.JInternalFrame {
     }//GEN-LAST:event_checkGestionLotesActionPerformed
 
     private void checkExportarLotesActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_checkExportarLotesActionPerformed
-        // TODO add your handling code here:
     }//GEN-LAST:event_checkExportarLotesActionPerformed
 
     private void checkGestionTercerosActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_checkGestionTercerosActionPerformed
-        // TODO add your handling code here:
         if(checkGestionTerceros.isSelected()){
             checkVerTerceros.setSelected(true);
         }else if(!checkGestionTerceros.isSelected()){
@@ -406,11 +376,9 @@ public class FrmRolesPermisos extends javax.swing.JInternalFrame {
     }//GEN-LAST:event_checkGestionTercerosActionPerformed
 
     private void checkExportarTercerosActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_checkExportarTercerosActionPerformed
-        // TODO add your handling code here:
     }//GEN-LAST:event_checkExportarTercerosActionPerformed
 
     private void checkGestionReportesActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_checkGestionReportesActionPerformed
-        // TODO add your handling code here:
         if(checkGestionReportes.isSelected()){
             checkVerReportes.setSelected(true);
         }else if(!checkGestionReportes.isSelected()){
@@ -419,7 +387,6 @@ public class FrmRolesPermisos extends javax.swing.JInternalFrame {
     }//GEN-LAST:event_checkGestionReportesActionPerformed
 
     private void checkExportarReportesActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_checkExportarReportesActionPerformed
-        // TODO add your handling code here:
     }//GEN-LAST:event_checkExportarReportesActionPerformed
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
