@@ -239,15 +239,13 @@ public class MDI extends javax.swing.JFrame {
 
     private void itemNuevoUsuarioActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_itemNuevoUsuarioActionPerformed
         FrmNuevoUsuario vista = new FrmNuevoUsuario();
-        new CtrlNuevoUsuario(new Usuario(), vista, new UsuarioDAO());
+        CtrlNuevoUsuario ctrl = new CtrlNuevoUsuario(new Usuario(), vista, new UsuarioDAO());
+        ctrl.cargarTabla();
         abrirVentana(vista);
     }//GEN-LAST:event_itemNuevoUsuarioActionPerformed
 
     private void itemGestionarUsuariosActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_itemGestionarUsuariosActionPerformed
-        FrmGestionarUsuarios vista = new FrmGestionarUsuarios();
-        CtrlGestionarUsuarios ctrl = new CtrlGestionarUsuarios(new Usuario(), vista, new UsuarioDAO());
-        ctrl.cargarTabla();
-        abrirVentana(vista);
+        
     }//GEN-LAST:event_itemGestionarUsuariosActionPerformed
 
     private void itemRolesActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_itemRolesActionPerformed
