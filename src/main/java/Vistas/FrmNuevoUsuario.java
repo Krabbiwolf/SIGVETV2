@@ -13,6 +13,8 @@ import javax.swing.JFileChooser;
 import javax.swing.JOptionPane;
 import javax.swing.SwingWorker;
 import javax.swing.filechooser.FileNameExtensionFilter;
+import javax.swing.JLabel;
+import javax.swing.table.DefaultTableCellRenderer;
 
 public class FrmNuevoUsuario extends javax.swing.JInternalFrame {
 
@@ -21,24 +23,65 @@ public class FrmNuevoUsuario extends javax.swing.JInternalFrame {
 
     public FrmNuevoUsuario() {
         initComponents();
-        txtRutaImagen.setVisible(false);
         
-        cargarRolesAsync(); // 🔥 asíncrono
+        btnEliminarUsuario.setBackground(new Color(230, 57, 70));
+btnEliminarUsuario.setForeground(Color.WHITE);
 
-        // Hover btnGuardar
+btnEliminarUsuario.setOpaque(true);
+btnEliminarUsuario.setContentAreaFilled(true);
+
+btnEliminarUsuario.setFocusPainted(false);
+btnEliminarUsuario.setBorderPainted(false);
+
+        txtRutaImagen.setVisible(false);
+        txtPassword.setText(""); // Limpiar campo de contraseña
+        
+        cargarRolesAsync(); 
+
+        // Estilizar cabecera de tabla al tema Azul Corporativo
+        tableUsuarios.getTableHeader().setBackground(Color.decode("#DCE6F2"));
+        tableUsuarios.getTableHeader().setForeground(Color.decode("#2D4A8A"));
+        tableUsuarios.getTableHeader().setFont(new java.awt.Font("Segoe UI", java.awt.Font.BOLD, 12));
+        tableUsuarios.getTableHeader().setBorder(javax.swing.BorderFactory.createMatteBorder(0, 0, 1, 0, Color.decode("#C5D8F5")));
+        ((DefaultTableCellRenderer) tableUsuarios.getTableHeader().getDefaultRenderer()).setHorizontalAlignment(JLabel.CENTER);
+
+        // Hover Efectos (Garantizando texto legible en blanco y azul)
         btnGuardarUsuario.addMouseListener(new MouseAdapter() {
-            public void mouseEntered(MouseEvent e) { btnGuardarUsuario.setBackground(Color.decode("#00B38F")); }
-            public void mouseExited(MouseEvent e)  { btnGuardarUsuario.setBackground(Color.decode("#00D4AA")); }
+            public void mouseEntered(MouseEvent e) { btnGuardarUsuario.setBackground(Color.decode("#3A5AAA")); }
+            public void mouseExited(MouseEvent e)  { btnGuardarUsuario.setBackground(Color.decode("#2D4A8A")); }
         });
 
-        // Hover btnImagen
         btnAgregarImagen.addMouseListener(new MouseAdapter() {
-            public void mouseEntered(MouseEvent e) { btnAgregarImagen.setBackground(Color.decode("#2A3050")); }
-            public void mouseExited(MouseEvent e)  { btnAgregarImagen.setBackground(Color.decode("#1F2640")); }
+            public void mouseEntered(MouseEvent e) { btnAgregarImagen.setBackground(Color.decode("#C5D8F5")); }
+            public void mouseExited(MouseEvent e)  { btnAgregarImagen.setBackground(Color.decode("#DCE6F2")); }
+        });
+        
+        btnActualizarUsuario.addMouseListener(new MouseAdapter() {
+            public void mouseEntered(MouseEvent e) { btnActualizarUsuario.setBackground(Color.decode("#3A5AAA")); }
+            public void mouseExited(MouseEvent e)  { btnActualizarUsuario.setBackground(Color.decode("#2D4A8A")); }
+        });
+        
+        btnEliminarUsuario.addMouseListener(new MouseAdapter() {
+            public void mouseEntered(MouseEvent e) { btnEliminarUsuario.setBackground(Color.decode("#C52835")); }
+            public void mouseExited(MouseEvent e)  { btnEliminarUsuario.setBackground(Color.decode("#E63946")); }
+        });
+        
+        btnLimpiar.addMouseListener(new MouseAdapter() {
+            public void mouseEntered(MouseEvent e) { btnLimpiar.setBackground(Color.decode("#DCE6F2")); }
+            public void mouseExited(MouseEvent e)  { btnLimpiar.setBackground(Color.WHITE); }
+        });
+        
+        btnVerInfo.addMouseListener(new MouseAdapter() {
+            public void mouseEntered(MouseEvent e) { btnVerInfo.setBackground(Color.decode("#C5D8F5")); }
+            public void mouseExited(MouseEvent e)  { btnVerInfo.setBackground(Color.decode("#DCE6F2")); }
+        });
+        
+        btnExportar.addMouseListener(new MouseAdapter() {
+            public void mouseEntered(MouseEvent e) { btnExportar.setBackground(Color.decode("#218838")); }
+            public void mouseExited(MouseEvent e)  { btnExportar.setBackground(Color.decode("#28A745")); }
         });
     }
 
-    // ================== Carga asíncrona de roles ==================
     private void cargarRolesAsync() {
         if (currentRolesWorker != null && !currentRolesWorker.isDone()) {
             currentRolesWorker.cancel(true);
@@ -106,7 +149,7 @@ public class FrmNuevoUsuario extends javax.swing.JInternalFrame {
         txtPassword = new javax.swing.JPasswordField();
         btnExportar = new javax.swing.JButton();
 
-        setBackground(new java.awt.Color(10, 12, 16));
+        setBackground(new java.awt.Color(240, 244, 248));
         setClosable(true);
         setMaximizable(true);
         setTitle("Registrar Staff");
@@ -116,160 +159,152 @@ public class FrmNuevoUsuario extends javax.swing.JInternalFrame {
         jScrollPane1.setVerticalScrollBarPolicy(javax.swing.ScrollPaneConstants.VERTICAL_SCROLLBAR_ALWAYS);
         jScrollPane1.setPreferredSize(new java.awt.Dimension(800, 1000));
 
-        card.setBackground(new java.awt.Color(17, 21, 32));
-        card.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(42, 48, 80)));
+        card.setBackground(new java.awt.Color(240, 244, 248));
+        card.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(197, 216, 245)));
         card.setAutoscrolls(true);
         card.setPreferredSize(new java.awt.Dimension(800, 1100));
         card.setLayout(null);
 
         lblTitulo.setFont(new java.awt.Font("Segoe UI", 1, 22)); // NOI18N
-        lblTitulo.setForeground(new java.awt.Color(240, 242, 255));
-        lblTitulo.setText("✦  Alta de Nuevo Empleado");
+        lblTitulo.setForeground(new java.awt.Color(45, 74, 138));
+        lblTitulo.setText("Nuevo Empleado");
         card.add(lblTitulo);
         lblTitulo.setBounds(30, 20, 400, 30);
 
         lblNombres.setFont(new java.awt.Font("Segoe UI", 1, 11)); // NOI18N
-        lblNombres.setForeground(new java.awt.Color(155, 163, 196));
+        lblNombres.setForeground(new java.awt.Color(45, 74, 138));
         lblNombres.setText("NOMBRES");
         card.add(lblNombres);
         lblNombres.setBounds(30, 70, 400, 18);
 
-        txtNombres.setBackground(new java.awt.Color(24, 29, 46));
         txtNombres.setFont(new java.awt.Font("Segoe UI", 0, 13)); // NOI18N
-        txtNombres.setForeground(new java.awt.Color(240, 242, 255));
-        txtNombres.setBorder(javax.swing.BorderFactory.createCompoundBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(42, 48, 80)), javax.swing.BorderFactory.createEmptyBorder(6, 12, 6, 12)));
+        txtNombres.setForeground(new java.awt.Color(51, 51, 51));
+        txtNombres.setBorder(javax.swing.BorderFactory.createCompoundBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(197, 216, 245)), javax.swing.BorderFactory.createEmptyBorder(6, 12, 6, 12)));
         card.add(txtNombres);
-        txtNombres.setBounds(30, 90, 400, 40);
+        txtNombres.setBounds(30, 90, 400, 38);
 
         lblApellidos.setFont(new java.awt.Font("Segoe UI", 1, 11)); // NOI18N
-        lblApellidos.setForeground(new java.awt.Color(155, 163, 196));
+        lblApellidos.setForeground(new java.awt.Color(45, 74, 138));
         lblApellidos.setText("APELLIDOS");
         card.add(lblApellidos);
         lblApellidos.setBounds(30, 140, 400, 18);
 
-        txtApellidos.setBackground(new java.awt.Color(24, 29, 46));
         txtApellidos.setFont(new java.awt.Font("Segoe UI", 0, 13)); // NOI18N
-        txtApellidos.setForeground(new java.awt.Color(240, 242, 255));
-        txtApellidos.setBorder(javax.swing.BorderFactory.createCompoundBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(42, 48, 80)), javax.swing.BorderFactory.createEmptyBorder(6, 12, 6, 12)));
+        txtApellidos.setForeground(new java.awt.Color(51, 51, 51));
+        txtApellidos.setBorder(javax.swing.BorderFactory.createCompoundBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(197, 216, 245)), javax.swing.BorderFactory.createEmptyBorder(6, 12, 6, 12)));
         card.add(txtApellidos);
-        txtApellidos.setBounds(30, 158, 400, 40);
+        txtApellidos.setBounds(30, 160, 400, 38);
 
         lblDUI.setFont(new java.awt.Font("Segoe UI", 1, 11)); // NOI18N
-        lblDUI.setForeground(new java.awt.Color(155, 163, 196));
+        lblDUI.setForeground(new java.awt.Color(45, 74, 138));
         lblDUI.setText("DUI");
         card.add(lblDUI);
         lblDUI.setBounds(30, 210, 190, 18);
 
-        txtDUI.setBackground(new java.awt.Color(24, 29, 46));
         txtDUI.setFont(new java.awt.Font("Segoe UI", 0, 13)); // NOI18N
-        txtDUI.setForeground(new java.awt.Color(240, 242, 255));
-        txtDUI.setBorder(javax.swing.BorderFactory.createCompoundBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(42, 48, 80)), javax.swing.BorderFactory.createEmptyBorder(6, 12, 6, 12)));
+        txtDUI.setForeground(new java.awt.Color(51, 51, 51));
+        txtDUI.setBorder(javax.swing.BorderFactory.createCompoundBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(197, 216, 245)), javax.swing.BorderFactory.createEmptyBorder(6, 12, 6, 12)));
         card.add(txtDUI);
-        txtDUI.setBounds(30, 228, 190, 40);
+        txtDUI.setBounds(30, 230, 190, 38);
 
         lblTelefono.setFont(new java.awt.Font("Segoe UI", 1, 11)); // NOI18N
-        lblTelefono.setForeground(new java.awt.Color(155, 163, 196));
+        lblTelefono.setForeground(new java.awt.Color(45, 74, 138));
         lblTelefono.setText("TELÉFONO");
         card.add(lblTelefono);
         lblTelefono.setBounds(240, 210, 190, 18);
 
-        txtTelefono.setBackground(new java.awt.Color(24, 29, 46));
         txtTelefono.setFont(new java.awt.Font("Segoe UI", 0, 13)); // NOI18N
-        txtTelefono.setForeground(new java.awt.Color(240, 242, 255));
-        txtTelefono.setBorder(javax.swing.BorderFactory.createCompoundBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(42, 48, 80)), javax.swing.BorderFactory.createEmptyBorder(6, 12, 6, 12)));
+        txtTelefono.setForeground(new java.awt.Color(51, 51, 51));
+        txtTelefono.setBorder(javax.swing.BorderFactory.createCompoundBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(197, 216, 245)), javax.swing.BorderFactory.createEmptyBorder(6, 12, 6, 12)));
         card.add(txtTelefono);
-        txtTelefono.setBounds(240, 228, 190, 40);
+        txtTelefono.setBounds(240, 230, 190, 38);
 
         lblUsuario.setFont(new java.awt.Font("Segoe UI", 1, 11)); // NOI18N
-        lblUsuario.setForeground(new java.awt.Color(155, 163, 196));
+        lblUsuario.setForeground(new java.awt.Color(45, 74, 138));
         lblUsuario.setText("USERNAME");
         card.add(lblUsuario);
         lblUsuario.setBounds(30, 280, 190, 18);
 
-        txtUsuario.setBackground(new java.awt.Color(24, 29, 46));
         txtUsuario.setFont(new java.awt.Font("Segoe UI", 0, 13)); // NOI18N
-        txtUsuario.setForeground(new java.awt.Color(240, 242, 255));
-        txtUsuario.setBorder(javax.swing.BorderFactory.createCompoundBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(42, 48, 80)), javax.swing.BorderFactory.createEmptyBorder(6, 12, 6, 12)));
+        txtUsuario.setForeground(new java.awt.Color(51, 51, 51));
+        txtUsuario.setBorder(javax.swing.BorderFactory.createCompoundBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(197, 216, 245)), javax.swing.BorderFactory.createEmptyBorder(6, 12, 6, 12)));
         card.add(txtUsuario);
-        txtUsuario.setBounds(30, 298, 190, 40);
+        txtUsuario.setBounds(30, 300, 190, 38);
 
         lblPassword.setFont(new java.awt.Font("Segoe UI", 1, 11)); // NOI18N
-        lblPassword.setForeground(new java.awt.Color(155, 163, 196));
+        lblPassword.setForeground(new java.awt.Color(45, 74, 138));
         lblPassword.setText("CONTRASEÑA");
         card.add(lblPassword);
         lblPassword.setBounds(240, 280, 190, 18);
 
         lblRol.setFont(new java.awt.Font("Segoe UI", 1, 11)); // NOI18N
-        lblRol.setForeground(new java.awt.Color(155, 163, 196));
+        lblRol.setForeground(new java.awt.Color(45, 74, 138));
         lblRol.setText("BUSCAR");
         card.add(lblRol);
-        lblRol.setBounds(50, 640, 50, 18);
+        lblRol.setBounds(30, 620, 100, 18);
 
-        comboRoles.setBackground(new java.awt.Color(24, 29, 46));
         comboRoles.setFont(new java.awt.Font("Segoe UI", 0, 13)); // NOI18N
-        comboRoles.setForeground(new java.awt.Color(0, 0, 0));
-        comboRoles.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(42, 48, 80)));
+        comboRoles.setForeground(new java.awt.Color(51, 51, 51));
+        comboRoles.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(197, 216, 245)));
         card.add(comboRoles);
-        comboRoles.setBounds(30, 368, 190, 40);
+        comboRoles.setBounds(30, 370, 190, 38);
 
         lblEstado.setFont(new java.awt.Font("Segoe UI", 1, 11)); // NOI18N
-        lblEstado.setForeground(new java.awt.Color(155, 163, 196));
+        lblEstado.setForeground(new java.awt.Color(45, 74, 138));
         lblEstado.setText("ESTADO");
         card.add(lblEstado);
         lblEstado.setBounds(240, 350, 190, 18);
 
-        comboEstado.setBackground(new java.awt.Color(24, 29, 46));
         comboEstado.setFont(new java.awt.Font("Segoe UI", 0, 13)); // NOI18N
-        comboEstado.setForeground(new java.awt.Color(0, 0, 0));
+        comboEstado.setForeground(new java.awt.Color(51, 51, 51));
         comboEstado.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "ACTIVO", "INACTIVO" }));
-        comboEstado.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(42, 48, 80)));
+        comboEstado.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(197, 216, 245)));
         card.add(comboEstado);
-        comboEstado.setBounds(240, 368, 190, 40);
+        comboEstado.setBounds(240, 370, 190, 38);
 
         lblImagen.setFont(new java.awt.Font("Segoe UI", 1, 11)); // NOI18N
-        lblImagen.setForeground(new java.awt.Color(155, 163, 196));
+        lblImagen.setForeground(new java.awt.Color(45, 74, 138));
         lblImagen.setText("FOTO DE PERFIL");
         card.add(lblImagen);
         lblImagen.setBounds(470, 70, 340, 18);
 
-        btnAgregarImagen.setBackground(new java.awt.Color(31, 38, 64));
+        btnAgregarImagen.setBackground(new java.awt.Color(220, 230, 242));
         btnAgregarImagen.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
-        btnAgregarImagen.setForeground(new java.awt.Color(255, 255, 255));
+        btnAgregarImagen.setForeground(new java.awt.Color(45, 74, 138));
         btnAgregarImagen.setText("Examinar...");
-        btnAgregarImagen.setBorderPainted(false);
-        btnAgregarImagen.setCursor(new java.awt.Cursor(java.awt.Cursor.DEFAULT_CURSOR));
+        btnAgregarImagen.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(197, 216, 245)));
+        btnAgregarImagen.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
+        btnAgregarImagen.setFocusPainted(false);
         btnAgregarImagen.addActionListener(this::btnAgregarImagenActionPerformed);
         card.add(btnAgregarImagen);
-        btnAgregarImagen.setBounds(470, 88, 120, 40);
+        btnAgregarImagen.setBounds(470, 90, 120, 38);
 
         lblImagenPreview.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        lblImagenPreview.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(42, 48, 80)));
+        lblImagenPreview.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(197, 216, 245)));
         card.add(lblImagenPreview);
-        lblImagenPreview.setBounds(470, 143, 300, 300);
-
-        txtRutaImagen.setBackground(new java.awt.Color(24, 29, 46));
+        lblImagenPreview.setBounds(470, 140, 300, 300);
         card.add(txtRutaImagen);
         txtRutaImagen.setBounds(0, 0, 0, 0);
 
-        btnGuardarUsuario.setBackground(new java.awt.Color(0, 212, 170));
+        btnGuardarUsuario.setBackground(new java.awt.Color(45, 74, 138));
         btnGuardarUsuario.setFont(new java.awt.Font("Segoe UI", 1, 15)); // NOI18N
         btnGuardarUsuario.setForeground(new java.awt.Color(255, 255, 255));
         btnGuardarUsuario.setText("Guardar Empleado");
         btnGuardarUsuario.setBorderPainted(false);
-        btnGuardarUsuario.setCursor(new java.awt.Cursor(java.awt.Cursor.DEFAULT_CURSOR));
+        btnGuardarUsuario.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
+        btnGuardarUsuario.setFocusPainted(false);
         card.add(btnGuardarUsuario);
-        btnGuardarUsuario.setBounds(470, 490, 300, 45);
+        btnGuardarUsuario.setBounds(470, 480, 300, 42);
 
         lblTituloOLD.setFont(new java.awt.Font("Segoe UI", 1, 20)); // NOI18N
-        lblTituloOLD.setForeground(new java.awt.Color(240, 242, 255));
-        lblTituloOLD.setText("✦  Gestión de Usuarios");
+        lblTituloOLD.setForeground(new java.awt.Color(45, 74, 138));
+        lblTituloOLD.setText("Gestión de Usuarios");
         card.add(lblTituloOLD);
-        lblTituloOLD.setBounds(50, 580, 400, 30);
+        lblTituloOLD.setBounds(30, 580, 400, 30);
 
-        scrollPane.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(42, 48, 80)));
+        scrollPane.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(197, 216, 245)));
 
-        tableUsuarios.setBackground(new java.awt.Color(14, 18, 25));
-        tableUsuarios.setForeground(new java.awt.Color(240, 242, 255));
+        tableUsuarios.setForeground(new java.awt.Color(51, 51, 51));
         tableUsuarios.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
 
@@ -286,84 +321,81 @@ public class FrmNuevoUsuario extends javax.swing.JInternalFrame {
                 return canEdit [columnIndex];
             }
         });
-        tableUsuarios.setGridColor(new java.awt.Color(26, 31, 48));
-        tableUsuarios.setRowHeight(30);
-        tableUsuarios.setSelectionBackground(new java.awt.Color(108, 99, 255));
-        tableUsuarios.setSelectionForeground(new java.awt.Color(255, 255, 255));
+        tableUsuarios.setGridColor(new java.awt.Color(224, 224, 224));
+        tableUsuarios.setRowHeight(32);
+        tableUsuarios.setSelectionBackground(new java.awt.Color(197, 216, 245));
+        tableUsuarios.setSelectionForeground(new java.awt.Color(13, 32, 96));
         scrollPane.setViewportView(tableUsuarios);
 
         card.add(scrollPane);
-        scrollPane.setBounds(50, 690, 760, 280);
+        scrollPane.setBounds(30, 690, 760, 270);
 
         lblRol1.setFont(new java.awt.Font("Segoe UI", 1, 11)); // NOI18N
-        lblRol1.setForeground(new java.awt.Color(155, 163, 196));
+        lblRol1.setForeground(new java.awt.Color(45, 74, 138));
         lblRol1.setText("ROL ASIGNADO");
         card.add(lblRol1);
         lblRol1.setBounds(30, 350, 190, 18);
 
-        txtBuscador.setBackground(new java.awt.Color(24, 29, 46));
         txtBuscador.setFont(new java.awt.Font("Segoe UI", 0, 13)); // NOI18N
-        txtBuscador.setForeground(new java.awt.Color(240, 242, 255));
-        txtBuscador.setBorder(javax.swing.BorderFactory.createCompoundBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(42, 48, 80)), javax.swing.BorderFactory.createEmptyBorder(6, 12, 6, 12)));
+        txtBuscador.setForeground(new java.awt.Color(51, 51, 51));
+        txtBuscador.setBorder(javax.swing.BorderFactory.createCompoundBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(197, 216, 245)), javax.swing.BorderFactory.createEmptyBorder(6, 12, 6, 12)));
         card.add(txtBuscador);
-        txtBuscador.setBounds(100, 630, 710, 40);
+        txtBuscador.setBounds(30, 640, 760, 40);
 
-        btnVerInfo.setBackground(new java.awt.Color(204, 204, 204));
+        btnVerInfo.setBackground(new java.awt.Color(220, 230, 242));
         btnVerInfo.setFont(new java.awt.Font("Segoe UI", 1, 13)); // NOI18N
-        btnVerInfo.setForeground(new java.awt.Color(255, 255, 255));
+        btnVerInfo.setForeground(new java.awt.Color(45, 74, 138));
         btnVerInfo.setText("Ver información");
-        btnVerInfo.setBorderPainted(false);
-        btnVerInfo.setCursor(new java.awt.Cursor(java.awt.Cursor.DEFAULT_CURSOR));
+        btnVerInfo.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(197, 216, 245)));
+        btnVerInfo.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
         btnVerInfo.setFocusPainted(false);
         card.add(btnVerInfo);
-        btnVerInfo.setBounds(180, 980, 140, 36);
+        btnVerInfo.setBounds(160, 975, 140, 40);
 
-        btnEliminarUsuario.setBackground(new java.awt.Color(30, 10, 16));
+        btnEliminarUsuario.setBackground(new java.awt.Color(230, 57, 70));
         btnEliminarUsuario.setFont(new java.awt.Font("Segoe UI", 1, 13)); // NOI18N
-        btnEliminarUsuario.setForeground(new java.awt.Color(255, 91, 122));
+        btnEliminarUsuario.setForeground(new java.awt.Color(255, 255, 255));
         btnEliminarUsuario.setText("Eliminar");
-        btnEliminarUsuario.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(58, 21, 32)));
-        btnEliminarUsuario.setCursor(new java.awt.Cursor(java.awt.Cursor.DEFAULT_CURSOR));
+        btnEliminarUsuario.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(230, 57, 70)));
+        btnEliminarUsuario.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
         btnEliminarUsuario.setFocusPainted(false);
         card.add(btnEliminarUsuario);
-        btnEliminarUsuario.setBounds(50, 980, 120, 36);
+        btnEliminarUsuario.setBounds(30, 975, 120, 40);
 
-        btnActualizarUsuario.setBackground(new java.awt.Color(108, 99, 255));
+        btnActualizarUsuario.setBackground(new java.awt.Color(45, 74, 138));
         btnActualizarUsuario.setFont(new java.awt.Font("Segoe UI", 1, 13)); // NOI18N
         btnActualizarUsuario.setForeground(new java.awt.Color(255, 255, 255));
         btnActualizarUsuario.setText("Actualizar");
         btnActualizarUsuario.setBorderPainted(false);
-        btnActualizarUsuario.setCursor(new java.awt.Cursor(java.awt.Cursor.DEFAULT_CURSOR));
+        btnActualizarUsuario.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
         btnActualizarUsuario.setFocusPainted(false);
         card.add(btnActualizarUsuario);
-        btnActualizarUsuario.setBounds(150, 440, 120, 36);
+        btnActualizarUsuario.setBounds(160, 430, 120, 40);
 
-        btnLimpiar.setBackground(new java.awt.Color(204, 204, 204));
         btnLimpiar.setFont(new java.awt.Font("Segoe UI", 1, 13)); // NOI18N
-        btnLimpiar.setForeground(new java.awt.Color(255, 255, 255));
+        btnLimpiar.setForeground(new java.awt.Color(45, 74, 138));
         btnLimpiar.setText("Limpiar");
-        btnLimpiar.setBorderPainted(false);
-        btnLimpiar.setCursor(new java.awt.Cursor(java.awt.Cursor.DEFAULT_CURSOR));
+        btnLimpiar.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(197, 216, 245)));
+        btnLimpiar.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
         btnLimpiar.setFocusPainted(false);
         card.add(btnLimpiar);
-        btnLimpiar.setBounds(30, 440, 110, 36);
+        btnLimpiar.setBounds(30, 430, 120, 40);
 
-        txtPassword.setBackground(new java.awt.Color(24, 29, 46));
         txtPassword.setFont(new java.awt.Font("Segoe UI", 0, 13)); // NOI18N
-        txtPassword.setText("jPasswordField1");
-        txtPassword.setPreferredSize(new java.awt.Dimension(64, 32));
+        txtPassword.setForeground(new java.awt.Color(51, 51, 51));
+        txtPassword.setBorder(javax.swing.BorderFactory.createCompoundBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(197, 216, 245)), javax.swing.BorderFactory.createEmptyBorder(6, 12, 6, 12)));
         card.add(txtPassword);
-        txtPassword.setBounds(240, 300, 190, 40);
+        txtPassword.setBounds(240, 300, 190, 38);
 
-        btnExportar.setBackground(new java.awt.Color(51, 255, 51));
+        btnExportar.setBackground(new java.awt.Color(40, 167, 69));
         btnExportar.setFont(new java.awt.Font("Segoe UI", 1, 13)); // NOI18N
         btnExportar.setForeground(new java.awt.Color(255, 255, 255));
         btnExportar.setText("Exportar");
         btnExportar.setBorderPainted(false);
-        btnExportar.setCursor(new java.awt.Cursor(java.awt.Cursor.DEFAULT_CURSOR));
+        btnExportar.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
         btnExportar.setFocusPainted(false);
         card.add(btnExportar);
-        btnExportar.setBounds(330, 980, 90, 36);
+        btnExportar.setBounds(310, 975, 120, 40);
 
         jScrollPane1.setViewportView(card);
 
