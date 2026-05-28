@@ -10,8 +10,10 @@ import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.List;
 
 import javax.swing.JOptionPane;
+import javax.swing.SwingWorker;
 import javax.swing.table.DefaultTableModel;
 
 public class CtrlPuntoCompra implements ActionListener {
@@ -31,8 +33,69 @@ public class CtrlPuntoCompra implements ActionListener {
             new SimpleDateFormat("dd/MM/yyyy").format(new Date())
         );
         configurarTabla();
-        cargarProveedores();
-        cargarProductos();
+        
+        // Llamada a la carga asíncrona para no congelar la ventana
+        cargarDatosAsync();
+    }
+
+    // =====================================================
+    // CARGA ASÍNCRONA DE DATOS (SWING WORKER)
+    // =====================================================
+    private void cargarDatosAsync() {
+        // 1. Mostrar estado de carga y bloquear combos temporalmente
+        form.cmbProveedor.removeAllItems();
+        form.cmbProveedor.addItem("Cargando proveedores...");
+        form.cmbProveedor.setEnabled(false);
+
+        form.cmbProducto.removeAllItems();
+        form.cmbProducto.addItem("Cargando productos...");
+        form.cmbProducto.setEnabled(false);
+        
+        form.btnAgregarProducto.setEnabled(false);
+
+        // 2. Crear el hilo en segundo plano
+        SwingWorker<Void, Void> worker = new SwingWorker<Void, Void>() {
+            
+            List<String> listaProveedores;
+            List<String> listaProductos;
+
+            @Override
+            protected Void doInBackground() throws Exception {
+                // Se ejecuta sin bloquear la ventana
+                listaProveedores = dao.listarProveedoresCombo();
+                listaProductos = dao.listarProductosCombo();
+                return null;
+            }
+
+            @Override
+            protected void done() {
+                // Actualiza la interfaz gráfica una vez llegan los datos
+                try {
+                    get(); // Verifica errores
+                    
+                    form.cmbProveedor.removeAllItems();
+                    for (String p : listaProveedores) {
+                        form.cmbProveedor.addItem(p);
+                    }
+                    form.cmbProveedor.setEnabled(true);
+
+                    form.cmbProducto.removeAllItems();
+                    for (String p : listaProductos) {
+                        form.cmbProducto.addItem(p);
+                    }
+                    form.cmbProducto.setEnabled(true);
+                    
+                    form.btnAgregarProducto.setEnabled(true);
+
+                } catch (Exception ex) {
+                    System.out.println("Error en la carga asíncrona: " + ex.getMessage());
+                    JOptionPane.showMessageDialog(form, "Error al cargar los datos del sistema.");
+                }
+            }
+        };
+
+        // 3. Ejecutar el hilo
+        worker.execute();
     }
 
     private void configurarTabla() {
@@ -62,20 +125,6 @@ public class CtrlPuntoCompra implements ActionListener {
         form.tblDetalleCompra.getColumnModel().getColumn(7).setMinWidth(0);
         form.tblDetalleCompra.getColumnModel().getColumn(7).setMaxWidth(0);
         form.tblDetalleCompra.getColumnModel().getColumn(7).setWidth(0);
-    }
-
-    private void cargarProveedores() {
-        form.cmbProveedor.removeAllItems();
-        for (String p : dao.listarProveedoresCombo()) {
-            form.cmbProveedor.addItem(p);
-        }
-    }
-
-    private void cargarProductos() {
-        form.cmbProducto.removeAllItems();
-        for (String p : dao.listarProductosCombo()) {
-            form.cmbProducto.addItem(p);
-        }
     }
 
     private void asignarEventos() {
@@ -113,7 +162,10 @@ public class CtrlPuntoCompra implements ActionListener {
         // =====================================================
         if (e.getSource() == form.btnAgregarProducto) {
 
-            if (form.cmbProducto.getSelectedItem() == null) return;
+            // Evitar agregar si aún están cargando los datos
+            if (form.cmbProducto.getSelectedItem() == null || form.cmbProducto.getSelectedItem().toString().startsWith("Cargando")) {
+                return;
+            }
 
             String cantStr = form.txtCantidad.getText().trim();
             String precioStr = form.txtPrecioCompra.getText().trim();
@@ -189,7 +241,8 @@ public class CtrlPuntoCompra implements ActionListener {
                 });
             }
 
-            form.txtPrecioCompra.setText("");
+            // CORRECCIÓN: Limpiar ambos campos correctamente
+            form.txtCantidad.setText("");
             form.txtPrecioCompra.setText("");
             recalcularTotales();
         }
@@ -207,7 +260,10 @@ public class CtrlPuntoCompra implements ActionListener {
                 return;
             }
 
-            if (form.cmbProveedor.getSelectedItem() == null) return;
+            // Evitar registro si los proveedores no han cargado
+            if (form.cmbProveedor.getSelectedItem() == null || form.cmbProveedor.getSelectedItem().toString().startsWith("Cargando")) {
+                return;
+            }
 
             int idProveedor = Integer.parseInt(
                 form.cmbProveedor.getSelectedItem()
@@ -217,7 +273,6 @@ public class CtrlPuntoCompra implements ActionListener {
             boolean todaBien = true;
 
             // REGISTRAR CADA PRODUCTO POR SEPARADO
-            // (el trigger crea el lote y el kardex automáticamente)
             for (int i = 0; i < modelo.getRowCount(); i++) {
 
                 int idProducto = Integer.parseInt(
@@ -234,7 +289,7 @@ public class CtrlPuntoCompra implements ActionListener {
 
                 Compra compra = new Compra();
                 compra.setIdProveedor(idProveedor);
-                compra.setIdUsuario(3);
+                compra.setIdUsuario(3); // Ajustar al usuario de la sesión en el futuro
 
                 boolean resultado =
                     dao.registrarCompra(compra, idProducto, cantidad, precio);
@@ -309,7 +364,7 @@ public class CtrlPuntoCompra implements ActionListener {
     // =====================================================
     private void limpiarTodo() {
         ((DefaultTableModel) form.tblDetalleCompra.getModel()).setRowCount(0);
-        form.txtPrecioCompra.setText("");
+        form.txtCantidad.setText(""); 
         form.txtPrecioCompra.setText("");
         recalcularTotales();
     }

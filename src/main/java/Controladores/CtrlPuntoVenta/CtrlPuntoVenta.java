@@ -13,8 +13,10 @@ import java.awt.event.MouseEvent;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 
 import javax.swing.JOptionPane;
+import javax.swing.SwingWorker;
 import javax.swing.table.DefaultTableModel;
 
 public class CtrlPuntoVenta implements ActionListener {
@@ -51,9 +53,71 @@ public class CtrlPuntoVenta implements ActionListener {
         form.cmbDescuento.addItem("15%");
 
         configurarTabla();
-        cargarClientes();
-        cargarProductos();
+        
+        // Llamada a la carga asíncrona en lugar de bloquear el hilo principal
+        cargarDatosAsync();
+        
         actualizarEtiquetasTotales();
+    }
+
+    // =====================================================
+    // CARGA ASÍNCRONA DE DATOS (SWING WORKER)
+    // =====================================================
+    private void cargarDatosAsync() {
+        // 1. Mostrar estado de carga en la vista y bloquear los combos temporalmente
+        form.cmbCliente.removeAllItems();
+        form.cmbCliente.addItem("Cargando clientes...");
+        form.cmbCliente.setEnabled(false);
+
+        form.cmbProducto.removeAllItems();
+        form.cmbProducto.addItem("Cargando productos...");
+        form.cmbProducto.setEnabled(false);
+        
+        form.btnAgregarProducto.setEnabled(false);
+
+        // 2. Crear el hilo en segundo plano
+        SwingWorker<Void, Void> worker = new SwingWorker<Void, Void>() {
+            
+            List<String> listaClientes;
+            List<String> listaProductos;
+
+            @Override
+            protected Void doInBackground() throws Exception {
+                // Esto ocurre en segundo plano (No congela la ventana)
+                listaClientes = dao.listarClientesCombo();
+                listaProductos = dao.listarProductosCombo();
+                return null;
+            }
+
+            @Override
+            protected void done() {
+                // Esto se ejecuta cuando doInBackground termina (Actualiza la interfaz de forma segura)
+                try {
+                    get(); // Verifica si hubo errores en el proceso en segundo plano
+                    
+                    form.cmbCliente.removeAllItems();
+                    for (String c : listaClientes) {
+                        form.cmbCliente.addItem(c);
+                    }
+                    form.cmbCliente.setEnabled(true);
+
+                    form.cmbProducto.removeAllItems();
+                    for (String p : listaProductos) {
+                        form.cmbProducto.addItem(p);
+                    }
+                    form.cmbProducto.setEnabled(true);
+                    
+                    form.btnAgregarProducto.setEnabled(true);
+
+                } catch (Exception ex) {
+                    System.out.println("Error en la carga asíncrona: " + ex.getMessage());
+                    JOptionPane.showMessageDialog(form, "Error al cargar los datos del sistema.");
+                }
+            }
+        };
+
+        // 3. Ejecutar el hilo
+        worker.execute();
     }
 
     private void configurarTabla() {
@@ -104,24 +168,6 @@ public class CtrlPuntoVenta implements ActionListener {
                 .getColumnModel().getColumn(8).setMaxWidth(0);
         form.tblDetalleFactura
                 .getColumnModel().getColumn(8).setWidth(0);
-    }
-
-    private void cargarClientes() {
-
-        form.cmbCliente.removeAllItems();
-
-        for (String c : dao.listarClientesCombo()) {
-            form.cmbCliente.addItem(c);
-        }
-    }
-
-    private void cargarProductos() {
-
-        form.cmbProducto.removeAllItems();
-
-        for (String p : dao.listarProductosCombo()) {
-            form.cmbProducto.addItem(p);
-        }
     }
 
     private void asignarEventos() {
@@ -178,7 +224,7 @@ public class CtrlPuntoVenta implements ActionListener {
         // =====================================================
         if (e.getSource() == form.btnAgregarProducto) {
 
-            if (form.cmbProducto.getSelectedItem() == null) {
+            if (form.cmbProducto.getSelectedItem() == null || form.cmbProducto.getSelectedItem().toString().startsWith("Cargando")) {
                 return;
             }
 
@@ -326,7 +372,7 @@ public class CtrlPuntoVenta implements ActionListener {
                 return;
             }
 
-            if (form.cmbCliente.getSelectedItem() == null) return;
+            if (form.cmbCliente.getSelectedItem() == null || form.cmbCliente.getSelectedItem().toString().startsWith("Cargando")) return;
 
             Venta nuevaVenta = new Venta();
 
