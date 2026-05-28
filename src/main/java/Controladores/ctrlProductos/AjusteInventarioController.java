@@ -8,17 +8,10 @@ import Vistas.FrmAjusteInventario;
 import java.awt.Cursor;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
-import java.io.File;
-import java.io.FileOutputStream;
-import java.io.IOException;
-import java.io.OutputStreamWriter;
-import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
-import javax.swing.JFileChooser;
 import javax.swing.JOptionPane;
 import javax.swing.SwingWorker;
 import javax.swing.table.DefaultTableModel;
-import javax.swing.table.TableModel;
 
 public class AjusteInventarioController {
 
@@ -26,7 +19,6 @@ public class AjusteInventarioController {
     private final FrmAjusteInventario vista;
     private SwingWorker<ArrayList<LoteInventario>, Void> currentLotesWorker;
     private SwingWorker<ArrayList<Object[]>, Void> currentAjustesWorker;
-    private boolean cargandoLotes = false;
 
     public AjusteInventarioController(FrmAjusteInventario vista) {
         this.dao = new AjusteInventarioDAO();
@@ -50,7 +42,6 @@ public class AjusteInventarioController {
     private void agregarEventos() {
         vista.btnRegistrarAjuste.addActionListener(e -> registrarAjuste());
         vista.btnLimpiar.addActionListener(e -> cancelar());
-        vista.btnExportarCSV.addActionListener(e -> exportarCSV());
         vista.cboLoteProducto.addActionListener(e -> actualizarStockActual());
     }
 
@@ -77,17 +68,13 @@ public class AjusteInventarioController {
             protected void done() {
                 try {
                     ArrayList<LoteInventario> lotes = get();
-                    cargandoLotes = true;
                     vista.cboLoteProducto.removeAllItems();
                     if (lotes != null && !lotes.isEmpty()) {
                         for (LoteInventario lote : lotes) {
                             vista.cboLoteProducto.addItem(lote);
                         }
-                        vista.cboLoteProducto.setSelectedIndex(0);
-                        cargandoLotes = false;
                         actualizarStockActual();
                     } else {
-                        cargandoLotes = false;
                         vista.lblStockActual.setText("0");
                         String error = dao.getUltimoError();
                         if (error != null && !error.trim().isEmpty()) {
@@ -97,7 +84,6 @@ public class AjusteInventarioController {
                         }
                     }
                 } catch (Exception ex) {
-                    cargandoLotes = false;
                     JOptionPane.showMessageDialog(vista, "Error al cargar lotes: " + ex.getMessage());
                     ex.printStackTrace();
                 } finally {
@@ -148,10 +134,16 @@ public class AjusteInventarioController {
             vista.lblStockActual.setText("0");
             return;
         }
-
-        // Evita consultar la base de datos cada vez que se mueve el combo.
-        // Los lotes ya vienen cargados con el stock actual desde listarLotesActivos().
-        vista.lblStockActual.setText(String.valueOf(lote.getStockActual()));
+        // Esta consulta es rápida, pero si se vuelve pesada se puede poner también en worker.
+        LoteInventario loteActualizado = dao.obtenerLotePorId(lote.getIdLote());
+        if (loteActualizado != null) {
+            lote.setStockInicial(loteActualizado.getStockInicial());
+            lote.setStockActual(loteActualizado.getStockActual());
+            vista.lblStockActual.setText(String.valueOf(loteActualizado.getStockActual()));
+            vista.cboLoteProducto.repaint();
+        } else {
+            vista.lblStockActual.setText(String.valueOf(lote.getStockActual()));
+        }
     }
 
     private LoteInventario obtenerLoteSeleccionado() {
@@ -265,72 +257,6 @@ public class AjusteInventarioController {
     private void cancelar() {
         limpiarCampos();
         vista.dispose();
-    }
-
-    private void exportarCSV() {
-        if (vista.tblAjustes.getRowCount() == 0) {
-            JOptionPane.showMessageDialog(vista, "No hay ajustes para exportar.");
-            return;
-        }
-
-        JFileChooser fileChooser = new JFileChooser();
-        fileChooser.setDialogTitle("Guardar reporte de ajustes");
-        fileChooser.setSelectedFile(new File("ajustes_inventario.csv"));
-
-        int opcion = fileChooser.showSaveDialog(vista);
-        if (opcion != JFileChooser.APPROVE_OPTION) {
-            return;
-        }
-
-        File archivo = fileChooser.getSelectedFile();
-        if (!archivo.getName().toLowerCase().endsWith(".csv")) {
-            archivo = new File(archivo.getParentFile(), archivo.getName() + ".csv");
-        }
-
-        try {
-            escribirTablaCSV(archivo);
-            JOptionPane.showMessageDialog(vista, "CSV exportado correctamente:\n" + archivo.getAbsolutePath());
-        } catch (IOException ex) {
-            JOptionPane.showMessageDialog(vista,
-                    "No se pudo exportar el CSV.\nDetalle: " + ex.getMessage(),
-                    "Error al exportar", JOptionPane.ERROR_MESSAGE);
-        }
-    }
-
-    private void escribirTablaCSV(File archivo) throws IOException {
-        TableModel modelo = vista.tblAjustes.getModel();
-
-        try (OutputStreamWriter writer = new OutputStreamWriter(new FileOutputStream(archivo), StandardCharsets.UTF_8)) {
-            for (int col = 0; col < modelo.getColumnCount(); col++) {
-                writer.write(escaparCSV(modelo.getColumnName(col)));
-                if (col < modelo.getColumnCount() - 1) {
-                    writer.write(",");
-                }
-            }
-            writer.write(System.lineSeparator());
-
-            for (int fila = 0; fila < modelo.getRowCount(); fila++) {
-                for (int col = 0; col < modelo.getColumnCount(); col++) {
-                    Object valor = modelo.getValueAt(fila, col);
-                    writer.write(escaparCSV(valor == null ? "" : valor.toString()));
-                    if (col < modelo.getColumnCount() - 1) {
-                        writer.write(",");
-                    }
-                }
-                writer.write(System.lineSeparator());
-            }
-        }
-    }
-
-    private String escaparCSV(String texto) {
-        if (texto == null) {
-            return "";
-        }
-
-        boolean requiereComillas = texto.contains(",") || texto.contains("\n") || texto.contains("\r") || texto.contains("\"");
-        String textoLimpio = texto.replace("\"", "\"\"");
-
-        return requiereComillas ? "\"" + textoLimpio + "\"" : textoLimpio;
     }
 
     private void validarSoloNumeros(javax.swing.JTextField campo) {

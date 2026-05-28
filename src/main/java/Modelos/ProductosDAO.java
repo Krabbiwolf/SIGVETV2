@@ -11,7 +11,6 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
-import java.util.List;
 
 public class ProductosDAO {
     Conexion cn = new Conexion();
@@ -43,7 +42,7 @@ public class ProductosDAO {
                 producto.setCodigoBarras(rs.getString("codigo_barras"));
                 producto.setNombre(rs.getString("nombre"));
                 producto.setDescripcionTecnica(rs.getString("descripcion_tecnica"));
-                producto.setPorcentajeIvaDetalle(13.0);
+                producto.setPorcentajeIvaDetalle(rs.getDouble("porcentaje_iva_default"));
                 producto.setImagenUrl(rs.getString("imagen_url"));
                 producto.setEstado(rs.getString("estado"));
                 producto.setIdCategoria(rs.getInt("id_categoria"));
@@ -63,7 +62,7 @@ public class ProductosDAO {
             ps.setString(1, producto.getCodigoBarras());
             ps.setString(2, producto.getNombre());
             ps.setString(3, producto.getDescripcionTecnica());
-            ps.setDouble(4, 13.0);
+            ps.setDouble(4, producto.getPorcentajeIvaDetalle());
             ps.setString(5, producto.getImagenUrl());
             ps.setString(6, producto.getEstado());
             ps.setInt(7, producto.getIdCategoria());
@@ -80,7 +79,7 @@ public class ProductosDAO {
             ps.setString(1, producto.getCodigoBarras());
             ps.setString(2, producto.getNombre());
             ps.setString(3, producto.getDescripcionTecnica());
-            ps.setDouble(4, 13.0);
+            ps.setDouble(4, producto.getPorcentajeIvaDetalle());
             ps.setString(5, producto.getImagenUrl());
             ps.setString(6, producto.getEstado());
             ps.setInt(7, producto.getIdCategoria());
@@ -103,92 +102,26 @@ public class ProductosDAO {
         }
     }
 
-    public boolean eliminarProductos(List<Integer> idsProductos) {
-        if (idsProductos == null || idsProductos.isEmpty()) {
-            return false;
-        }
-        String sql = "UPDATE PRODUCTOS SET estado='Inactivo' WHERE id_producto=?";
-        Connection con = null;
-        try {
-            con = cn.conectar();
-            if (con == null) {
-                return false;
-            }
-            con.setAutoCommit(false);
-            try (PreparedStatement ps = con.prepareStatement(sql)) {
-                for (Integer id : idsProductos) {
-                    if (id == null) continue;
-                    ps.setInt(1, id);
-                    ps.addBatch();
-                }
-                int[] resultados = ps.executeBatch();
-                con.commit();
-                for (int r : resultados) {
-                    if (r > 0 || r == PreparedStatement.SUCCESS_NO_INFO) {
-                        return true;
-                    }
-                }
-                return false;
-            }
-        } catch (SQLException e) {
-            if (con != null) {
-                try { con.rollback(); } catch (SQLException ex) { ex.printStackTrace(); }
-            }
-            System.err.println("Error al eliminar productos: " + e.getMessage());
-            return false;
-        } finally {
-            if (con != null) {
-                try { con.setAutoCommit(true); con.close(); } catch (SQLException e) { e.printStackTrace(); }
-            }
-        }
-    }
-
     public ArrayList<Producto> buscarProductos(String texto) {
-        return buscarProductos(texto, "Todos");
-    }
-
-    public ArrayList<Producto> buscarProductos(String texto, String estado) {
         ArrayList<Producto> lista = new ArrayList<>();
-        StringBuilder sql = new StringBuilder();
-        sql.append("SELECT id_producto, codigo_barras, nombre, descripcion_tecnica, porcentaje_iva_default, imagen_url, estado, id_categoria ");
-        sql.append("FROM PRODUCTOS WHERE 1=1 ");
-
-        boolean filtrarTexto = texto != null && !texto.trim().isEmpty();
-        boolean filtrarEstado = estado != null && !estado.trim().isEmpty() && !estado.equalsIgnoreCase("Todos");
-
-        if (filtrarTexto) {
-            sql.append("AND (nombre LIKE ? OR codigo_barras LIKE ? OR descripcion_tecnica LIKE ?) ");
-        }
-        if (filtrarEstado) {
-            sql.append("AND estado = ? ");
-        }
-        sql.append("ORDER BY id_producto DESC");
-
-        try (Connection con = cn.conectar(); PreparedStatement ps = con.prepareStatement(sql.toString())) {
-            int parametro = 1;
-            if (filtrarTexto) {
-                String like = "%" + texto.trim() + "%";
-                ps.setString(parametro++, like);
-                ps.setString(parametro++, like);
-                ps.setString(parametro++, like);
-            }
-            if (filtrarEstado) {
-                ps.setString(parametro, estado.trim());
-            }
-
-            try (ResultSet rs = ps.executeQuery()) {
-                while (rs.next()) {
-                    Producto producto = new Producto();
-                    producto.setIdProducto(rs.getInt("id_producto"));
-                    producto.setCodigoBarras(rs.getString("codigo_barras"));
-                    producto.setNombre(rs.getString("nombre"));
-                    producto.setDescripcionTecnica(rs.getString("descripcion_tecnica"));
-                    producto.setPorcentajeIvaDetalle(13.0);
-                    producto.setImagenUrl(rs.getString("imagen_url"));
-                    producto.setEstado(rs.getString("estado"));
-                    producto.setIdCategoria(rs.getInt("id_categoria"));
-                    lista.add(producto);
-                }
+        String sql = "SELECT id_producto, codigo_barras, nombre, descripcion_tecnica, porcentaje_iva_default, imagen_url, estado, id_categoria FROM PRODUCTOS WHERE nombre LIKE ? OR codigo_barras LIKE ? OR descripcion_tecnica LIKE ? ORDER BY id_producto DESC";
+        try (Connection con = cn.conectar(); PreparedStatement ps = con.prepareStatement(sql)) {
+            String like = "%" + texto + "%";
+            ps.setString(1, like);
+            ps.setString(2, like);
+            ps.setString(3, like);
+            ResultSet rs = ps.executeQuery();
+            while (rs.next()) {
+                Producto producto = new Producto();
+                producto.setIdProducto(rs.getInt("id_producto"));
+                producto.setCodigoBarras(rs.getString("codigo_barras"));
+                producto.setNombre(rs.getString("nombre"));
+                producto.setDescripcionTecnica(rs.getString("descripcion_tecnica"));
+                producto.setPorcentajeIvaDetalle(rs.getDouble("porcentaje_iva_default"));
+                producto.setImagenUrl(rs.getString("imagen_url"));
+                producto.setEstado(rs.getString("estado"));
+                producto.setIdCategoria(rs.getInt("id_categoria"));
+                lista.add(producto);
             }
         } catch (SQLException e) {
             System.err.println("Error al buscar productos: " + e.getMessage());

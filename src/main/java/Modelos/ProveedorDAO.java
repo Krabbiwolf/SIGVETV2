@@ -1,3 +1,7 @@
+/*
+ * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
+ * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
+ */
 package Modelos;
 
 import Conexion.Conexion;
@@ -7,6 +11,10 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 
+/**
+ *
+ * @author ASUS
+ */
 public class ProveedorDAO {
 
     Conexion con = new Conexion();
@@ -14,8 +22,7 @@ public class ProveedorDAO {
     private ResultSet rs;
 
     public boolean registrar(Proveedor proveedor) {
-        // Se agregaron 'estado' y 'ruta_imagen' a la consulta de inserción
-        String sql = "INSERT INTO PROVEEDORES (nombre_empresa, telefono, estado, ruta_imagen) VALUES(?,?,?,?);";
+        String sql = "INSERT INTO PROVEEDORES (nombre_empresa,telefono) VALUES(?,?);";
 
         Connection conexion = con.conectar();
 
@@ -23,23 +30,23 @@ public class ProveedorDAO {
             ps = conexion.prepareStatement(sql);
             ps.setString(1, proveedor.getNombre());
             ps.setString(2, proveedor.getTelefono());
-            ps.setString(3, proveedor.getEstado());
-            ps.setString(4, proveedor.getRutaImagen()); // Nuevo campo para la imagen
 
             int filasAfectadas = ps.executeUpdate();
             return filasAfectadas > 0;
 
         } catch (SQLException e) {
-            System.out.println("Error al registrar proveedor: " + e.getMessage());
+            System.out.println("Error al registrar cuenta: " + e.getMessage());
             return false;
         }
     }
 
+    
     public boolean existeProveedor(String nombre) {
+        
         String sql = "SELECT id_proveedor FROM PROVEEDORES WHERE nombre_empresa = ?";
 
         try (Connection conexion = con.conectar(); 
-             PreparedStatement ps = conexion.prepareStatement(sql)) {
+                PreparedStatement ps = conexion.prepareStatement(sql)) {
 
             ps.setString(1, nombre);
 
@@ -52,97 +59,77 @@ public class ProveedorDAO {
             return false;
         }
     }
-
-    public ArrayList<Proveedor> listar() {
-        ArrayList<Proveedor> proveedores = new ArrayList<>();
-        String sql = "SELECT * FROM PROVEEDORES ORDER BY estado";
+    
+    public ArrayList<Proveedor> listar(){
+        ArrayList<Proveedor> proveedores=new ArrayList<>();
+        String sql="SELECT * FROM PROVEEDORES ORDER BY estado";
         Connection conexion = con.conectar();
-
-        try {
-            ps = conexion.prepareStatement(sql);
-            rs = ps.executeQuery();
-
-            while (rs.next()) {
-                Proveedor proveedor = new Proveedor();
+        
+        try{
+            ps=conexion.prepareStatement(sql);
+            rs=ps.executeQuery();
+            
+            while(rs.next()){
+                Proveedor proveedor =new Proveedor();
                 proveedor.setId(rs.getInt("id_proveedor"));
                 proveedor.setNombre(rs.getString("nombre_empresa"));
                 proveedor.setTelefono(rs.getString("telefono"));
                 proveedor.setEstado(rs.getString("estado"));
                 
-                // Se recupera la ruta de la imagen desde la base de datos
-                proveedor.setRutaImagen(rs.getString("ruta_imagen")); 
-
                 proveedores.add(proveedor);
             }
-        } catch (SQLException e) {
+        }catch(SQLException e){
             System.out.println("Error al listar proveedores: " + e.getMessage());
         }
-
-        return proveedores;
+        
+        return  proveedores;
     }
-
-    public boolean eliminar(int id) {
-        String sql = "DELETE FROM PROVEEDORES WHERE id_proveedor=?";
-
+    
+    public boolean eliminar(int id){
+        String sql="DELETE FROM PROVEEDORES WHERE id_proveedor=?";
+        
         Connection conexion = con.conectar();
-
-        try {
-            ps = conexion.prepareStatement(sql);
+        
+        try{
+            ps=conexion.prepareStatement(sql);
             ps.setInt(1, id);
-            int filasAfectadas = ps.executeUpdate();
-
+            int filasAfectadas=ps.executeUpdate();
+         
             if (filasAfectadas > 0) {
                 return true;
             } else {
                 return false;
             }
-
-        } catch (SQLException e) {
+            
+        }catch(SQLException e){
             System.out.println("Error al eliminar proveedor: " + e.getMessage());
         }
         return false;
     }
-
-    public boolean actualizar(Proveedor p) {
-        // Se agregó 'ruta_imagen' a la consulta de actualización
-        String sql = "UPDATE PROVEEDORES SET nombre_empresa=?, telefono=?, estado=?, ruta_imagen=? WHERE id_proveedor=?";
-
+    
+    public boolean actualizar(Proveedor p){
+        String sql="UPDATE PROVEEDORES SET nombre_empresa=?,telefono=?,estado=? WHERE id_proveedor=?";
+        
         Connection conexion = con.conectar();
-
-        try {
-            ps = conexion.prepareStatement(sql);
+        
+        try{
+            ps=conexion.prepareStatement(sql);
             ps.setString(1, p.getNombre());
-            ps.setString(2, p.getTelefono());
-            ps.setString(3, p.getEstado());
-            ps.setString(4, p.getRutaImagen()); // Nuevo campo para actualizar la imagen
-            ps.setInt(5, p.getId());
-            
-            int filasAfectadas = ps.executeUpdate();
-
+            ps.setString(2,p.getTelefono());
+            ps.setString(3,p.getEstado());
+            ps.setInt(4,p.getId());
+            int filasAfectadas=ps.executeUpdate();
+         
             if (filasAfectadas > 0) {
                 return true;
             } else {
                 return false;
             }
-
-        } catch (SQLException e) {
+            
+        }catch(SQLException e){
             System.out.println("Error al actualizar proveedor: " + e.getMessage());
         }
         return false;
     }
-    
-    // Agrégalo dentro de tu ProveedorDAO.java
-    public boolean inactivar(int id) {
-        String sql = "UPDATE PROVEEDORES SET estado = 'INACTIVO' WHERE id_proveedor = ?";
-        Connection conexion = con.conectar();
-        try {
-            ps = conexion.prepareStatement(sql);
-            ps.setInt(1, id);
-            int filasAfectadas = ps.executeUpdate();
-            return filasAfectadas > 0;
-        } catch (SQLException e) {
-            System.out.println("Error al inactivar proveedor: " + e.getMessage());
-            return false;
-        }
-    }
+
 }

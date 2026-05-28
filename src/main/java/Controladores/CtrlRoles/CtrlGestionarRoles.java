@@ -36,41 +36,12 @@ public class CtrlGestionarRoles implements ActionListener {
     public void limpiarCampos() {
         form.txtRol.setText("");
         form.txtDescripcion.setText("");
-        
-        // Limpiar Módulo Usuarios
-        form.checkVerUsuarios.setSelected(false);
-        form.checkGestionUsuarios.setSelected(false);
-        form.checkExportarUsuarios.setSelected(false);
-
-        // Limpiar Módulo Productos
-        form.checkVerProductos.setSelected(false);
-        form.checkGestionProductos.setSelected(false);
-        form.checkExportarProductos.setSelected(false);
-
-        // Limpiar Módulo Ventas
-        form.checkVerVentas.setSelected(false);
+        form.checkGestionProductoProveedor.setSelected(false);
         form.checkRegistroCompraVenta.setSelected(false);
-        form.checkExportarVentas.setSelected(false);
-
-        // Limpiar Módulo Compras
-        form.checkVerCompras.setSelected(false);
-        form.checkGestionCompra.setSelected(false);
-        form.checkExportarCompras.setSelected(false);
-
-        // Limpiar Módulo Lotes
-        form.checkVerLotes.setSelected(false);
-        form.checkGestionLotes.setSelected(false);
-        form.checkExportarLotes.setSelected(false);
-
-        // Limpiar Módulo Terceros
-        form.checkVerTerceros.setSelected(false);
-        form.checkGestionTerceros.setSelected(false);
-        form.checkExportarTerceros.setSelected(false);
-
-        // Limpiar Módulo Reportes
-        form.checkVerReportes.setSelected(false);
-        form.checkGestionReportes.setSelected(false);
-        form.checkExportarReportes.setSelected(false);
+        form.checkGestionUsuarios.setSelected(false);
+        form.checkVerProductoProveedor.setSelected(false);
+        form.checkVerCompraVenta.setSelected(false);
+        form.checkVerUsuarios.setSelected(false);
     }
 
     // ================== CARGA ASÍNCRONA DE ROLES ==================
@@ -121,44 +92,27 @@ public class CtrlGestionarRoles implements ActionListener {
                 rol.setDescripcion(descripcion);
 
                 ArrayList<String> permisos = new ArrayList<>();
-                
-                // --- Módulo Usuarios ---
-                if(form.checkVerUsuarios.isSelected()) permisos.add("LECTURA_USUARIOS");
-                if(form.checkGestionUsuarios.isSelected()) permisos.add("EDICION_USUARIOS");
-                if(form.checkExportarUsuarios.isSelected()) permisos.add("EXPORTAR_USUARIOS");
-
-                // --- Módulo Productos ---
-                if(form.checkVerProductos.isSelected()) permisos.add("LECTURA_PRODUCTOS");
-                if(form.checkGestionProductos.isSelected()) permisos.add("EDICION_PRODUCTOS");
-                if(form.checkExportarProductos.isSelected()) permisos.add("EXPORTAR_PRODUCTOS");
-
-                // --- Módulo Ventas ---
-                if(form.checkVerVentas.isSelected()) permisos.add("LECTURA_VENTAS");
-                if(form.checkRegistroCompraVenta.isSelected()) permisos.add("EDICION_VENTAS");
-                if(form.checkExportarVentas.isSelected()) permisos.add("EXPORTAR_VENTAS");
-
-                // --- Módulo Compras ---
-                if(form.checkVerCompras.isSelected()) permisos.add("LECTURA_COMPRAS");
-                if(form.checkGestionCompra.isSelected()) permisos.add("EDICION_COMPRAS");
-                if(form.checkExportarCompras.isSelected()) permisos.add("EXPORTAR_COMPRAS");
-
-                // --- Módulo Lotes ---
-                if(form.checkVerLotes.isSelected()) permisos.add("LECTURA_LOTES");
-                if(form.checkGestionLotes.isSelected()) permisos.add("EDICION_LOTES");
-                if(form.checkExportarLotes.isSelected()) permisos.add("EXPORTAR_LOTES");
-
-                // --- Módulo Terceros ---
-                if(form.checkVerTerceros.isSelected()) permisos.add("LECTURA_TERCEROS");
-                if(form.checkGestionTerceros.isSelected()) permisos.add("EDICION_TERCEROS");
-                if(form.checkExportarTerceros.isSelected()) permisos.add("EXPORTAR_TERCEROS");
-
-                // --- Módulo Reportes ---
-                if(form.checkVerReportes.isSelected()) permisos.add("LECTURA_REPORTES");
-                if(form.checkGestionReportes.isSelected()) permisos.add("EDICION_REPORTES");
-                if(form.checkExportarReportes.isSelected()) permisos.add("EXPORTAR_REPORTES");
+                if (form.checkGestionProductoProveedor.isSelected()) {
+                    permisos.add("Gestion Productos y Proveedores");
+                }
+                if (form.checkRegistroCompraVenta.isSelected()) {
+                    permisos.add("Registro Compra y Ventas");
+                }
+                if (form.checkGestionUsuarios.isSelected()) {
+                    permisos.add("Gestion Usuarios");
+                }
+                if (form.checkVerProductoProveedor.isSelected()) {
+                    permisos.add("Ver Productos y Proveedores");
+                }
+                if (form.checkVerCompraVenta.isSelected()) {
+                    permisos.add("Ver Compra y Ventas");
+                }
+                if (form.checkVerUsuarios.isSelected()) {
+                    permisos.add("Ver Usuarios");
+                }
 
                 if (permisos.isEmpty()) {
-                    JOptionPane.showMessageDialog(null, "Debe asignar al menos un permiso al rol.");
+                    JOptionPane.showMessageDialog(null, "Debe seleccionar al menos un permiso.");
                     return;
                 }
 

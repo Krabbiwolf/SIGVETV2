@@ -2,7 +2,7 @@ package Controladores;
 
 import Modelos.Cliente;
 import Modelos.ClienteDAO;
-import Vistas.FrmGestionarClientes;
+import Vistas.GestionarClientes;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyAdapter;
@@ -25,10 +25,10 @@ import javax.swing.table.TableRowSorter;
 public class CtrlGestionarClientes implements ActionListener {
 
     private final ClienteDAO clienteDAO;
-    private final FrmGestionarClientes form;
+    private final GestionarClientes form;
     private SwingWorker<ArrayList<Cliente>, Void> currentWorker;
 
-    public CtrlGestionarClientes(Cliente cliente, ClienteDAO clienteDAO, FrmGestionarClientes form) {
+    public CtrlGestionarClientes(Cliente cliente, ClienteDAO clienteDAO, GestionarClientes form) {
         this.clienteDAO = clienteDAO;
         this.form = form;
 

@@ -2,29 +2,6 @@
 
 <Form version="1.3" maxVersion="1.9" type="org.netbeans.modules.form.forminfo.JFrameFormInfo">
   <NonVisualComponents>
-    <Component class="javax.swing.JMenuItem" name="jMenuItem1">
-      <Properties>
-        <Property name="text" type="java.lang.String" value="jMenuItem1"/>
-      </Properties>
-    </Component>
-    <Container class="javax.swing.JMenuBar" name="jMenuBar1">
-
-      <Layout class="org.netbeans.modules.form.compat2.layouts.DesignAbsoluteLayout">
-        <Property name="useNullLayout" type="boolean" value="true"/>
-      </Layout>
-      <SubComponents>
-        <Menu class="javax.swing.JMenu" name="jMenu1">
-          <Properties>
-            <Property name="text" type="java.lang.String" value="File"/>
-          </Properties>
-        </Menu>
-        <Menu class="javax.swing.JMenu" name="jMenu2">
-          <Properties>
-            <Property name="text" type="java.lang.String" value="Edit"/>
-          </Properties>
-        </Menu>
-      </SubComponents>
-    </Container>
     <Menu class="javax.swing.JMenuBar" name="menuBar">
       <SubComponents>
         <Menu class="javax.swing.JMenu" name="menuArchivo">
@@ -44,23 +21,23 @@
         </Menu>
         <Menu class="javax.swing.JMenu" name="menuProveedores">
           <Properties>
-            <Property name="text" type="java.lang.String" value="Terceros"/>
+            <Property name="text" type="java.lang.String" value="Proveedores"/>
           </Properties>
           <SubComponents>
+            <MenuItem class="javax.swing.JMenuItem" name="itemNuevoProveedor">
+              <Properties>
+                <Property name="text" type="java.lang.String" value="Nuevo Proveedor"/>
+              </Properties>
+              <Events>
+                <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="itemNuevoProveedorActionPerformed"/>
+              </Events>
+            </MenuItem>
             <MenuItem class="javax.swing.JMenuItem" name="itemGestionarProveedores">
               <Properties>
                 <Property name="text" type="java.lang.String" value="Gestionar Proveedores"/>
               </Properties>
               <Events>
                 <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="itemGestionarProveedoresActionPerformed"/>
-              </Events>
-            </MenuItem>
-            <MenuItem class="javax.swing.JMenuItem" name="itemGestionarClientes">
-              <Properties>
-                <Property name="text" type="java.lang.String" value="Gestionar Clientes"/>
-              </Properties>
-              <Events>
-                <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="itemGestionarClientesActionPerformed"/>
               </Events>
             </MenuItem>
           </SubComponents>
@@ -70,6 +47,14 @@
             <Property name="text" type="java.lang.String" value="Productos"/>
           </Properties>
           <SubComponents>
+            <MenuItem class="javax.swing.JMenuItem" name="itemNuevoProducto">
+              <Properties>
+                <Property name="text" type="java.lang.String" value="Nuevo Producto"/>
+              </Properties>
+              <Events>
+                <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="itemNuevoProductoActionPerformed"/>
+              </Events>
+            </MenuItem>
             <MenuItem class="javax.swing.JMenuItem" name="itemGestionarProductos">
               <Properties>
                 <Property name="text" type="java.lang.String" value="Gestionar Productos"/>
@@ -104,6 +89,21 @@
             </MenuItem>
           </SubComponents>
         </Menu>
+        <Menu class="javax.swing.JMenu" name="menuClientes">
+          <Properties>
+            <Property name="text" type="java.lang.String" value="Clientes"/>
+          </Properties>
+          <SubComponents>
+            <MenuItem class="javax.swing.JMenuItem" name="itemGestionarClientes">
+              <Properties>
+                <Property name="text" type="java.lang.String" value="Gestionar Clientes"/>
+              </Properties>
+              <Events>
+                <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="itemGestionarClientesActionPerformed"/>
+              </Events>
+            </MenuItem>
+          </SubComponents>
+        </Menu>
         <Menu class="javax.swing.JMenu" name="menuUsuarios">
           <Properties>
             <Property name="text" type="java.lang.String" value="Usuarios y Permisos"/>
@@ -115,6 +115,14 @@
               </Properties>
               <Events>
                 <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="itemNuevoUsuarioActionPerformed"/>
+              </Events>
+            </MenuItem>
+            <MenuItem class="javax.swing.JMenuItem" name="itemGestionarUsuarios">
+              <Properties>
+                <Property name="text" type="java.lang.String" value="Gestionar Usuarios"/>
+              </Properties>
+              <Events>
+                <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="itemGestionarUsuariosActionPerformed"/>
               </Events>
             </MenuItem>
             <MenuItem class="javax.swing.JMenuItem" name="itemRoles">
@@ -188,45 +196,6 @@
             </MenuItem>
           </SubComponents>
         </Menu>
-        <Menu class="javax.swing.JMenu" name="jMenu3">
-          <Properties>
-            <Property name="text" type="java.lang.String" value="Maestros-Detalle"/>
-          </Properties>
-          <SubComponents>
-            <MenuItem class="javax.swing.JMenuItem" name="jMenuItem3">
-              <Properties>
-                <Property name="text" type="java.lang.String" value="Clientes-Ventas"/>
-              </Properties>
-              <Events>
-                <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="jMenuItem3ActionPerformed"/>
-              </Events>
-            </MenuItem>
-            <MenuItem class="javax.swing.JMenuItem" name="jMenuItem5">
-              <Properties>
-                <Property name="text" type="java.lang.String" value="Proveedores-Compras"/>
-              </Properties>
-              <Events>
-                <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="jMenuItem5ActionPerformed"/>
-              </Events>
-            </MenuItem>
-            <MenuItem class="javax.swing.JMenuItem" name="jMenuItem4">
-              <Properties>
-                <Property name="text" type="java.lang.String" value="Productos-Lotes"/>
-              </Properties>
-              <Events>
-                <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="jMenuItem4ActionPerformed"/>
-              </Events>
-            </MenuItem>
-            <MenuItem class="javax.swing.JMenuItem" name="jMenuItem2">
-              <Properties>
-                <Property name="text" type="java.lang.String" value="Categorias-Productos"/>
-              </Properties>
-              <Events>
-                <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="jMenuItem2ActionPerformed"/>
-              </Events>
-            </MenuItem>
-          </SubComponents>
-        </Menu>
       </SubComponents>
     </Menu>
   </NonVisualComponents>
@@ -256,7 +225,7 @@
     <Container class="javax.swing.JDesktopPane" name="desktopPane">
       <Properties>
         <Property name="background" type="java.awt.Color" editor="org.netbeans.beaninfo.editors.ColorEditor">
-          <Color blue="f8" green="f4" red="f0" type="rgb"/>
+          <Color blue="10" green="c" red="a" type="rgb"/>
         </Property>
       </Properties>
       <Constraints>

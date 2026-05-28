@@ -34,7 +34,7 @@ public class FrmGestionarUsuarios extends javax.swing.JInternalFrame {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
-        lblTituloOLD = new javax.swing.JLabel();
+        lblTitulo = new javax.swing.JLabel();
         scrollPane = new javax.swing.JScrollPane();
         tableUsuarios = new javax.swing.JTable();
         lblContraseña = new javax.swing.JLabel();
@@ -55,11 +55,11 @@ public class FrmGestionarUsuarios extends javax.swing.JInternalFrame {
         setPreferredSize(new java.awt.Dimension(820, 560));
         getContentPane().setLayout(null);
 
-        lblTituloOLD.setFont(new java.awt.Font("Segoe UI", 1, 20)); // NOI18N
-        lblTituloOLD.setForeground(new java.awt.Color(240, 242, 255));
-        lblTituloOLD.setText("✦  Gestión de Usuarios");
-        getContentPane().add(lblTituloOLD);
-        lblTituloOLD.setBounds(20, 15, 400, 30);
+        lblTitulo.setFont(new java.awt.Font("Segoe UI", 1, 20)); // NOI18N
+        lblTitulo.setForeground(new java.awt.Color(240, 242, 255));
+        lblTitulo.setText("✦  Gestión de Usuarios");
+        getContentPane().add(lblTitulo);
+        lblTitulo.setBounds(20, 15, 400, 30);
 
         scrollPane.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(42, 48, 80)));
 
@@ -134,7 +134,7 @@ public class FrmGestionarUsuarios extends javax.swing.JInternalFrame {
         btnActualizarUsuario.setForeground(new java.awt.Color(255, 255, 255));
         btnActualizarUsuario.setText("Actualizar");
         btnActualizarUsuario.setBorderPainted(false);
-        btnActualizarUsuario.setCursor(new java.awt.Cursor(java.awt.Cursor.DEFAULT_CURSOR));
+        btnActualizarUsuario.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
         btnActualizarUsuario.setFocusPainted(false);
         getContentPane().add(btnActualizarUsuario);
         btnActualizarUsuario.setBounds(20, 420, 120, 36);
@@ -144,7 +144,7 @@ public class FrmGestionarUsuarios extends javax.swing.JInternalFrame {
         btnEliminarUsuario.setForeground(new java.awt.Color(255, 91, 122));
         btnEliminarUsuario.setText("Eliminar");
         btnEliminarUsuario.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(58, 21, 32)));
-        btnEliminarUsuario.setCursor(new java.awt.Cursor(java.awt.Cursor.DEFAULT_CURSOR));
+        btnEliminarUsuario.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
         btnEliminarUsuario.setFocusPainted(false);
         getContentPane().add(btnEliminarUsuario);
         btnEliminarUsuario.setBounds(154, 420, 120, 36);
@@ -160,7 +160,7 @@ public class FrmGestionarUsuarios extends javax.swing.JInternalFrame {
     private javax.swing.JLabel lblContraseña;
     private javax.swing.JLabel lblEstado;
     private javax.swing.JLabel lblTelefono;
-    private javax.swing.JLabel lblTituloOLD;
+    private javax.swing.JLabel lblTitulo;
     private javax.swing.JScrollPane scrollPane;
     public static javax.swing.JTable tableUsuarios;
     public javax.swing.JTextField txtNuevaPassword;

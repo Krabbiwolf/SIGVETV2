@@ -2,7 +2,7 @@ package Controladores;
 
 import Modelos.Categoria;
 import Modelos.CategoriaDAO;
-import Vistas.FrmGestionarCategorias;
+import Vistas.GestionarCategorias;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyAdapter;
@@ -25,10 +25,10 @@ import javax.swing.table.TableRowSorter;
 public class CtrlGestionarCategoria implements ActionListener {
 
     private final CategoriaDAO dao;
-    private final FrmGestionarCategorias form;
+    private final GestionarCategorias form;
     private SwingWorker<ArrayList<Categoria>, Void> currentWorker;
 
-    public CtrlGestionarCategoria(Categoria c, CategoriaDAO dao, FrmGestionarCategorias form) {
+    public CtrlGestionarCategoria(Categoria c, CategoriaDAO dao, GestionarCategorias form) {
         this.dao = dao;
         this.form = form;
 

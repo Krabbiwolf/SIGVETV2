@@ -22,7 +22,7 @@ public class UsuarioDAO {
     private ResultSet rs;
 
     public boolean registrarUsuario(Usuario usuario) {
-        String sql = "INSERT INTO USUARIOS (nombre,apellido,dui,telefono,username,password,imagen_url,id_rol) VALUES(?,?,?,?,?,MD5(?),?,?);";
+        String sql = "INSERT INTO USUARIOS (nombre,apellido,dui,telefono,username,password,imagen_url,id_rol) VALUES(?,?,?,?,?,?,?,?);";
 
         Connection conexion = con.conectar();
 
@@ -100,22 +100,16 @@ public class UsuarioDAO {
     }
     
     public boolean actualizarUsuario(Usuario usuario){
-        String sql="UPDATE USUARIOS SET nombre=?,apellido=?,dui=?,telefono=?,username=?,password=MD5(?),imagen_url=?,estado=?,id_rol=? WHERE id_usuario = ?";
+        String sql="UPDATE USUARIOS SET telefono=?,password=?,estado=? WHERE id_usuario = ?";
         
         Connection conexion = con.conectar();
         
         try{
             ps=conexion.prepareStatement(sql);
-            ps.setString(1, usuario.getNombre());
-            ps.setString(2, usuario.getApellido());
-            ps.setString(3, usuario.getDui());
-            ps.setString(4, usuario.getTelefono());
-            ps.setString(5, usuario.getUsuario());
-            ps.setString(6, usuario.getPassword());
-            ps.setString(7, usuario.getImagenURL());
-            ps.setString(8, usuario.getEstado());
-            ps.setInt(9, usuario.getIdRol());
-            ps.setInt(10, usuario.getIdUsuario());
+            ps.setString(1, usuario.getTelefono());
+            ps.setString(2, usuario.getPassword());
+            ps.setString(3, usuario.getEstado());
+            ps.setInt(4, usuario.getIdUsuario());
             
             int filasAfectadas=ps.executeUpdate();
          
@@ -134,7 +128,7 @@ public class UsuarioDAO {
 public Usuario login(String user, String pass) {
     String sql = "SELECT u.*, r.nombre_cargo FROM USUARIOS u "
                + "INNER JOIN ROLES r ON u.id_rol = r.id_rol "
-               + "WHERE u.username = ? AND u.password = MD5(?) AND u.estado = 'ACTIVO'";
+               + "WHERE u.username = ? AND u.password = ? AND u.estado = 'ACTIVO'";
     Connection conexion = con.conectar();
     try {
         PreparedStatement ps = conexion.prepareStatement(sql);
