@@ -1,10 +1,16 @@
 package Controladores.CtrlMaestroDetalle;
 
 import Modelos.MaestroDetalleDAO;
-import Modelos.SesionUsuario;
 import Vistas.MaestroDetalleVista;
 import java.awt.Component;
 import java.awt.event.ActionEvent;
+import javax.swing.filechooser.FileNameExtensionFilter;
+import javax.swing.JFileChooser;
+import java.nio.charset.StandardCharsets;
+import java.io.OutputStreamWriter;
+import java.io.FileOutputStream;
+import java.io.File;
+import java.io.BufferedWriter;
 import java.util.concurrent.CancellationException;
 import javax.swing.JOptionPane;
 import javax.swing.JTable;
@@ -28,7 +34,7 @@ public class CtrlMaestroDetalle {
         this.dao = dao;
         configurarTitulos();
         configurarEventos();
-        cargarMaestro();                
+        cargarMaestro();
     }
 
     private void configurarTitulos() {
@@ -83,6 +89,7 @@ public class CtrlMaestroDetalle {
             vista.getTxtBuscar().setText("");
             cargarMaestro();
         });
+        vista.getBtnExportarCSV().addActionListener((ActionEvent e) -> exportarMaestroDetalleCSV());
         vista.getTxtBuscar().addActionListener((ActionEvent e) -> cargarMaestro());
 
         vista.getTblMaestro().getSelectionModel().addListSelectionListener((ListSelectionEvent e) -> {
@@ -92,9 +99,6 @@ public class CtrlMaestroDetalle {
         });
     }
 
-    // =========================================================================
-    // CARGA ASÍNCRONA DEL MAESTRO CON FEEDBACK VISUAL
-    // =========================================================================
     private void cargarMaestro() {
         cancelarWorker(maestroWorker);
         cancelarWorker(detalleWorker);
@@ -103,22 +107,9 @@ public class CtrlMaestroDetalle {
         final String tipo = vista.getTipo();
 
         cargando = true;
-        
-        // 1. Bloquear controles y mostrar estado de carga
-        vista.getBtnBuscar().setEnabled(false);
-        vista.getBtnActualizar().setEnabled(false);
-        vista.getBtnLimpiar().setEnabled(false);
-        vista.getTxtBuscar().setEnabled(false);
-        
+        limpiarTabla(vista.getTblMaestro());
         limpiarTabla(vista.getTblDetalle());
-        
-        DefaultTableModel modeloCargando = new DefaultTableModel(
-            new Object[][]{{"Cargando registros, por favor espere..."}}, 
-            new String[]{"Estado del Sistema"}
-        );
-        vista.getTblMaestro().setModel(modeloCargando);
-        
-        vista.getLblInfo().setText("Buscando información en la base de datos...");
+        vista.getLblInfo().setText("Selecciona un registro maestro para ver su detalle.");
 
         maestroWorker = new SwingWorker<DefaultTableModel, Void>() {
             @Override
@@ -142,16 +133,11 @@ public class CtrlMaestroDetalle {
                         cargarDetalle();
                     }
                 } catch (CancellationException ex) {
-                    // Cancelado por nueva búsqueda
+                    // La carga anterior se canceló porque el usuario hizo otra búsqueda.
                 } catch (Exception ex) {
                     cargando = false;
                     JOptionPane.showMessageDialog(obtenerComponenteVista(), "Error al cargar maestro: " + ex.getMessage());
                 } finally {
-                    // 2. Liberar controles al terminar
-                    vista.getBtnBuscar().setEnabled(true);
-                    vista.getBtnActualizar().setEnabled(true);
-                    vista.getBtnLimpiar().setEnabled(true);
-                    vista.getTxtBuscar().setEnabled(true);
                     maestroWorker = null;
                 }
             }
@@ -175,9 +161,6 @@ public class CtrlMaestroDetalle {
         }
     }
 
-    // =========================================================================
-    // CARGA ASÍNCRONA DEL DETALLE CON FEEDBACK VISUAL
-    // =========================================================================
     private void cargarDetalle() {
         int filaVista = vista.getTblMaestro().getSelectedRow();
         if (filaVista < 0 || vista.getTblMaestro().getColumnCount() == 0) {
@@ -196,13 +179,8 @@ public class CtrlMaestroDetalle {
         final String tipo = vista.getTipo();
         final int idMaestro = id;
 
-        // 1. Mostrar estado de carga en la tabla detalle
-        DefaultTableModel modeloCargandoDetalle = new DefaultTableModel(
-            new Object[][]{{"Cargando detalles..."}}, 
-            new String[]{"Estado"}
-        );
-        vista.getTblDetalle().setModel(modeloCargandoDetalle);
-        vista.getLblInfo().setText("Obteniendo los detalles del registro seleccionado...");
+        limpiarTabla(vista.getTblDetalle());
+        vista.getLblInfo().setText("Selecciona un registro maestro para ver su detalle.");
 
         detalleWorker = new SwingWorker<DefaultTableModel, Void>() {
             @Override
@@ -219,7 +197,7 @@ public class CtrlMaestroDetalle {
                     vista.getLblInfo().setText("Detalle cargado para el ID maestro: " + idMaestro
                             + " | Registros encontrados: " + detalle.getRowCount());
                 } catch (CancellationException ex) {
-                    // Cancelado por nueva selección
+                    // La carga anterior se canceló porque el usuario seleccionó otro registro.
                 } catch (Exception ex) {
                     JOptionPane.showMessageDialog(obtenerComponenteVista(), "Error al cargar detalle: " + ex.getMessage());
                 } finally {
@@ -244,6 +222,140 @@ public class CtrlMaestroDetalle {
             default:
                 return new DefaultTableModel();
         }
+    }
+
+
+    private void exportarMaestroDetalleCSV() {
+        JTable tablaMaestro = vista.getTblMaestro();
+        JTable tablaDetalle = vista.getTblDetalle();
+
+        if ((tablaMaestro.getRowCount() == 0 && tablaDetalle.getRowCount() == 0)
+                || (tablaMaestro.getColumnCount() == 0 && tablaDetalle.getColumnCount() == 0)) {
+            JOptionPane.showMessageDialog(obtenerComponenteVista(),
+                    "No hay datos cargados para exportar a CSV.",
+                    "Exportar CSV",
+                    JOptionPane.WARNING_MESSAGE);
+            return;
+        }
+
+        JFileChooser selector = new JFileChooser();
+        selector.setDialogTitle("Guardar reporte Maestro-Detalle en CSV");
+        selector.setFileFilter(new FileNameExtensionFilter("Archivo CSV (*.csv)", "csv"));
+        selector.setSelectedFile(new File(nombreArchivoCSV()));
+
+        int opcion = selector.showSaveDialog(obtenerComponenteVista());
+        if (opcion != JFileChooser.APPROVE_OPTION) {
+            return;
+        }
+
+        File archivo = asegurarExtensionCSV(selector.getSelectedFile());
+        if (archivo.exists()) {
+            int confirmar = JOptionPane.showConfirmDialog(obtenerComponenteVista(),
+                    "El archivo ya existe. ¿Deseas reemplazarlo?",
+                    "Confirmar reemplazo",
+                    JOptionPane.YES_NO_OPTION,
+                    JOptionPane.QUESTION_MESSAGE);
+            if (confirmar != JOptionPane.YES_OPTION) {
+                return;
+            }
+        }
+
+        try (BufferedWriter bw = new BufferedWriter(new OutputStreamWriter(
+                new FileOutputStream(archivo), StandardCharsets.UTF_8))) {
+            bw.write('\ufeff');
+            bw.write("REPORTE MAESTRO-DETALLE");
+            bw.newLine();
+            bw.write("Vista;" + escaparCSV(tituloVista()));
+            bw.newLine();
+            bw.newLine();
+
+            escribirTablaCSV(bw, "MAESTRO", tablaMaestro);
+            bw.newLine();
+            escribirTablaCSV(bw, "DETALLE", tablaDetalle);
+
+            JOptionPane.showMessageDialog(obtenerComponenteVista(),
+                    "CSV exportado correctamente:\n" + archivo.getAbsolutePath(),
+                    "Exportar CSV",
+                    JOptionPane.INFORMATION_MESSAGE);
+        } catch (Exception ex) {
+            JOptionPane.showMessageDialog(obtenerComponenteVista(),
+                    "Error al exportar CSV: " + ex.getMessage(),
+                    "Exportar CSV",
+                    JOptionPane.ERROR_MESSAGE);
+        }
+    }
+
+    private void escribirTablaCSV(BufferedWriter bw, String titulo, JTable tabla) throws Exception {
+        bw.write(titulo);
+        bw.newLine();
+
+        if (tabla.getColumnCount() == 0) {
+            bw.write("Sin columnas");
+            bw.newLine();
+            return;
+        }
+
+        for (int col = 0; col < tabla.getColumnCount(); col++) {
+            if (col > 0) {
+                bw.write(';');
+            }
+            bw.write(escaparCSV(tabla.getColumnName(col)));
+        }
+        bw.newLine();
+
+        if (tabla.getRowCount() == 0) {
+            bw.write("Sin datos");
+            bw.newLine();
+            return;
+        }
+
+        for (int fila = 0; fila < tabla.getRowCount(); fila++) {
+            for (int col = 0; col < tabla.getColumnCount(); col++) {
+                if (col > 0) {
+                    bw.write(';');
+                }
+                bw.write(escaparCSV(tabla.getValueAt(fila, col)));
+            }
+            bw.newLine();
+        }
+    }
+
+    private String escaparCSV(Object valor) {
+        String texto = valor == null ? "" : valor.toString();
+        texto = texto.replace("\r\n", " ").replace("\n", " ").replace("\r", " ");
+        if (texto.contains(";") || texto.contains("\"") || texto.contains(",")) {
+            texto = "\"" + texto.replace("\"", "\"\"") + "\"";
+        }
+        return texto;
+    }
+
+    private File asegurarExtensionCSV(File archivo) {
+        if (archivo == null) {
+            return new File(nombreArchivoCSV());
+        }
+        String ruta = archivo.getAbsolutePath();
+        if (!ruta.toLowerCase().endsWith(".csv")) {
+            return new File(ruta + ".csv");
+        }
+        return archivo;
+    }
+
+    private String nombreArchivoCSV() {
+        return normalizarNombreArchivo(tituloVista()) + ".csv";
+    }
+
+    private String tituloVista() {
+        String titulo = vista.getLblTitulo() != null ? vista.getLblTitulo().getText() : "Maestro Detalle";
+        return (titulo == null || titulo.trim().isEmpty()) ? "Maestro Detalle" : titulo.trim();
+    }
+
+    private String normalizarNombreArchivo(String texto) {
+        String limpio = texto == null ? "maestro_detalle" : texto.toLowerCase().trim();
+        limpio = limpio.replace('á', 'a').replace('é', 'e').replace('í', 'i')
+                .replace('ó', 'o').replace('ú', 'u').replace('ñ', 'n');
+        limpio = limpio.replaceAll("[^a-z0-9]+", "_");
+        limpio = limpio.replaceAll("^_+|_+$", "");
+        return limpio.isEmpty() ? "maestro_detalle" : limpio;
     }
 
     private void cancelarWorker(SwingWorker<?, ?> worker) {
