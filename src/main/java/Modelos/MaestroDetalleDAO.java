@@ -190,7 +190,7 @@ public class MaestroDetalleDAO {
         
        
         DefaultTableModel modelo = new DefaultTableModel(
-                new Object[]{"ID Venta", "N° Comprobante", "Fecha Emisión", "Estado","Cliente"}, 0) {
+                new Object[]{"ID", "N° Comprobante", "Fecha Emisión", "Estado"}, 0) {
             @Override
             public boolean isCellEditable(int row, int column) { return false; }
         };
@@ -277,35 +277,56 @@ public class MaestroDetalleDAO {
     }
 
     public DefaultTableModel listarLotesPorProducto(int idProducto) {
-        setUltimoError("");
-        DefaultTableModel modelo = new DefaultTableModel(
-                new Object[]{"ID Lote", "N° Lote", "Stock Inicial", "Stock Actual", "Vencimiento", "Precio Compra", "Precio Venta", "Estado"}, 0) {
-            @Override
-            public boolean isCellEditable(int row, int column) { return false; }
-        };
+    setUltimoError("");
+    DefaultTableModel modelo = new DefaultTableModel(
+            new Object[]{
+                "ID Lote", "N° Lote", "Stock Inicial", "Stock Actual",
+                "Fecha Ingreso", "Precio Compra", "Precio Venta", "Estado"
+            }, 0) {
+        @Override
+        public boolean isCellEditable(int row, int column) { return false; }
+    };
 
-        String sql = "SELECT id_lote, numero_lote, stock_inicial, stock_actual, fecha_vencimiento, precio_compra, precio_venta, estado "
-                   + "FROM LOTES WHERE id_producto = ? ORDER BY id_lote DESC";
+    String sql = """
+        SELECT
+            id_lote,
+            numero_lote,
+            stock_inicial,
+            stock_actual,
+            fecha_ingreso,
+            precio_compra,
+            precio_venta,
+            estado
+        FROM LOTES
+        WHERE id_producto = ?
+        ORDER BY id_lote DESC
+    """;
 
-        try (Connection cn = conexion.conectar(); PreparedStatement ps = cn.prepareStatement(sql)) {
-            ps.setInt(1, idProducto);
-            try (ResultSet rs = ps.executeQuery()) {
-                while (rs.next()) {
-                    modelo.addRow(new Object[]{
-                        rs.getInt("id_lote"),
-                        rs.getString("numero_lote"),
-                        rs.getInt("stock_inicial"),
-                        rs.getInt("stock_actual"),
-                        rs.getDate("fecha_vencimiento"),
-                        "$" + rs.getDouble("precio_compra"),
-                        "$" + rs.getDouble("precio_venta"),
-                        rs.getString("estado")
-                    });
-                }
+    try (
+        Connection cn = conexion.conectar();
+        PreparedStatement ps = cn.prepareStatement(sql)
+    ) {
+        ps.setInt(1, idProducto);
+
+        try (ResultSet rs = ps.executeQuery()) {
+            while (rs.next()) {
+                modelo.addRow(new Object[]{
+                    rs.getInt("id_lote"),
+                    rs.getString("numero_lote"),
+                    rs.getInt("stock_inicial"),
+                    rs.getInt("stock_actual"),
+                    rs.getDate("fecha_ingreso"),
+                    "$" + String.format("%.2f", rs.getDouble("precio_compra")),
+                    "$" + String.format("%.2f", rs.getDouble("precio_venta")),
+                    rs.getString("estado")
+                });
             }
-        } catch (SQLException e) {
-            setUltimoError("Error al listar lotes: " + e.getMessage());
         }
-        return modelo;
+
+    } catch (SQLException e) {
+        setUltimoError("Error al listar lotes: " + e.getMessage());
     }
+
+    return modelo;
+}
 }

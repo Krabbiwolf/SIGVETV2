@@ -39,10 +39,10 @@ public class FrmAjusteInventario extends javax.swing.JInternalFrame {
         scrollMotivo = new javax.swing.JScrollPane();
         txtMotivoAjuste = new javax.swing.JTextArea();
         btnRegistrarAjuste = new javax.swing.JButton();
-        btnLimpiar1 = new javax.swing.JButton();
+        btnLimpiar = new javax.swing.JButton();
         scrollTabla = new javax.swing.JScrollPane();
         tblAjustes = new javax.swing.JTable();
-        btnLimpiar = new javax.swing.JButton();
+        btnExportarCSV = new javax.swing.JButton();
 
         setBackground(new java.awt.Color(244, 246, 249));
         setClosable(true);
@@ -55,7 +55,7 @@ public class FrmAjusteInventario extends javax.swing.JInternalFrame {
 
         jLabelTitulo.setFont(new java.awt.Font("Segoe UI", 1, 20)); // NOI18N
         jLabelTitulo.setForeground(new java.awt.Color(32, 56, 100));
-        jLabelTitulo.setText("■ Ajuste de Inventario");
+        jLabelTitulo.setText("Ajuste de Inventario");
         getContentPane().add(jLabelTitulo, new org.netbeans.lib.awtextra.AbsoluteConstraints(25, 15, 400, 30));
 
         panelDatos.setBackground(new java.awt.Color(255, 255, 255));
@@ -132,26 +132,26 @@ public class FrmAjusteInventario extends javax.swing.JInternalFrame {
         btnRegistrarAjuste.setFocusPainted(false);
         panelDatos.add(btnRegistrarAjuste, new org.netbeans.lib.awtextra.AbsoluteConstraints(560, 105, 150, 42));
 
-        btnLimpiar1.setBackground(new java.awt.Color(248, 249, 250));
-        btnLimpiar1.setFont(new java.awt.Font("Segoe UI", 1, 13)); // NOI18N
-        btnLimpiar1.setForeground(new java.awt.Color(43, 68, 122));
-        btnLimpiar1.setText("Cancelar");
-        btnLimpiar1.setCursor(new java.awt.Cursor(java.awt.Cursor.DEFAULT_CURSOR));
-        btnLimpiar1.setFocusPainted(false);
-        panelDatos.add(btnLimpiar1, new org.netbeans.lib.awtextra.AbsoluteConstraints(560, 165, 150, 42));
+        btnLimpiar.setBackground(new java.awt.Color(248, 249, 250));
+        btnLimpiar.setFont(new java.awt.Font("Segoe UI", 1, 13)); // NOI18N
+        btnLimpiar.setForeground(new java.awt.Color(43, 68, 122));
+        btnLimpiar.setText("Cancelar");
+        btnLimpiar.setCursor(new java.awt.Cursor(java.awt.Cursor.DEFAULT_CURSOR));
+        btnLimpiar.setFocusPainted(false);
+        panelDatos.add(btnLimpiar, new org.netbeans.lib.awtextra.AbsoluteConstraints(560, 165, 150, 42));
 
         getContentPane().add(panelDatos, new org.netbeans.lib.awtextra.AbsoluteConstraints(25, 60, 730, 245));
 
         scrollTabla.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(209, 217, 230)));
 
-        tblAjustes.setForeground(new java.awt.Color(51, 51, 51));
         tblAjustes.setBackground(new java.awt.Color(255, 255, 255));
+        tblAjustes.setForeground(new java.awt.Color(51, 51, 51));
         tblAjustes.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
 
             },
             new String [] {
-                "Title 1", "Title 2", "Title 3", "Title 4"
+                "ID Movimineto", "Tipo", "Cantidad", "Fecha", "Producto", "Lote", "Stock Inicial", "Stock Actual", "Precio Compra", "Precio Venta", "Motivo", "ID Usuario"
             }
         ));
         tblAjustes.setGridColor(new java.awt.Color(224, 229, 236));
@@ -162,23 +162,22 @@ public class FrmAjusteInventario extends javax.swing.JInternalFrame {
 
         getContentPane().add(scrollTabla, new org.netbeans.lib.awtextra.AbsoluteConstraints(25, 320, 730, 210));
 
-        btnLimpiar.setBackground(new java.awt.Color(43, 68, 122));
-        btnLimpiar.setFont(new java.awt.Font("Segoe UI", 1, 13)); // NOI18N
-        btnLimpiar.setForeground(new java.awt.Color(255, 255, 255));
-        btnLimpiar.setText("Exportar CSV");
-        btnLimpiar.setBorderPainted(false);
-        btnLimpiar.setCursor(new java.awt.Cursor(java.awt.Cursor.DEFAULT_CURSOR));
-        btnLimpiar.setFocusPainted(false);
-        getContentPane().add(btnLimpiar, new org.netbeans.lib.awtextra.AbsoluteConstraints(600, 10, 150, 30));
+        btnExportarCSV.setBackground(new java.awt.Color(43, 68, 122));
+        btnExportarCSV.setFont(new java.awt.Font("Segoe UI", 1, 13)); // NOI18N
+        btnExportarCSV.setForeground(new java.awt.Color(255, 255, 255));
+        btnExportarCSV.setText("Exportar CSV");
+        btnExportarCSV.setBorderPainted(false);
+        btnExportarCSV.setCursor(new java.awt.Cursor(java.awt.Cursor.DEFAULT_CURSOR));
+        btnExportarCSV.setFocusPainted(false);
+        getContentPane().add(btnExportarCSV, new org.netbeans.lib.awtextra.AbsoluteConstraints(600, 10, 150, 30));
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
-    public javax.swing.JButton btnExportarCSV;
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    public javax.swing.JButton btnExportarCSV;
     public javax.swing.JButton btnLimpiar;
-    public javax.swing.JButton btnLimpiar1;
     public javax.swing.JButton btnRegistrarAjuste;
     public javax.swing.JComboBox<Modelos.LoteInventario> cboLoteProducto;
     public javax.swing.JComboBox<String> cboTipoMovimiento;

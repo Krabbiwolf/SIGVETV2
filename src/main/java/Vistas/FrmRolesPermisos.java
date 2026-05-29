@@ -9,11 +9,7 @@ public class FrmRolesPermisos extends javax.swing.JInternalFrame {
     public FrmRolesPermisos() {
         initComponents();
         
-        // Efecto Hover al botón Guardar
-        btnGuardarRol.addMouseListener(new MouseAdapter() {
-            public void mouseEntered(MouseEvent e) { btnGuardarRol.setBackground(Color.decode("#3A5AAA")); }
-            public void mouseExited(MouseEvent e)  { btnGuardarRol.setBackground(Color.decode("#2D4A8A")); }
-        });
+       
     }
 
     @SuppressWarnings("unchecked")

@@ -14,59 +14,7 @@ public class FrmGestionarCategorias extends javax.swing.JInternalFrame {
     public FrmGestionarCategorias() {
         initComponents();
 
-        // Estilizar cabecera de tabla al tema Azul Corporativo
-        tblCategorias.getTableHeader().setBackground(Color.decode("#DCE6F2"));
-        tblCategorias.getTableHeader().setForeground(Color.decode("#2D4A8A"));
-        tblCategorias.getTableHeader().setFont(new java.awt.Font("Segoe UI", java.awt.Font.BOLD, 12));
-        tblCategorias.getTableHeader().setBorder(
-            javax.swing.BorderFactory.createMatteBorder(0, 0, 1, 0, Color.decode("#C5D8F5"))
-        );
-        ((DefaultTableCellRenderer) tblCategorias.getTableHeader().getDefaultRenderer()).setHorizontalAlignment(JLabel.CENTER);
-
-        txtId.setEnabled(false);
-        chkEstado.setSelected(true);
-        chkEstado.setOpaque(false);
-
-        // Efectos Hover a Botones
-        btnGuardar.addMouseListener(new MouseAdapter() {
-            public void mouseEntered(MouseEvent e) { btnGuardar.setBackground(Color.decode("#3A5AAA")); }
-            public void mouseExited(MouseEvent e)  { btnGuardar.setBackground(Color.decode("#2D4A8A")); }
-        });
-
-        btnActualizar.addMouseListener(new MouseAdapter() {
-            public void mouseEntered(MouseEvent e) { btnActualizar.setBackground(Color.decode("#3A5AAA")); }
-            public void mouseExited(MouseEvent e)  { btnActualizar.setBackground(Color.decode("#2D4A8A")); }
-        });
-
-        btnEliminar.addMouseListener(new MouseAdapter() {
-            public void mouseEntered(MouseEvent e) { btnEliminar.setBackground(Color.decode("#C52835")); }
-            public void mouseExited(MouseEvent e)  { btnEliminar.setBackground(Color.decode("#E63946")); }
-        });
-
-        btnLimpiar.addMouseListener(new MouseAdapter() {
-            public void mouseEntered(MouseEvent e) { btnLimpiar.setBackground(Color.decode("#DCE6F2")); }
-            public void mouseExited(MouseEvent e)  { btnLimpiar.setBackground(Color.WHITE); }
-        });
-
-        btnRefrescar.addMouseListener(new MouseAdapter() {
-            public void mouseEntered(MouseEvent e) { btnRefrescar.setBackground(Color.decode("#C5D8F5")); }
-            public void mouseExited(MouseEvent e)  { btnRefrescar.setBackground(Color.decode("#DCE6F2")); }
-        });
-
-        btnBuscarCategorias.addMouseListener(new MouseAdapter() {
-            public void mouseEntered(MouseEvent e) { btnBuscarCategorias.setBackground(Color.decode("#3A5AAA")); }
-            public void mouseExited(MouseEvent e)  { btnBuscarCategorias.setBackground(Color.decode("#2D4A8A")); }
-        });
-
-        btnLimpiarFiltroCategorias.addMouseListener(new MouseAdapter() {
-            public void mouseEntered(MouseEvent e) { btnLimpiarFiltroCategorias.setBackground(Color.decode("#DCE6F2")); }
-            public void mouseExited(MouseEvent e)  { btnLimpiarFiltroCategorias.setBackground(Color.WHITE); }
-        });
-
-        btnExportarCategorias.addMouseListener(new MouseAdapter() {
-            public void mouseEntered(MouseEvent e) { btnExportarCategorias.setBackground(Color.decode("#218838")); }
-            public void mouseExited(MouseEvent e)  { btnExportarCategorias.setBackground(Color.decode("#28A745")); }
-        });
+       
 
         Categoria categoria = new Categoria();
         CategoriaDAO categoriaDAO = new CategoriaDAO();

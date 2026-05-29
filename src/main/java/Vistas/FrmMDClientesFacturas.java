@@ -11,7 +11,6 @@ public class FrmMDClientesFacturas extends javax.swing.JInternalFrame implements
 
     public FrmMDClientesFacturas() {
         initComponents();
-        configurarComponentes();
         new CtrlMaestroDetalle(this, new MaestroDetalleDAO());
     }
 
@@ -23,40 +22,13 @@ public class FrmMDClientesFacturas extends javax.swing.JInternalFrame implements
     @Override
     public void configurarTextos(String titulo, String maestro, String detalle, String placeholder) {
         setTitle(titulo);
-        lblTitulo.setText("✦  " + titulo);
+        lblTitulo.setText(titulo);
         lblMaestro.setText(maestro);
         lblDetalle.setText(detalle);
         txtBuscar.setToolTipText(placeholder);
     }
 
-    private void configurarComponentes() {
-        getContentPane().setBackground(Color.decode("#0A0C10"));
-        setSize(1100, 680);
-
-        configurarTabla(tblMaestro);
-        configurarTabla(tblDetalle);
-
-        scrollMaestro.getViewport().setBackground(Color.decode("#0E1219"));
-        scrollDetalle.getViewport().setBackground(Color.decode("#0E1219"));
-        scrollMaestro.getVerticalScrollBar().setUnitIncrement(16);
-        scrollDetalle.getVerticalScrollBar().setUnitIncrement(16);
-        scrollMaestro.getHorizontalScrollBar().setUnitIncrement(16);
-        scrollDetalle.getHorizontalScrollBar().setUnitIncrement(16);
-    }
-
-    private void configurarTabla(javax.swing.JTable tabla) {
-        tabla.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
-        tabla.setAutoResizeMode(javax.swing.JTable.AUTO_RESIZE_OFF);
-        tabla.setFillsViewportHeight(true);
-        tabla.setOpaque(true);
-        tabla.setShowGrid(true);
-        tabla.getTableHeader().setBackground(Color.decode("#181D2E"));
-        tabla.getTableHeader().setForeground(Color.decode("#9BA3C4"));
-        tabla.getTableHeader().setFont(new java.awt.Font("Segoe UI", java.awt.Font.BOLD, 11));
-        tabla.getTableHeader().setReorderingAllowed(false);
-        ((DefaultTableCellRenderer) tabla.getTableHeader().getDefaultRenderer()).setHorizontalAlignment(JLabel.CENTER);
-    }
-
+  
     @Override
     public JLabel getLblTitulo() {
         return lblTitulo;
@@ -134,7 +106,7 @@ public class FrmMDClientesFacturas extends javax.swing.JInternalFrame implements
         tblDetalle = new javax.swing.JTable();
         lblInfo = new javax.swing.JLabel();
 
-        setBackground(new java.awt.Color(10, 12, 16));
+        setBackground(new java.awt.Color(240, 244, 248));
         setClosable(true);
         setIconifiable(true);
         setMaximizable(true);
@@ -144,56 +116,55 @@ public class FrmMDClientesFacturas extends javax.swing.JInternalFrame implements
         getContentPane().setLayout(null);
 
         lblTitulo.setFont(new java.awt.Font("Segoe UI", 1, 22)); // NOI18N
-        lblTitulo.setForeground(new java.awt.Color(240, 242, 255));
-        lblTitulo.setText("✦  Clientes - Facturas/Ventas");
+        lblTitulo.setForeground(new java.awt.Color(45, 74, 138));
+        lblTitulo.setText("Clientes - Facturas/Ventas");
         getContentPane().add(lblTitulo);
         lblTitulo.setBounds(30, 20, 520, 32);
 
-        panelFiltros.setBackground(new java.awt.Color(17, 21, 32));
-        panelFiltros.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(42, 48, 80)));
+        panelFiltros.setBackground(new java.awt.Color(240, 244, 248));
+        panelFiltros.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(197, 216, 245)));
         panelFiltros.setLayout(null);
 
         lblBuscar.setFont(new java.awt.Font("Segoe UI", 1, 11)); // NOI18N
-        lblBuscar.setForeground(new java.awt.Color(155, 163, 196));
+        lblBuscar.setForeground(new java.awt.Color(45, 74, 138));
         lblBuscar.setText("BUSCAR");
         panelFiltros.add(lblBuscar);
         lblBuscar.setBounds(20, 14, 210, 16);
 
-        txtBuscar.setBackground(new java.awt.Color(24, 29, 46));
+        txtBuscar.setBackground(new java.awt.Color(255, 255, 255));
         txtBuscar.setFont(new java.awt.Font("Segoe UI", 0, 13)); // NOI18N
-        txtBuscar.setForeground(new java.awt.Color(240, 242, 255));
+        txtBuscar.setForeground(new java.awt.Color(51, 51, 51));
         txtBuscar.setToolTipText("Buscar por nombre, DUI o teléfono");
-        txtBuscar.setCaretColor(new java.awt.Color(108, 99, 255));
-        txtBuscar.setBorder(javax.swing.BorderFactory.createCompoundBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(42, 48, 80)), javax.swing.BorderFactory.createEmptyBorder(6, 10, 6, 10)));
+        txtBuscar.setCaretColor(new java.awt.Color(45, 74, 138));
+        txtBuscar.setBorder(javax.swing.BorderFactory.createCompoundBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(197, 216, 245)), javax.swing.BorderFactory.createEmptyBorder(6, 10, 6, 10)));
         panelFiltros.add(txtBuscar);
         txtBuscar.setBounds(20, 34, 390, 38);
 
-        btnBuscar.setBackground(new java.awt.Color(108, 99, 255));
+        btnBuscar.setBackground(new java.awt.Color(45, 74, 138));
         btnBuscar.setFont(new java.awt.Font("Segoe UI", 1, 13)); // NOI18N
         btnBuscar.setForeground(new java.awt.Color(255, 255, 255));
         btnBuscar.setText("Buscar");
         btnBuscar.setBorderPainted(false);
-        btnBuscar.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
+        btnBuscar.setCursor(new java.awt.Cursor(java.awt.Cursor.DEFAULT_CURSOR));
         btnBuscar.setFocusPainted(false);
         panelFiltros.add(btnBuscar);
         btnBuscar.setBounds(430, 34, 130, 38);
 
-        btnActualizar.setBackground(new java.awt.Color(31, 38, 64));
+        btnActualizar.setBackground(new java.awt.Color(45, 74, 138));
         btnActualizar.setFont(new java.awt.Font("Segoe UI", 1, 13)); // NOI18N
-        btnActualizar.setForeground(new java.awt.Color(240, 242, 255));
+        btnActualizar.setForeground(new java.awt.Color(255, 255, 255));
         btnActualizar.setText("Actualizar");
-        btnActualizar.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(42, 48, 80)));
-        btnActualizar.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
+        btnActualizar.setBorderPainted(false);
+        btnActualizar.setCursor(new java.awt.Cursor(java.awt.Cursor.DEFAULT_CURSOR));
         btnActualizar.setFocusPainted(false);
         panelFiltros.add(btnActualizar);
         btnActualizar.setBounds(570, 34, 130, 38);
 
-        btnLimpiar.setBackground(new java.awt.Color(30, 10, 16));
+        btnLimpiar.setBackground(new java.awt.Color(255, 255, 255));
         btnLimpiar.setFont(new java.awt.Font("Segoe UI", 1, 13)); // NOI18N
-        btnLimpiar.setForeground(new java.awt.Color(255, 91, 122));
+        btnLimpiar.setForeground(new java.awt.Color(45, 74, 138));
         btnLimpiar.setText("Limpiar");
-        btnLimpiar.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(80, 42, 58)));
-        btnLimpiar.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
+        btnLimpiar.setCursor(new java.awt.Cursor(java.awt.Cursor.DEFAULT_CURSOR));
         btnLimpiar.setFocusPainted(false);
         panelFiltros.add(btnLimpiar);
         btnLimpiar.setBounds(710, 34, 130, 38);
@@ -202,8 +173,8 @@ public class FrmMDClientesFacturas extends javax.swing.JInternalFrame implements
         btnExportarCSV.setFont(new java.awt.Font("Segoe UI", 1, 13)); // NOI18N
         btnExportarCSV.setForeground(new java.awt.Color(255, 255, 255));
         btnExportarCSV.setText("Exportar CSV");
-        btnExportarCSV.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(197, 216, 245)));
-        btnExportarCSV.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
+        btnExportarCSV.setBorderPainted(false);
+        btnExportarCSV.setCursor(new java.awt.Cursor(java.awt.Cursor.DEFAULT_CURSOR));
         btnExportarCSV.setFocusPainted(false);
         panelFiltros.add(btnExportarCSV);
         btnExportarCSV.setBounds(850, 34, 150, 38);
@@ -211,33 +182,30 @@ public class FrmMDClientesFacturas extends javax.swing.JInternalFrame implements
         getContentPane().add(panelFiltros);
         panelFiltros.setBounds(30, 65, 1020, 92);
 
-        panelMaestro.setBackground(new java.awt.Color(17, 21, 32));
-        panelMaestro.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(42, 48, 80)));
+        panelMaestro.setBackground(new java.awt.Color(240, 244, 248));
+        panelMaestro.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(197, 216, 245)));
         panelMaestro.setLayout(null);
 
         lblMaestro.setFont(new java.awt.Font("Segoe UI", 1, 15)); // NOI18N
-        lblMaestro.setForeground(new java.awt.Color(240, 242, 255));
+        lblMaestro.setForeground(new java.awt.Color(45, 74, 138));
         lblMaestro.setText("Clientes");
         panelMaestro.add(lblMaestro);
         lblMaestro.setBounds(18, 10, 400, 22);
 
-        scrollMaestro.setBorder(javax.swing.BorderFactory.createEmptyBorder(1, 1, 1, 1));
-
-        tblMaestro.setBackground(new java.awt.Color(14, 18, 25));
-        tblMaestro.setFont(new java.awt.Font("Segoe UI", 0, 12)); // NOI18N
-        tblMaestro.setForeground(new java.awt.Color(240, 242, 255));
+        tblMaestro.setBackground(new java.awt.Color(255, 255, 255));
+        tblMaestro.setForeground(new java.awt.Color(51, 51, 51));
         tblMaestro.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
 
             },
             new String [] {
-
+                "ID", "Cliente", "DUI", "Telefono", "Direccion", "Estado"
             }
         ));
-        tblMaestro.setGridColor(new java.awt.Color(26, 31, 48));
+        tblMaestro.setGridColor(new java.awt.Color(224, 224, 224));
         tblMaestro.setRowHeight(30);
-        tblMaestro.setSelectionBackground(new java.awt.Color(108, 99, 255));
-        tblMaestro.setSelectionForeground(new java.awt.Color(255, 255, 255));
+        tblMaestro.setSelectionBackground(new java.awt.Color(197, 216, 245));
+        tblMaestro.setSelectionForeground(new java.awt.Color(13, 32, 96));
         scrollMaestro.setViewportView(tblMaestro);
 
         panelMaestro.add(scrollMaestro);
@@ -246,33 +214,30 @@ public class FrmMDClientesFacturas extends javax.swing.JInternalFrame implements
         getContentPane().add(panelMaestro);
         panelMaestro.setBounds(30, 170, 1020, 220);
 
-        panelDetalle.setBackground(new java.awt.Color(17, 21, 32));
-        panelDetalle.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(42, 48, 80)));
+        panelDetalle.setBackground(new java.awt.Color(240, 244, 248));
+        panelDetalle.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(197, 216, 245)));
         panelDetalle.setLayout(null);
 
         lblDetalle.setFont(new java.awt.Font("Segoe UI", 1, 15)); // NOI18N
-        lblDetalle.setForeground(new java.awt.Color(240, 242, 255));
+        lblDetalle.setForeground(new java.awt.Color(45, 74, 138));
         lblDetalle.setText("Facturas o ventas del cliente seleccionado");
         panelDetalle.add(lblDetalle);
         lblDetalle.setBounds(18, 10, 620, 22);
 
-        scrollDetalle.setBorder(javax.swing.BorderFactory.createEmptyBorder(1, 1, 1, 1));
-
-        tblDetalle.setBackground(new java.awt.Color(14, 18, 25));
-        tblDetalle.setFont(new java.awt.Font("Segoe UI", 0, 12)); // NOI18N
-        tblDetalle.setForeground(new java.awt.Color(240, 242, 255));
+        tblDetalle.setBackground(new java.awt.Color(255, 255, 255));
+        tblDetalle.setForeground(new java.awt.Color(51, 51, 51));
         tblDetalle.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
 
             },
             new String [] {
-
+                "ID", "N° Comprobante", "Fecha Emision", "Estado"
             }
         ));
-        tblDetalle.setGridColor(new java.awt.Color(26, 31, 48));
+        tblDetalle.setGridColor(new java.awt.Color(224, 224, 224));
         tblDetalle.setRowHeight(30);
-        tblDetalle.setSelectionBackground(new java.awt.Color(108, 99, 255));
-        tblDetalle.setSelectionForeground(new java.awt.Color(255, 255, 255));
+        tblDetalle.setSelectionBackground(new java.awt.Color(197, 216, 245));
+        tblDetalle.setSelectionForeground(new java.awt.Color(13, 32, 96));
         scrollDetalle.setViewportView(tblDetalle);
 
         panelDetalle.add(scrollDetalle);
@@ -281,8 +246,7 @@ public class FrmMDClientesFacturas extends javax.swing.JInternalFrame implements
         getContentPane().add(panelDetalle);
         panelDetalle.setBounds(30, 405, 1020, 220);
 
-        lblInfo.setFont(new java.awt.Font("Segoe UI", 0, 12)); // NOI18N
-        lblInfo.setForeground(new java.awt.Color(155, 163, 196));
+        lblInfo.setForeground(new java.awt.Color(51, 51, 51));
         lblInfo.setText("Selecciona un registro maestro para ver su detalle.");
         getContentPane().add(lblInfo);
         lblInfo.setBounds(30, 632, 1020, 22);

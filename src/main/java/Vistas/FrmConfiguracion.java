@@ -43,91 +43,73 @@ public class FrmConfiguracion extends javax.swing.JInternalFrame {
         jLabel3 = new javax.swing.JLabel();
         jLabel4 = new javax.swing.JLabel();
 
+        setBackground(new java.awt.Color(240, 244, 248));
         setClosable(true);
         setMaximizable(true);
         setResizable(true);
+        setTitle("Configuración del Sistema");
+        setPreferredSize(new java.awt.Dimension(750, 600));
+        getContentPane().setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
 
+        cbPorcentajeGanancia.setFont(new java.awt.Font("Segoe UI", 0, 13)); // NOI18N
+        cbPorcentajeGanancia.setForeground(new java.awt.Color(51, 51, 51));
         cbPorcentajeGanancia.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
+        getContentPane().add(cbPorcentajeGanancia, new org.netbeans.lib.awtextra.AbsoluteConstraints(433, 120, 150, 32));
 
+        cbIvaPredeterminado.setFont(new java.awt.Font("Segoe UI", 0, 13)); // NOI18N
+        cbIvaPredeterminado.setForeground(new java.awt.Color(51, 51, 51));
         cbIvaPredeterminado.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
+        getContentPane().add(cbIvaPredeterminado, new org.netbeans.lib.awtextra.AbsoluteConstraints(430, 190, 150, 32));
 
+        cbDescuentoMaximo.setFont(new java.awt.Font("Segoe UI", 0, 13)); // NOI18N
+        cbDescuentoMaximo.setForeground(new java.awt.Color(51, 51, 51));
         cbDescuentoMaximo.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
+        getContentPane().add(cbDescuentoMaximo, new org.netbeans.lib.awtextra.AbsoluteConstraints(430, 270, 150, 32));
 
-        btnGuardar.setText("Guardar Configuracion");
+        btnGuardar.setBackground(new java.awt.Color(45, 74, 138));
+        btnGuardar.setFont(new java.awt.Font("Segoe UI", 1, 13)); // NOI18N
+        btnGuardar.setForeground(new java.awt.Color(255, 255, 255));
+        btnGuardar.setText("Guardar Configuración");
+        btnGuardar.setBorderPainted(false);
+        btnGuardar.setCursor(new java.awt.Cursor(java.awt.Cursor.DEFAULT_CURSOR));
+        btnGuardar.setFocusPainted(false);
+        getContentPane().add(btnGuardar, new org.netbeans.lib.awtextra.AbsoluteConstraints(40, 360, 180, 42));
 
+        btnRestaurar.setBackground(new java.awt.Color(255, 255, 255));
+        btnRestaurar.setFont(new java.awt.Font("Segoe UI", 1, 13)); // NOI18N
+        btnRestaurar.setForeground(new java.awt.Color(45, 74, 138));
         btnRestaurar.setText("Restaurar Valores");
+        btnRestaurar.setCursor(new java.awt.Cursor(java.awt.Cursor.DEFAULT_CURSOR));
+        btnRestaurar.setFocusPainted(false);
+        getContentPane().add(btnRestaurar, new org.netbeans.lib.awtextra.AbsoluteConstraints(280, 360, 160, 42));
 
+        btnCerrar.setBackground(new java.awt.Color(255, 255, 255));
+        btnCerrar.setFont(new java.awt.Font("Segoe UI", 1, 13)); // NOI18N
+        btnCerrar.setForeground(new java.awt.Color(230, 51, 51));
         btnCerrar.setText("Cerrar");
+        btnCerrar.setCursor(new java.awt.Cursor(java.awt.Cursor.DEFAULT_CURSOR));
+        btnCerrar.setFocusPainted(false);
+        getContentPane().add(btnCerrar, new org.netbeans.lib.awtextra.AbsoluteConstraints(530, 360, 120, 42));
 
-        jLabel1.setText("CONFIGURACION");
+        jLabel1.setFont(new java.awt.Font("Segoe UI", 1, 22)); // NOI18N
+        jLabel1.setForeground(new java.awt.Color(45, 74, 138));
+        jLabel1.setText("CONFIGURACIÓN");
+        getContentPane().add(jLabel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(246, 30, -1, -1));
 
+        jLabel2.setFont(new java.awt.Font("Segoe UI", 1, 13)); // NOI18N
+        jLabel2.setForeground(new java.awt.Color(45, 74, 138));
         jLabel2.setText("Porcentaje de ganancia para precio de venta (%):");
+        getContentPane().add(jLabel2, new org.netbeans.lib.awtextra.AbsoluteConstraints(120, 130, -1, -1));
 
+        jLabel3.setFont(new java.awt.Font("Segoe UI", 1, 13)); // NOI18N
+        jLabel3.setForeground(new java.awt.Color(45, 74, 138));
         jLabel3.setText("IVA predeterminado (%):");
+        getContentPane().add(jLabel3, new org.netbeans.lib.awtextra.AbsoluteConstraints(270, 190, -1, -1));
 
+        jLabel4.setFont(new java.awt.Font("Segoe UI", 1, 13)); // NOI18N
+        jLabel4.setForeground(new java.awt.Color(45, 74, 138));
         jLabel4.setText("Descuento máximo permitido (%):  ");
-
-        javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
-        getContentPane().setLayout(layout);
-        layout.setHorizontalGroup(
-            layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jLabel4)
-                    .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                        .addComponent(jLabel3)
-                        .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                            .addComponent(jLabel2)
-                            .addGap(41, 41, 41)
-                            .addComponent(cbPorcentajeGanancia, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))))
-                .addGap(125, 125, 125))
-            .addGroup(layout.createSequentialGroup()
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(layout.createSequentialGroup()
-                        .addGap(246, 246, 246)
-                        .addComponent(jLabel1))
-                    .addGroup(layout.createSequentialGroup()
-                        .addGap(283, 283, 283)
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(cbIvaPredeterminado, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addGroup(layout.createSequentialGroup()
-                                .addGap(72, 72, 72)
-                                .addComponent(cbDescuentoMaximo, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))))
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-            .addGroup(layout.createSequentialGroup()
-                .addGap(34, 34, 34)
-                .addComponent(btnGuardar)
-                .addGap(58, 58, 58)
-                .addComponent(btnRestaurar)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 88, Short.MAX_VALUE)
-                .addComponent(btnCerrar)
-                .addGap(68, 68, 68))
-        );
-        layout.setVerticalGroup(
-            layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(layout.createSequentialGroup()
-                .addGap(19, 19, 19)
-                .addComponent(jLabel1)
-                .addGap(71, 71, 71)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(cbPorcentajeGanancia, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jLabel2))
-                .addGap(67, 67, 67)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(cbIvaPredeterminado, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jLabel3))
-                .addGap(82, 82, 82)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(cbDescuentoMaximo, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jLabel4))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 168, Short.MAX_VALUE)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(btnGuardar)
-                    .addComponent(btnRestaurar)
-                    .addComponent(btnCerrar))
-                .addGap(45, 45, 45))
-        );
+        getContentPane().add(jLabel4, new org.netbeans.lib.awtextra.AbsoluteConstraints(200, 270, -1, -1));
 
         pack();
     }// </editor-fold>//GEN-END:initComponents

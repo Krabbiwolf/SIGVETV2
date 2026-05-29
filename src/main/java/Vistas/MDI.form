@@ -29,7 +29,7 @@
       <SubComponents>
         <Menu class="javax.swing.JMenu" name="menuArchivo">
           <Properties>
-            <Property name="text" type="java.lang.String" value="Archivo"/>
+            <Property name="text" type="java.lang.String" value="Secion"/>
           </Properties>
           <SubComponents>
             <MenuItem class="javax.swing.JMenuItem" name="menuItemSalir">
