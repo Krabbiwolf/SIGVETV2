@@ -123,7 +123,7 @@ public class MDI extends javax.swing.JFrame {
         desktopPane.setBackground(new java.awt.Color(240, 244, 248));
         getContentPane().add(desktopPane, java.awt.BorderLayout.CENTER);
 
-        menuArchivo.setText("Archivo");
+        menuArchivo.setText("Secion");
 
         menuItemSalir.setText("Cerrar Sesión y Salir");
         menuItemSalir.addActionListener(this::menuItemSalirActionPerformed);

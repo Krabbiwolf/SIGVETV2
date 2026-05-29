@@ -38,48 +38,7 @@ btnEliminarUsuario.setBorderPainted(false);
         
         cargarRolesAsync(); 
 
-        // Estilizar cabecera de tabla al tema Azul Corporativo
-        tableUsuarios.getTableHeader().setBackground(Color.decode("#DCE6F2"));
-        tableUsuarios.getTableHeader().setForeground(Color.decode("#2D4A8A"));
-        tableUsuarios.getTableHeader().setFont(new java.awt.Font("Segoe UI", java.awt.Font.BOLD, 12));
-        tableUsuarios.getTableHeader().setBorder(javax.swing.BorderFactory.createMatteBorder(0, 0, 1, 0, Color.decode("#C5D8F5")));
-        ((DefaultTableCellRenderer) tableUsuarios.getTableHeader().getDefaultRenderer()).setHorizontalAlignment(JLabel.CENTER);
-
-        // Hover Efectos (Garantizando texto legible en blanco y azul)
-        btnGuardarUsuario.addMouseListener(new MouseAdapter() {
-            public void mouseEntered(MouseEvent e) { btnGuardarUsuario.setBackground(Color.decode("#3A5AAA")); }
-            public void mouseExited(MouseEvent e)  { btnGuardarUsuario.setBackground(Color.decode("#2D4A8A")); }
-        });
-
-        btnAgregarImagen.addMouseListener(new MouseAdapter() {
-            public void mouseEntered(MouseEvent e) { btnAgregarImagen.setBackground(Color.decode("#C5D8F5")); }
-            public void mouseExited(MouseEvent e)  { btnAgregarImagen.setBackground(Color.decode("#DCE6F2")); }
-        });
         
-        btnActualizarUsuario.addMouseListener(new MouseAdapter() {
-            public void mouseEntered(MouseEvent e) { btnActualizarUsuario.setBackground(Color.decode("#3A5AAA")); }
-            public void mouseExited(MouseEvent e)  { btnActualizarUsuario.setBackground(Color.decode("#2D4A8A")); }
-        });
-        
-        btnEliminarUsuario.addMouseListener(new MouseAdapter() {
-            public void mouseEntered(MouseEvent e) { btnEliminarUsuario.setBackground(Color.decode("#C52835")); }
-            public void mouseExited(MouseEvent e)  { btnEliminarUsuario.setBackground(Color.decode("#E63946")); }
-        });
-        
-        btnLimpiar.addMouseListener(new MouseAdapter() {
-            public void mouseEntered(MouseEvent e) { btnLimpiar.setBackground(Color.decode("#DCE6F2")); }
-            public void mouseExited(MouseEvent e)  { btnLimpiar.setBackground(Color.WHITE); }
-        });
-        
-        btnVerInfo.addMouseListener(new MouseAdapter() {
-            public void mouseEntered(MouseEvent e) { btnVerInfo.setBackground(Color.decode("#C5D8F5")); }
-            public void mouseExited(MouseEvent e)  { btnVerInfo.setBackground(Color.decode("#DCE6F2")); }
-        });
-        
-        btnExportar.addMouseListener(new MouseAdapter() {
-            public void mouseEntered(MouseEvent e) { btnExportar.setBackground(Color.decode("#218838")); }
-            public void mouseExited(MouseEvent e)  { btnExportar.setBackground(Color.decode("#28A745")); }
-        });
     }
 
     private void cargarRolesAsync() {
@@ -272,8 +231,7 @@ btnEliminarUsuario.setBorderPainted(false);
         btnAgregarImagen.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
         btnAgregarImagen.setForeground(new java.awt.Color(45, 74, 138));
         btnAgregarImagen.setText("Examinar...");
-        btnAgregarImagen.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(197, 216, 245)));
-        btnAgregarImagen.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
+        btnAgregarImagen.setCursor(new java.awt.Cursor(java.awt.Cursor.DEFAULT_CURSOR));
         btnAgregarImagen.setFocusPainted(false);
         btnAgregarImagen.addActionListener(this::btnAgregarImagenActionPerformed);
         card.add(btnAgregarImagen);
@@ -291,7 +249,7 @@ btnEliminarUsuario.setBorderPainted(false);
         btnGuardarUsuario.setForeground(new java.awt.Color(255, 255, 255));
         btnGuardarUsuario.setText("Guardar Empleado");
         btnGuardarUsuario.setBorderPainted(false);
-        btnGuardarUsuario.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
+        btnGuardarUsuario.setCursor(new java.awt.Cursor(java.awt.Cursor.DEFAULT_CURSOR));
         btnGuardarUsuario.setFocusPainted(false);
         card.add(btnGuardarUsuario);
         btnGuardarUsuario.setBounds(470, 480, 300, 42);
@@ -346,8 +304,7 @@ btnEliminarUsuario.setBorderPainted(false);
         btnVerInfo.setFont(new java.awt.Font("Segoe UI", 1, 13)); // NOI18N
         btnVerInfo.setForeground(new java.awt.Color(45, 74, 138));
         btnVerInfo.setText("Ver información");
-        btnVerInfo.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(197, 216, 245)));
-        btnVerInfo.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
+        btnVerInfo.setCursor(new java.awt.Cursor(java.awt.Cursor.DEFAULT_CURSOR));
         btnVerInfo.setFocusPainted(false);
         card.add(btnVerInfo);
         btnVerInfo.setBounds(160, 975, 140, 40);
@@ -357,7 +314,7 @@ btnEliminarUsuario.setBorderPainted(false);
         btnEliminarUsuario.setForeground(new java.awt.Color(255, 255, 255));
         btnEliminarUsuario.setText("Eliminar");
         btnEliminarUsuario.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(230, 57, 70)));
-        btnEliminarUsuario.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
+        btnEliminarUsuario.setCursor(new java.awt.Cursor(java.awt.Cursor.DEFAULT_CURSOR));
         btnEliminarUsuario.setFocusPainted(false);
         card.add(btnEliminarUsuario);
         btnEliminarUsuario.setBounds(30, 975, 120, 40);
@@ -367,16 +324,16 @@ btnEliminarUsuario.setBorderPainted(false);
         btnActualizarUsuario.setForeground(new java.awt.Color(255, 255, 255));
         btnActualizarUsuario.setText("Actualizar");
         btnActualizarUsuario.setBorderPainted(false);
-        btnActualizarUsuario.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
+        btnActualizarUsuario.setCursor(new java.awt.Cursor(java.awt.Cursor.DEFAULT_CURSOR));
         btnActualizarUsuario.setFocusPainted(false);
         card.add(btnActualizarUsuario);
         btnActualizarUsuario.setBounds(160, 430, 120, 40);
 
+        btnLimpiar.setBackground(new java.awt.Color(255, 255, 255));
         btnLimpiar.setFont(new java.awt.Font("Segoe UI", 1, 13)); // NOI18N
         btnLimpiar.setForeground(new java.awt.Color(45, 74, 138));
         btnLimpiar.setText("Limpiar");
-        btnLimpiar.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(197, 216, 245)));
-        btnLimpiar.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
+        btnLimpiar.setCursor(new java.awt.Cursor(java.awt.Cursor.DEFAULT_CURSOR));
         btnLimpiar.setFocusPainted(false);
         card.add(btnLimpiar);
         btnLimpiar.setBounds(30, 430, 120, 40);
@@ -392,7 +349,7 @@ btnEliminarUsuario.setBorderPainted(false);
         btnExportar.setForeground(new java.awt.Color(255, 255, 255));
         btnExportar.setText("Exportar");
         btnExportar.setBorderPainted(false);
-        btnExportar.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
+        btnExportar.setCursor(new java.awt.Cursor(java.awt.Cursor.DEFAULT_CURSOR));
         btnExportar.setFocusPainted(false);
         card.add(btnExportar);
         btnExportar.setBounds(310, 975, 120, 40);
