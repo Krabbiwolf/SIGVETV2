@@ -46,7 +46,7 @@ public class FrmGestionarProveedores extends javax.swing.JInternalFrame {
         setMaximizable(true);
         setResizable(true);
         setTitle("Gestionar Proveedores");
-        setPreferredSize(new java.awt.Dimension(1100, 650));
+        setPreferredSize(new java.awt.Dimension(1100, 720));
         getContentPane().setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
 
         lblTitulo.setFont(new java.awt.Font("Segoe UI", 1, 18)); // NOI18N
@@ -99,6 +99,7 @@ public class FrmGestionarProveedores extends javax.swing.JInternalFrame {
         btnAgregarImagen.addActionListener(this::btnAgregarImagenActionPerformed);
         getContentPane().add(btnAgregarImagen, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 260, 145, 30));
 
+        lblMostrarImagen.setBackground(new java.awt.Color(255, 255, 255));
         lblMostrarImagen.setForeground(new java.awt.Color(51, 51, 51));
         lblMostrarImagen.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         lblMostrarImagen.setText("Sin imagen");
@@ -147,7 +148,7 @@ public class FrmGestionarProveedores extends javax.swing.JInternalFrame {
         btnVerDetalle.setFocusPainted(false);
         getContentPane().add(btnVerDetalle, new org.netbeans.lib.awtextra.AbsoluteConstraints(290, 160, 770, 35));
 
-        scrollTabla.setBorder(javax.swing.BorderFactory.createEmptyBorder(1, 1, 1, 1));
+        scrollTabla.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(209, 217, 230)));
 
         tableProveedores.setBackground(new java.awt.Color(255, 255, 255));
         tableProveedores.setForeground(new java.awt.Color(51, 51, 51));
@@ -156,25 +157,10 @@ public class FrmGestionarProveedores extends javax.swing.JInternalFrame {
 
             },
             new String [] {
-                "Sel", "Id", "Nombre", "Teléfono", "Estado", "RutaImagen"
+                "Sel", "Id", "Nombre", "Telefono", "Estado"
             }
-        ) {
-            Class[] types = new Class [] {
-                java.lang.Boolean.class, java.lang.Object.class, java.lang.Object.class, java.lang.Object.class, java.lang.Object.class, java.lang.Object.class
-            };
-            boolean[] canEdit = new boolean [] {
-                true, false, false, false, false, false
-            };
-
-            public Class getColumnClass(int columnIndex) {
-                return types [columnIndex];
-            }
-
-            public boolean isCellEditable(int rowIndex, int columnIndex) {
-                return canEdit [columnIndex];
-            }
-        });
-        tableProveedores.setGridColor(new java.awt.Color(209, 217, 230));
+        ));
+        tableProveedores.setGridColor(new java.awt.Color(224, 229, 236));
         tableProveedores.setRowHeight(35);
         tableProveedores.setSelectionBackground(new java.awt.Color(217, 226, 243));
         tableProveedores.setSelectionForeground(new java.awt.Color(0, 0, 0));

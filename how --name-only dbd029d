@@ -1,0 +1,59 @@
+[33mdbd029d[m[33m ([m[1;31morigin/Marlin[m[33m)[m Agregar configuracion dinamica de IVA descuento y ganancia
+[33m83bcdbf[m Merge pull request #5 from Krabbiwolf/Cris
+[33m663f11f[m Maestros Detalle Forms
+[33ma88fff8[m Merge pull request #4 from Krabbiwolf/Cris
+[33m63b614b[m Merge dev en Cris, conflictos resueltos
+[33mb7e4c93[m Actualizacion formularios
+[33m560774a[m Punto de Venta y Punto de Compra
+[33m766d48b[m Gestionar Proveedores
+[33mf57ccd1[m[33m ([m[1;32mmaster[m[33m)[m Merge pull request #3 from Krabbiwolf/Marlin
+[33m3a7e8e1[m Merge branch 'dev' into Marlin
+[33m9e4ebd9[m Clientes y exportacion de categorias completo
+[33md45070a[m Merge pull request #1 from Krabbiwolf/Carlos
+[33m2e20c89[m Cambios Gestionar productos
+[33mefcede4[m Vistas optimizadas y controladores
+[33m7c81271[m Merge pull request #19 from crisce-03/Marlin
+[33m2920541[m Resolver conflicto en MDI y mantener Kardex
+[33m5754c1b[m Agregar modulo Kardex
+[33mdbfd90d[m Merge pull request #18 from crisce-03/Carlos
+[33maec6588[m Agrego módulo de ajuste de inventario
+[33m5a6ec3c[m Merge pull request #17 from crisce-03/Hector
+[33m981feb7[m Actualizacion Vistas V3.2
+[33mb05df14[m Merge pull request #16 from crisce-03/Cris "Arreglo de Botones  Parte 1"
+[33mcdc30b0[m Arreglo de botonos Parte 1
+[33mf2aa6fc[m Merge pull request #15 from crisce-03/Hector
+[33m1691495[m Refactor MDI.java by cleaning up actionPerformed method
+[33mce3d509[m Actualizacion Vistas V3.1
+[33md47d729[m Merge pull request #13 from crisce-03/Axel
+[33mcd84aa9[m Merge branch 'dev' into Axel
+[33m2f4543d[m Roles y Permisos
+[33m2ee4d40[m Merge pull request #12 from crisce-03/Hector
+[33m8dee4f0[m Actualizacion vistas v2
+[33m4cd7480[m Vistas actualizadas
+[33m45faab1[m Merge pull request #11 from crisce-03/Carlos
+[33m07bc994[m Agrego modulo de facturacion pero nada mas visual sin funcionalidades
+[33maa5e28d[m Merge pull request #10 from crisce-03/Axel
+[33m1595593[m Nueva Compra 2
+[33mb078c35[m Merge pull request #9 from crisce-03/Axel
+[33mded8852[m Nueva Compra
+[33mffffcc7[m Merge pull request #8 from crisce-03/Cris
+[33mf091fdd[m Arreglos en el modulo Productos
+[33ma63ec86[m Arreglo en el MDI
+[33m3c738db[m Merge pull request #7 from crisce-03/Cris
+[33m1b396f0[m Merge pull request #6 from crisce-03/Marlin
+[33mc219842[m Formulario Clientes y categorias
+[33m2045d56[m Merge pull request #5 from crisce-03/Axel
+[33m0dae0cf[m Gestion Usuarios
+[33m5e74253[m Gestion Usuarios
+[33md7f61eb[m Merge pull request #4 from crisce-03/Cris
+[33m9586872[m Eliminar archivos ignorados del repositorio
+[33m6ae43a7[m Imagenes Cloud
+[33m2d61280[m Merge pull request #2 from crisce-03/Cris
+[33me43bb12[m Formulario Producto
+[33m19b3464[m Formulario Proveedores
+[33m89d1635[m Menu bar del MDI
+[33m8375ca8[m MDI
+[33m602b887[m MDI
+[33m3f9d073[m Primer commit
+[33m4671ea3[m Merge pull request #1 from crisce-03/dev
+[33m1bdc200[m Delete src/main/java/Conexion directory

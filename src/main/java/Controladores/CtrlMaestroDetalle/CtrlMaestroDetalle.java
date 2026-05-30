@@ -1,9 +1,17 @@
 package Controladores.CtrlMaestroDetalle;
 
 import Modelos.MaestroDetalleDAO;
+import Modelos.SesionUsuario;
 import Vistas.MaestroDetalleVista;
 import java.awt.Component;
 import java.awt.event.ActionEvent;
+import javax.swing.filechooser.FileNameExtensionFilter;
+import javax.swing.JFileChooser;
+import java.nio.charset.StandardCharsets;
+import java.io.OutputStreamWriter;
+import java.io.FileOutputStream;
+import java.io.File;
+import java.io.BufferedWriter;
 import java.util.concurrent.CancellationException;
 import javax.swing.JOptionPane;
 import javax.swing.JTable;
@@ -28,6 +36,7 @@ public class CtrlMaestroDetalle {
         configurarTitulos();
         configurarEventos();
         cargarMaestro();
+        aplicarPermisos();
     }
 
     private void configurarTitulos() {
@@ -82,6 +91,7 @@ public class CtrlMaestroDetalle {
             vista.getTxtBuscar().setText("");
             cargarMaestro();
         });
+        vista.getBtnExportarCSV().addActionListener((ActionEvent e) -> exportarMaestroDetalleCSV());
         vista.getTxtBuscar().addActionListener((ActionEvent e) -> cargarMaestro());
 
         vista.getTblMaestro().getSelectionModel().addListSelectionListener((ListSelectionEvent e) -> {
@@ -214,6 +224,140 @@ public class CtrlMaestroDetalle {
             default:
                 return new DefaultTableModel();
         }
+    }
+
+
+    private void exportarMaestroDetalleCSV() {
+        JTable tablaMaestro = vista.getTblMaestro();
+        JTable tablaDetalle = vista.getTblDetalle();
+
+        if ((tablaMaestro.getRowCount() == 0 && tablaDetalle.getRowCount() == 0)
+                || (tablaMaestro.getColumnCount() == 0 && tablaDetalle.getColumnCount() == 0)) {
+            JOptionPane.showMessageDialog(obtenerComponenteVista(),
+                    "No hay datos cargados para exportar a CSV.",
+                    "Exportar CSV",
+                    JOptionPane.WARNING_MESSAGE);
+            return;
+        }
+
+        JFileChooser selector = new JFileChooser();
+        selector.setDialogTitle("Guardar reporte Maestro-Detalle en CSV");
+        selector.setFileFilter(new FileNameExtensionFilter("Archivo CSV (*.csv)", "csv"));
+        selector.setSelectedFile(new File(nombreArchivoCSV()));
+
+        int opcion = selector.showSaveDialog(obtenerComponenteVista());
+        if (opcion != JFileChooser.APPROVE_OPTION) {
+            return;
+        }
+
+        File archivo = asegurarExtensionCSV(selector.getSelectedFile());
+        if (archivo.exists()) {
+            int confirmar = JOptionPane.showConfirmDialog(obtenerComponenteVista(),
+                    "El archivo ya existe. ¿Deseas reemplazarlo?",
+                    "Confirmar reemplazo",
+                    JOptionPane.YES_NO_OPTION,
+                    JOptionPane.QUESTION_MESSAGE);
+            if (confirmar != JOptionPane.YES_OPTION) {
+                return;
+            }
+        }
+
+        try (BufferedWriter bw = new BufferedWriter(new OutputStreamWriter(
+                new FileOutputStream(archivo), StandardCharsets.UTF_8))) {
+            bw.write('\ufeff');
+            bw.write("REPORTE MAESTRO-DETALLE");
+            bw.newLine();
+            bw.write("Vista;" + escaparCSV(tituloVista()));
+            bw.newLine();
+            bw.newLine();
+
+            escribirTablaCSV(bw, "MAESTRO", tablaMaestro);
+            bw.newLine();
+            escribirTablaCSV(bw, "DETALLE", tablaDetalle);
+
+            JOptionPane.showMessageDialog(obtenerComponenteVista(),
+                    "CSV exportado correctamente:\n" + archivo.getAbsolutePath(),
+                    "Exportar CSV",
+                    JOptionPane.INFORMATION_MESSAGE);
+        } catch (Exception ex) {
+            JOptionPane.showMessageDialog(obtenerComponenteVista(),
+                    "Error al exportar CSV: " + ex.getMessage(),
+                    "Exportar CSV",
+                    JOptionPane.ERROR_MESSAGE);
+        }
+    }
+
+    private void escribirTablaCSV(BufferedWriter bw, String titulo, JTable tabla) throws Exception {
+        bw.write(titulo);
+        bw.newLine();
+
+        if (tabla.getColumnCount() == 0) {
+            bw.write("Sin columnas");
+            bw.newLine();
+            return;
+        }
+
+        for (int col = 0; col < tabla.getColumnCount(); col++) {
+            if (col > 0) {
+                bw.write(';');
+            }
+            bw.write(escaparCSV(tabla.getColumnName(col)));
+        }
+        bw.newLine();
+
+        if (tabla.getRowCount() == 0) {
+            bw.write("Sin datos");
+            bw.newLine();
+            return;
+        }
+
+        for (int fila = 0; fila < tabla.getRowCount(); fila++) {
+            for (int col = 0; col < tabla.getColumnCount(); col++) {
+                if (col > 0) {
+                    bw.write(';');
+                }
+                bw.write(escaparCSV(tabla.getValueAt(fila, col)));
+            }
+            bw.newLine();
+        }
+    }
+
+    private String escaparCSV(Object valor) {
+        String texto = valor == null ? "" : valor.toString();
+        texto = texto.replace("\r\n", " ").replace("\n", " ").replace("\r", " ");
+        if (texto.contains(";") || texto.contains("\"") || texto.contains(",")) {
+            texto = "\"" + texto.replace("\"", "\"\"") + "\"";
+        }
+        return texto;
+    }
+
+    private File asegurarExtensionCSV(File archivo) {
+        if (archivo == null) {
+            return new File(nombreArchivoCSV());
+        }
+        String ruta = archivo.getAbsolutePath();
+        if (!ruta.toLowerCase().endsWith(".csv")) {
+            return new File(ruta + ".csv");
+        }
+        return archivo;
+    }
+
+    private String nombreArchivoCSV() {
+        return normalizarNombreArchivo(tituloVista()) + ".csv";
+    }
+
+    private String tituloVista() {
+        String titulo = vista.getLblTitulo() != null ? vista.getLblTitulo().getText() : "Maestro Detalle";
+        return (titulo == null || titulo.trim().isEmpty()) ? "Maestro Detalle" : titulo.trim();
+    }
+
+    private String normalizarNombreArchivo(String texto) {
+        String limpio = texto == null ? "maestro_detalle" : texto.toLowerCase().trim();
+        limpio = limpio.replace('á', 'a').replace('é', 'e').replace('í', 'i')
+                .replace('ó', 'o').replace('ú', 'u').replace('ñ', 'n');
+        limpio = limpio.replaceAll("[^a-z0-9]+", "_");
+        limpio = limpio.replaceAll("^_+|_+$", "");
+        return limpio.isEmpty() ? "maestro_detalle" : limpio;
     }
 
     private void cancelarWorker(SwingWorker<?, ?> worker) {
@@ -365,5 +509,99 @@ public class CtrlMaestroDetalle {
 
     private String normalizar(String texto) {
         return texto == null ? "" : texto.toLowerCase().trim();
+    }
+    
+    private void aplicarPermisos() {
+        String tipo = vista.getTipo();
+        boolean puedeExportar = false;
+
+        switch (tipo) {
+            case MaestroDetalleVista.CLIENTES_FACTURAS:
+                puedeExportar = SesionUsuario.tienePermiso("EXPORTAR_VENTAS"); 
+                break;
+            case MaestroDetalleVista.PROVEEDORES_COMPRAS:
+                puedeExportar = SesionUsuario.tienePermiso("EXPORTAR_COMPRAS");
+                break;
+            case MaestroDetalleVista.CATEGORIAS_PRODUCTOS:
+                puedeExportar = SesionUsuario.tienePermiso("EXPORTAR_PRODUCTOS");
+                break;
+            case MaestroDetalleVista.PRODUCTOS_LOTES:
+                puedeExportar = SesionUsuario.tienePermiso("EXPORTAR_LOTES");
+                break;
+        }
+
+        // Bloqueamos el botón con el método exacto de la interfaz
+        if (vista.getBtnExportarCSV() != null) {
+            vista.getBtnExportarCSV().setVisible(puedeExportar);
+        }
+    }
+    
+    private void exportarA_CSV() {
+        JFileChooser fileChooser = new JFileChooser();
+        fileChooser.setDialogTitle("Exportar Tablas a CSV");
+        fileChooser.setFileFilter(new FileNameExtensionFilter("Archivos CSV (*.csv)", "csv"));
+
+        int seleccion = fileChooser.showSaveDialog(obtenerComponenteVista());
+        if (seleccion == JFileChooser.APPROVE_OPTION) {
+            File archivo = fileChooser.getSelectedFile();
+            String rutaArchivo = archivo.getAbsolutePath();
+
+            if (!rutaArchivo.toLowerCase().endsWith(".csv")) {
+                rutaArchivo += ".csv";
+            }
+
+            try (BufferedWriter bw = new BufferedWriter(
+                    new OutputStreamWriter(new FileOutputStream(rutaArchivo), StandardCharsets.UTF_8))) {
+
+                // BOM para que Excel lea UTF-8 correctamente (tildes y ñ)
+                bw.write("\ufeff");
+
+                // Escribir Tabla Maestro
+                bw.write("--- DATOS DEL MAESTRO ---\n");
+                escribirTablaEnCSV(vista.getTblMaestro(), bw);
+
+                // Escribir Tabla Detalle si tiene datos
+                if (vista.getTblDetalle().getRowCount() > 0) {
+                    bw.newLine();
+                    bw.write("--- DATOS DEL DETALLE ASOCIADO ---\n");
+                    escribirTablaEnCSV(vista.getTblDetalle(), bw);
+                }
+
+                JOptionPane.showMessageDialog(obtenerComponenteVista(), "¡Reporte exportado exitosamente a CSV!");
+
+            } catch (Exception ex) {
+                JOptionPane.showMessageDialog(obtenerComponenteVista(), "Error al exportar el archivo: " + ex.getMessage());
+                System.out.println(ex);
+            }
+        }
+    }
+    
+    private void escribirTablaEnCSV(JTable tabla, BufferedWriter bw) throws Exception {
+        // Cabeceras
+        for (int i = 0; i < tabla.getColumnCount(); i++) {
+            bw.write(tabla.getColumnName(i));
+            if (i < tabla.getColumnCount() - 1) {
+                bw.write(";"); 
+            }
+        }
+        bw.newLine();
+
+        // Filas
+        for (int i = 0; i < tabla.getRowCount(); i++) {
+            for (int j = 0; j < tabla.getColumnCount(); j++) {
+                Object valorCelda = tabla.getValueAt(i, j);
+                String textoCelda = (valorCelda != null) ? valorCelda.toString() : "";
+
+                // Envolver en comillas si hay punto y coma
+                if (textoCelda.contains(";")) {
+                    textoCelda = "\"" + textoCelda + "\"";
+                }
+                bw.write(textoCelda);
+                if (j < tabla.getColumnCount() - 1) {
+                    bw.write(";");
+                }
+            }
+            bw.newLine();
+        }
     }
 }

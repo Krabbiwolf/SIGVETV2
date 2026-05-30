@@ -7,9 +7,9 @@ import java.awt.event.MouseEvent;
 import javax.swing.JLabel;
 import javax.swing.table.DefaultTableCellRenderer;
 
-public class FrmFacturaConsultar extends javax.swing.JInternalFrame {
+public class FrmConsultarCompras extends javax.swing.JInternalFrame {
 
-    public FrmFacturaConsultar() {
+    public FrmConsultarCompras() {
         initComponents();
         
         
@@ -22,8 +22,8 @@ public class FrmFacturaConsultar extends javax.swing.JInternalFrame {
     private void initComponents() {
 
         jScrollPane1 = new javax.swing.JScrollPane();
-        tblConsultaFacturas = new javax.swing.JTable();
-        btnAnularFactura = new javax.swing.JButton();
+        tblConsultaCompras = new javax.swing.JTable();
+        btnAnularCompra = new javax.swing.JButton();
         spFechaInicio = new javax.swing.JSpinner();
         spFechaFin = new javax.swing.JSpinner();
         btnFiltrar = new javax.swing.JButton();
@@ -45,31 +45,31 @@ public class FrmFacturaConsultar extends javax.swing.JInternalFrame {
 
         jScrollPane1.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(209, 217, 230)));
 
-        tblConsultaFacturas.setBackground(new java.awt.Color(255, 255, 255));
-        tblConsultaFacturas.setForeground(new java.awt.Color(51, 51, 51));
-        tblConsultaFacturas.setModel(new javax.swing.table.DefaultTableModel(
+        tblConsultaCompras.setBackground(new java.awt.Color(255, 255, 255));
+        tblConsultaCompras.setForeground(new java.awt.Color(51, 51, 51));
+        tblConsultaCompras.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
 
             },
             new String [] {
-                "Id", "Numero", "Fecha", "Estado", "Cliente", "Empleado"
+                "Id", "Numero", "Fecha", "Estado", "Proveedor", "Empleado"
             }
         ));
-        tblConsultaFacturas.setGridColor(new java.awt.Color(224, 229, 236));
-        tblConsultaFacturas.setRowHeight(35);
-        tblConsultaFacturas.setSelectionBackground(new java.awt.Color(217, 226, 243));
-        tblConsultaFacturas.setSelectionForeground(new java.awt.Color(0, 0, 0));
-        jScrollPane1.setViewportView(tblConsultaFacturas);
+        tblConsultaCompras.setGridColor(new java.awt.Color(224, 229, 236));
+        tblConsultaCompras.setRowHeight(35);
+        tblConsultaCompras.setSelectionBackground(new java.awt.Color(217, 226, 243));
+        tblConsultaCompras.setSelectionForeground(new java.awt.Color(0, 0, 0));
+        jScrollPane1.setViewportView(tblConsultaCompras);
 
         getContentPane().add(jScrollPane1, new org.netbeans.lib.awtextra.AbsoluteConstraints(40, 200, 620, 390));
 
-        btnAnularFactura.setBackground(new java.awt.Color(248, 249, 250));
-        btnAnularFactura.setFont(new java.awt.Font("Segoe UI", 1, 13)); // NOI18N
-        btnAnularFactura.setForeground(new java.awt.Color(255, 51, 51));
-        btnAnularFactura.setText("Anular");
-        btnAnularFactura.setCursor(new java.awt.Cursor(java.awt.Cursor.DEFAULT_CURSOR));
-        btnAnularFactura.setFocusPainted(false);
-        getContentPane().add(btnAnularFactura, new org.netbeans.lib.awtextra.AbsoluteConstraints(690, 280, 140, 42));
+        btnAnularCompra.setBackground(new java.awt.Color(248, 249, 250));
+        btnAnularCompra.setFont(new java.awt.Font("Segoe UI", 1, 13)); // NOI18N
+        btnAnularCompra.setForeground(new java.awt.Color(255, 51, 51));
+        btnAnularCompra.setText("Anular");
+        btnAnularCompra.setCursor(new java.awt.Cursor(java.awt.Cursor.DEFAULT_CURSOR));
+        btnAnularCompra.setFocusPainted(false);
+        getContentPane().add(btnAnularCompra, new org.netbeans.lib.awtextra.AbsoluteConstraints(690, 280, 140, 42));
 
         spFechaInicio.setModel(new javax.swing.SpinnerDateModel());
         spFechaInicio.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(197, 216, 245)));
@@ -117,7 +117,7 @@ public class FrmFacturaConsultar extends javax.swing.JInternalFrame {
 
         jLabel1.setFont(new java.awt.Font("Segoe UI", 1, 20)); // NOI18N
         jLabel1.setForeground(new java.awt.Color(32, 56, 100));
-        jLabel1.setText("Consulta de Facturas Emitidas");
+        jLabel1.setText("Consulta de Compras Realizadas");
         getContentPane().add(jLabel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(30, 30, 400, 30));
 
         btnImprimir.setBackground(new java.awt.Color(248, 249, 250));
@@ -132,7 +132,7 @@ public class FrmFacturaConsultar extends javax.swing.JInternalFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    public javax.swing.JButton btnAnularFactura;
+    public javax.swing.JButton btnAnularCompra;
     public javax.swing.JButton btnExportar;
     public javax.swing.JButton btnFiltrar;
     public javax.swing.JButton btnImprimir;
@@ -143,6 +143,6 @@ public class FrmFacturaConsultar extends javax.swing.JInternalFrame {
     private javax.swing.JLabel lblInicio;
     public javax.swing.JSpinner spFechaFin;
     public javax.swing.JSpinner spFechaInicio;
-    public javax.swing.JTable tblConsultaFacturas;
+    public javax.swing.JTable tblConsultaCompras;
     // End of variables declaration//GEN-END:variables
 }

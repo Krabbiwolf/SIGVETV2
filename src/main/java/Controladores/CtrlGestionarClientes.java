@@ -2,6 +2,7 @@ package Controladores;
 
 import Modelos.Cliente;
 import Modelos.ClienteDAO;
+import Modelos.SesionUsuario;
 import Vistas.FrmGestionarClientes;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -36,7 +37,7 @@ public class CtrlGestionarClientes implements ActionListener {
         this.form.btnActualizar.addActionListener(this);
         this.form.btnEliminar.addActionListener(this);
         this.form.btnRefrescar.addActionListener(this);
-        this.form.btnLimpiar.addActionListener(this);
+        this.form.btnEliminar.addActionListener(this);
         this.form.btnVerDetalle.addActionListener(this);
 
         this.form.btnBuscarClientes.addActionListener(this);
@@ -53,6 +54,16 @@ public class CtrlGestionarClientes implements ActionListener {
         agregarValidacionesDeTeclado();
         estadoInicial();
         cargarTabla();
+        
+        if (!SesionUsuario.tienePermiso("EDICION_TERCEROS")) {
+            form.btnGuardar.setVisible(false);
+            form.btnActualizar.setVisible(false);
+            form.btnEliminar.setVisible(false);
+        }
+        if (!SesionUsuario.tienePermiso("EXPORTAR_TERCEROS")) {
+            // Asegúrate de que el nombre del botón sea correcto en tu vista
+            if (form.btnExportarClientes != null) form.btnExportarClientes.setVisible(false);
+        }
     }
 
     private void estadoInicial() {
@@ -421,7 +432,7 @@ public class CtrlGestionarClientes implements ActionListener {
         form.tblClientes.setRowSorter(null);
     }
 
-    private void exportarClientesCSV() {
+private void exportarClientesCSV() {
         exportarTablaCSV(form.tblClientes, "clientes");
     }
 
@@ -448,13 +459,17 @@ public class CtrlGestionarClientes implements ActionListener {
             archivo = new File(archivo.getAbsolutePath() + ".csv");
         }
 
-        try (FileWriter fw = new FileWriter(archivo)) {
+        // Agregamos codificación UTF-8 para evitar problemas con tildes y eñes
+        try (java.io.FileWriter fw = new java.io.FileWriter(archivo, java.nio.charset.StandardCharsets.UTF_8)) {
+
+            // Escribir el BOM para que Excel detecte correctamente el UTF-8
+            fw.write("\ufeff");
 
             for (int i = 0; i < tabla.getColumnCount(); i++) {
                 fw.write(escaparCSV(tabla.getColumnName(i)));
 
                 if (i < tabla.getColumnCount() - 1) {
-                    fw.write(",");
+                    fw.write(";"); // Cambiado a PUNTO Y COMA
                 }
             }
 
@@ -468,7 +483,7 @@ public class CtrlGestionarClientes implements ActionListener {
                     fw.write(escaparCSV(valor == null ? "" : valor.toString()));
 
                     if (col < tabla.getColumnCount() - 1) {
-                        fw.write(",");
+                        fw.write(";"); // Cambiado a PUNTO Y COMA
                     }
                 }
 
@@ -477,7 +492,7 @@ public class CtrlGestionarClientes implements ActionListener {
 
             JOptionPane.showMessageDialog(form, "Archivo CSV exportado correctamente.");
 
-        } catch (IOException e) {
+        } catch (java.io.IOException e) {
             JOptionPane.showMessageDialog(form, "Error al exportar CSV: " + e.getMessage());
         }
     }
@@ -487,7 +502,8 @@ public class CtrlGestionarClientes implements ActionListener {
             return "";
         }
 
-        if (texto.contains(",") || texto.contains("\"") || texto.contains("\n")) {
+        // Cambiamos la condición para que busque punto y coma (;)
+        if (texto.contains(";") || texto.contains("\"") || texto.contains("\n")) {
             texto = texto.replace("\"", "\"\"");
             return "\"" + texto + "\"";
         }
@@ -595,7 +611,7 @@ public class CtrlGestionarClientes implements ActionListener {
         } else if (source == form.btnRefrescar) {
             limpiarCampos();
             cargarTabla();
-        } else if (source == form.btnLimpiar) {
+        } else if (source == form.btnEliminar) {
             limpiarCampos();
         } else if (source == form.btnVerDetalle) {
             verDetalle();

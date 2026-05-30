@@ -1,8 +1,8 @@
-package Controladores.CtrlPuntoVenta;
+package Controladores.CtrlCompra;
 
-import Modelos.ConsultarFacturasDAO;
+import Modelos.ConsultaComprasDAO;
 import Modelos.SesionUsuario;
-import Vistas.FrmFacturaConsultar;
+import Vistas.FrmConsultarCompras;
 
 // Librerías para iText (PDF)
 import com.itextpdf.text.BaseColor;
@@ -33,63 +33,62 @@ import javax.swing.SwingWorker;
 import javax.swing.filechooser.FileNameExtensionFilter;
 import javax.swing.table.DefaultTableModel;
 
-public class CtrlConsultarFactura implements ActionListener {
+public class CtrlConsultaCompras implements ActionListener {
 
-    private FrmFacturaConsultar vista;
-    private ConsultarFacturasDAO dao;
+    private FrmConsultarCompras vista;
+    private ConsultaComprasDAO dao;
 
-    public CtrlConsultarFactura(FrmFacturaConsultar vista, ConsultarFacturasDAO dao) {
+    public CtrlConsultaCompras(FrmConsultarCompras vista, ConsultaComprasDAO dao) {
         this.vista = vista;
         this.dao = dao;
         
-        // Asignar los eventos a los 5 botones
         this.vista.btnFiltrar.addActionListener(this);
         this.vista.btnLimpiar.addActionListener(this);
         this.vista.btnExportar.addActionListener(this);
-        this.vista.btnAnularFactura.addActionListener(this);
+        this.vista.btnAnularCompra.addActionListener(this);
         this.vista.btnImprimir.addActionListener(this);
         
-        // Cargar la tabla inicialmente sin filtros (todas las facturas)
+        // Carga inicial asíncrona
         cargarTabla(null, null);
         
-        if (!SesionUsuario.tienePermiso("EXPORTAR_VENTAS")) {
+        if (!SesionUsuario.tienePermiso("EXPORTAR_COMPRAS")) {
             vista.btnExportar.setVisible(false);
         }
     }
 
-    // =========================================================================
+    // =====================================================
     // CARGA ASÍNCRONA DE LA TABLA (SWING WORKER)
-    // =========================================================================
+    // =====================================================
     private void cargarTabla(Date inicio, Date fin) {
-        // 1. Bloquear botones de filtrado y mostrar mensaje de carga en la tabla
+        // 1. Mostrar estado de carga y bloquear botones temporalmente
         vista.btnFiltrar.setEnabled(false);
         vista.btnLimpiar.setEnabled(false);
         
         DefaultTableModel modeloCargando = new DefaultTableModel(
-            new Object[][]{{"Cargando facturas, por favor espere..."}}, 
+            new Object[][]{{"Cargando datos, por favor espere..."}}, 
             new String[]{"Estado del Sistema"}
         );
-        vista.tblConsultaFacturas.setModel(modeloCargando);
+        vista.tblConsultaCompras.setModel(modeloCargando);
 
-        // 2. Definir el proceso en un hilo secundario
+        // 2. Crear hilo secundario
         SwingWorker<DefaultTableModel, Void> worker = new SwingWorker<DefaultTableModel, Void>() {
             @Override
             protected DefaultTableModel doInBackground() throws Exception {
-                // Esta consulta se procesa en segundo plano
-                return dao.listarFacturas(inicio, fin);
+                // Consulta a BD sin congelar la pantalla
+                return dao.listarCompras(inicio, fin);
             }
 
             @Override
             protected void done() {
                 try {
-                    // Recuperar el modelo de datos e inyectarlo a la tabla de forma segura
+                    // Recibir los datos de forma segura
                     DefaultTableModel modelo = get();
-                    vista.tblConsultaFacturas.setModel(modelo);
+                    vista.tblConsultaCompras.setModel(modelo);
                 } catch (Exception ex) {
-                    System.out.println("Error en la carga asíncrona de facturas: " + ex.getMessage());
-                    JOptionPane.showMessageDialog(vista, "Error al cargar el listado de facturas.");
+                    System.out.println("Error en la carga asíncrona: " + ex.getMessage());
+                    JOptionPane.showMessageDialog(vista, "Error al cargar la tabla de compras.");
                 } finally {
-                    // 3. Rehabilitar el uso de los botones al terminar
+                    // Rehabilitar controles
                     vista.btnFiltrar.setEnabled(true);
                     vista.btnLimpiar.setEnabled(true);
                 }
@@ -117,63 +116,62 @@ public class CtrlConsultarFactura implements ActionListener {
 
         // ======================= 2. LIMPIAR FILTRO =======================
         if (e.getSource() == vista.btnLimpiar) {
-            vista.spFechaInicio.setValue(new Date()); // Restablece a hoy
-            vista.spFechaFin.setValue(new Date());    // Restablece a hoy
-            cargarTabla(null, null); // Carga todo de nuevo sin bloquear
+            vista.spFechaInicio.setValue(new Date()); 
+            vista.spFechaFin.setValue(new Date());    
+            cargarTabla(null, null); 
         }
 
         // ======================= 3. EXPORTAR A EXCEL =======================
         if (e.getSource() == vista.btnExportar) {
-            // Validar que no esté el modelo de carga ni la tabla vacía antes de exportar
-            if (vista.tblConsultaFacturas.getRowCount() == 0 || vista.tblConsultaFacturas.getColumnCount() == 1) {
+            if (vista.tblConsultaCompras.getRowCount() == 0 || vista.tblConsultaCompras.getColumnCount() == 1) {
                 JOptionPane.showMessageDialog(vista, "No hay datos en la tabla para exportar.");
                 return;
             }
             exportarExcel();
         }
 
-        // ======================= 4. ANULAR FACTURA =======================
-        if (e.getSource() == vista.btnAnularFactura) {
-            int fila = vista.tblConsultaFacturas.getSelectedRow();
+        // ======================= 4. ANULAR COMPRA =======================
+        if (e.getSource() == vista.btnAnularCompra) {
+            int fila = vista.tblConsultaCompras.getSelectedRow();
             if (fila == -1) {
-                JOptionPane.showMessageDialog(vista, "Seleccione una factura de la tabla para anular.");
+                JOptionPane.showMessageDialog(vista, "Seleccione una compra de la tabla para anular.");
                 return;
             }
             
-            String estado = vista.tblConsultaFacturas.getValueAt(fila, 3).toString();
+            String estado = vista.tblConsultaCompras.getValueAt(fila, 3).toString();
             if (estado.equalsIgnoreCase("ANULADA")) {
-                JOptionPane.showMessageDialog(vista, "Esta factura ya se encuentra anulada.");
+                JOptionPane.showMessageDialog(vista, "Esta compra ya se encuentra anulada.");
                 return;
             }
 
-            int idVenta = Integer.parseInt(vista.tblConsultaFacturas.getValueAt(fila, 0).toString());
-            int confirm = JOptionPane.showConfirmDialog(vista, "¿Está seguro de anular la venta #" + idVenta + "?", "Confirmar", JOptionPane.YES_NO_OPTION);
+            int idCompra = Integer.parseInt(vista.tblConsultaCompras.getValueAt(fila, 0).toString());
+            int confirm = JOptionPane.showConfirmDialog(vista, "¿Está seguro de anular la compra #" + idCompra + "?", "Confirmar", JOptionPane.YES_NO_OPTION);
             
             if (confirm == JOptionPane.YES_OPTION) {
-                if (dao.anularFactura(idVenta)) {
-                    JOptionPane.showMessageDialog(vista, "Factura anulada exitosamente.");
-                    vista.btnFiltrar.doClick(); // Simula clic para refrescar asíncronamente manteniendo el filtro actual
+                if (dao.anularCompra(idCompra)) {
+                    JOptionPane.showMessageDialog(vista, "Compra anulada exitosamente.");
+                    vista.btnFiltrar.doClick(); // Recargar tabla
                 } else {
-                    JOptionPane.showMessageDialog(vista, "Error al anular la factura.");
+                    JOptionPane.showMessageDialog(vista, "Error al anular la compra.");
                 }
             }
         }
 
         // ======================= 5. IMPRIMIR PDF =======================
         if (e.getSource() == vista.btnImprimir) {
-            int fila = vista.tblConsultaFacturas.getSelectedRow();
+            int fila = vista.tblConsultaCompras.getSelectedRow();
             if (fila == -1) {
-                JOptionPane.showMessageDialog(vista, "Seleccione una factura para imprimir.");
+                JOptionPane.showMessageDialog(vista, "Seleccione una compra para imprimir.");
                 return;
             }
 
-            int idVenta = Integer.parseInt(vista.tblConsultaFacturas.getValueAt(fila, 0).toString());
-            generarPDF(idVenta);
+            int idCompra = Integer.parseInt(vista.tblConsultaCompras.getValueAt(fila, 0).toString());
+            generarPDF(idCompra);
         }
     }
 
     // =========================================================================
-    // EXPORTAR A EXCEL (Formato CSV compatible con Excel)
+    // EXPORTAR A EXCEL
     // =========================================================================
     private void exportarExcel() {
         JFileChooser fileChooser = new JFileChooser();
@@ -194,19 +192,19 @@ public class CtrlConsultarFactura implements ActionListener {
                 // Escribir el BOM para que Excel detecte la codificación correctamente
                 fw.write("\ufeff");
 
-                // Escribir cabeceras separadas por PUNTO Y COMA (;)
-                for (int i = 0; i < vista.tblConsultaFacturas.getColumnCount(); i++) {
-                    fw.write(vista.tblConsultaFacturas.getColumnName(i));
-                    if (i < vista.tblConsultaFacturas.getColumnCount() - 1) {
+                // Cabeceras separadas por PUNTO Y COMA (;)
+                for (int i = 0; i < vista.tblConsultaCompras.getColumnCount(); i++) {
+                    fw.write(vista.tblConsultaCompras.getColumnName(i));
+                    if (i < vista.tblConsultaCompras.getColumnCount() - 1) {
                         fw.write(";");
                     }
                 }
                 fw.write("\n");
 
-                // Escribir datos
-                for (int i = 0; i < vista.tblConsultaFacturas.getRowCount(); i++) {
-                    for (int j = 0; j < vista.tblConsultaFacturas.getColumnCount(); j++) {
-                        Object valor = vista.tblConsultaFacturas.getValueAt(i, j);
+                // Filas
+                for (int i = 0; i < vista.tblConsultaCompras.getRowCount(); i++) {
+                    for (int j = 0; j < vista.tblConsultaCompras.getColumnCount(); j++) {
+                        Object valor = vista.tblConsultaCompras.getValueAt(i, j);
                         String texto = (valor != null ? valor.toString() : "");
                         
                         // Si el texto tiene un punto y coma, comillas dobles o saltos de línea, lo encerramos entre comillas
@@ -217,14 +215,17 @@ public class CtrlConsultarFactura implements ActionListener {
                         fw.write(texto);
                         
                         // Separador de columnas: PUNTO Y COMA (;)
-                        if (j < vista.tblConsultaFacturas.getColumnCount() - 1) {
+                        if (j < vista.tblConsultaCompras.getColumnCount() - 1) {
                             fw.write(";");
                         }
                     }
                     fw.write("\n");
                 }
                 JOptionPane.showMessageDialog(vista, "Exportación exitosa.");
+                
+                // Abrir el archivo automáticamente al terminar
                 Desktop.getDesktop().open(new File(ruta));
+                
             } catch (Exception ex) {
                 JOptionPane.showMessageDialog(vista, "Error al exportar: " + ex.getMessage());
             }
@@ -234,9 +235,9 @@ public class CtrlConsultarFactura implements ActionListener {
     // =========================================================================
     // LÓGICA DE CREACIÓN DEL PDF CON iTEXT
     // =========================================================================
-    private void generarPDF(int idVenta) {
-        Map<String, String> cabecera = dao.obtenerCabeceraFactura(idVenta);
-        List<Object[]> detalles = dao.obtenerDetallesFactura(idVenta);
+    private void generarPDF(int idCompra) {
+        Map<String, String> cabecera = dao.obtenerCabeceraCompra(idCompra);
+        List<Object[]> detalles = dao.obtenerDetallesCompra(idCompra);
 
         if (cabecera.isEmpty() || detalles.isEmpty()) {
             JOptionPane.showMessageDialog(vista, "No se encontraron datos para generar el PDF.");
@@ -245,17 +246,17 @@ public class CtrlConsultarFactura implements ActionListener {
 
         Document documento = new Document();
         try {
-            String rutaArchivo = System.getProperty("user.home") + "/Desktop/Factura_" + cabecera.get("comprobante") + ".pdf";
+            String rutaArchivo = System.getProperty("user.home") + "/Desktop/Compra_" + cabecera.get("comprobante") + ".pdf";
             PdfWriter.getInstance(documento, new FileOutputStream(rutaArchivo));
             documento.open();
 
             Font fontTitulo = FontFactory.getFont(FontFactory.HELVETICA_BOLD, 18, BaseColor.BLUE.darker());
-            Paragraph titulo = new Paragraph("SIVET", fontTitulo);
+            Paragraph titulo = new Paragraph("SIGVET", fontTitulo);
             titulo.setAlignment(Element.ALIGN_CENTER);
             documento.add(titulo);
 
             Font fontSub = FontFactory.getFont(FontFactory.HELVETICA, 10, BaseColor.DARK_GRAY);
-            Paragraph subtitulo = new Paragraph("Santa Ana, El Salvador\nComprobante de Venta", fontSub);
+            Paragraph subtitulo = new Paragraph("Santa Ana, El Salvador\nComprobante de Ingreso (Compra)", fontSub);
             subtitulo.setAlignment(Element.ALIGN_CENTER);
             subtitulo.setSpacingAfter(20);
             documento.add(subtitulo);
@@ -263,15 +264,15 @@ public class CtrlConsultarFactura implements ActionListener {
             Font fontNormal = FontFactory.getFont(FontFactory.HELVETICA, 11, BaseColor.BLACK);
             documento.add(new Paragraph("N° Comprobante: " + cabecera.get("comprobante"), fontNormal));
             documento.add(new Paragraph("Fecha: " + cabecera.get("fecha"), fontNormal));
-            documento.add(new Paragraph("Cliente: " + cabecera.get("cliente") + " (DUI: " + cabecera.get("dui") + ")", fontNormal));
-            documento.add(new Paragraph("Cajero: " + cabecera.get("cajero"), fontNormal));
+            documento.add(new Paragraph("Proveedor: " + cabecera.get("proveedor") + " (Tel: " + cabecera.get("telefono") + ")", fontNormal));
+            documento.add(new Paragraph("Registrado por: " + cabecera.get("empleado"), fontNormal));
             documento.add(Chunk.NEWLINE);
 
             PdfPTable tabla = new PdfPTable(5);
             tabla.setWidthPercentage(100);
             tabla.setWidths(new float[]{10f, 40f, 15f, 15f, 20f});
 
-            String[] headers = {"Cant.", "Descripción", "P. Unit", "IVA", "Subtotal"};
+            String[] headers = {"Cant.", "Producto", "P. Compra", "IVA", "Subtotal"};
             Font fontHeader = FontFactory.getFont(FontFactory.HELVETICA_BOLD, 11, BaseColor.WHITE);
             for (String header : headers) {
                 PdfPCell celda = new PdfPCell(new Phrase(header, fontHeader));
@@ -286,9 +287,9 @@ public class CtrlConsultarFactura implements ActionListener {
             for (Object[] row : detalles) {
                 int cantidad = (int) row[0];
                 String nombre = (String) row[1];
-                double precioUnitario = (double) row[2]; 
+                double precioCompra = (double) row[2]; 
                 
-                double subtotalFila = cantidad * precioUnitario;
+                double subtotalFila = cantidad * precioCompra;
                 double ivaFila = subtotalFila * 0.13; 
                 double totalFila = subtotalFila + ivaFila;
 
@@ -297,7 +298,7 @@ public class CtrlConsultarFactura implements ActionListener {
 
                 tabla.addCell(String.valueOf(cantidad));
                 tabla.addCell(nombre);
-                tabla.addCell(String.format("$%.2f", precioUnitario));
+                tabla.addCell(String.format("$%.2f", precioCompra));
                 tabla.addCell(String.format("$%.2f", ivaFila));
                 tabla.addCell(String.format("$%.2f", totalFila));
             }
@@ -308,14 +309,14 @@ public class CtrlConsultarFactura implements ActionListener {
             totales.setAlignment(Element.ALIGN_RIGHT);
             totales.setSpacingBefore(10);
             totales.add(new Phrase(String.format("Subtotal (Sin IVA): $%.2f\n", subtotalGlobal), fontNormal));
-            totales.add(new Phrase(String.format("IVA (13%%): $%.2f\n", ivaGlobal), fontNormal));
+            totales.add(new Phrase(String.format("IVA Aplicado: $%.2f\n", ivaGlobal), fontNormal));
             
             Font fontTotal = FontFactory.getFont(FontFactory.HELVETICA_BOLD, 14, BaseColor.RED.darker());
-            totales.add(new Phrase(String.format("TOTAL A PAGAR: $%.2f", totalFinal), fontTotal));
+            totales.add(new Phrase(String.format("TOTAL COMPRA: $%.2f", totalFinal), fontTotal));
             documento.add(totales);
 
             documento.close();
-            JOptionPane.showMessageDialog(vista, "Factura guardada en el Escritorio.");
+            JOptionPane.showMessageDialog(vista, "Comprobante de compra guardado en el Escritorio.");
 
             File file = new File(rutaArchivo);
             if (file.exists() && Desktop.isDesktopSupported()) {

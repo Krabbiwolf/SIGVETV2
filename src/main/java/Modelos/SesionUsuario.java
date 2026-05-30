@@ -1,5 +1,7 @@
 package Modelos;
 
+import java.util.ArrayList;
+
 /**
  * Guarda temporalmente el usuario que inició sesión.
  * Sirve para que los módulos no pidan manualmente el ID del usuario.
@@ -7,13 +9,15 @@ package Modelos;
 public class SesionUsuario {
 
     private static Usuario usuarioActual;
+    private static ArrayList<String> permisosActuales = new ArrayList<>();
 
     private SesionUsuario() {
         // Evita crear objetos de esta clase.
     }
 
-    public static void iniciarSesion(Usuario usuario) {
+    public static void iniciarSesion(Usuario usuario, ArrayList<String> permisos) {
         usuarioActual = usuario;
+        permisosActuales = permisos;
     }
 
     public static Usuario getUsuarioActual() {
@@ -49,5 +53,10 @@ public class SesionUsuario {
 
     public static void cerrarSesion() {
         usuarioActual = null;
+        permisosActuales.clear();
+    }
+    
+    public static boolean tienePermiso(String permiso) {
+        return permisosActuales.contains(permiso);
     }
 }

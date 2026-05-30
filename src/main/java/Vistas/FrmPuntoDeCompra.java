@@ -45,7 +45,6 @@ public class FrmPuntoDeCompra extends javax.swing.JInternalFrame {
         jLabel16 = new javax.swing.JLabel();
         lblTotal = new javax.swing.JLabel();
         btnRegistrarCompra = new javax.swing.JButton();
-        btnImprimirFactura = new javax.swing.JButton();
         jLabel13 = new javax.swing.JLabel();
         txtPrecioCompra = new javax.swing.JTextField();
         txtCantidad = new javax.swing.JTextField();
@@ -110,7 +109,7 @@ public class FrmPuntoDeCompra extends javax.swing.JInternalFrame {
         tblDetalleCompra.setSelectionForeground(new java.awt.Color(0, 0, 0));
         jScrollPane1.setViewportView(tblDetalleCompra);
 
-        getContentPane().add(jScrollPane1, new org.netbeans.lib.awtextra.AbsoluteConstraints(70, 230, 550, 350));
+        getContentPane().add(jScrollPane1, new org.netbeans.lib.awtextra.AbsoluteConstraints(70, 230, 550, 290));
 
         btnLimpiar.setBackground(new java.awt.Color(248, 249, 250));
         btnLimpiar.setFont(new java.awt.Font("Segoe UI", 1, 13)); // NOI18N
@@ -118,7 +117,7 @@ public class FrmPuntoDeCompra extends javax.swing.JInternalFrame {
         btnLimpiar.setText("Limpiar Todo");
         btnLimpiar.setCursor(new java.awt.Cursor(java.awt.Cursor.DEFAULT_CURSOR));
         btnLimpiar.setFocusPainted(false);
-        getContentPane().add(btnLimpiar, new org.netbeans.lib.awtextra.AbsoluteConstraints(70, 590, 120, 30));
+        getContentPane().add(btnLimpiar, new org.netbeans.lib.awtextra.AbsoluteConstraints(70, 540, 120, 30));
 
         jLabel3.setFont(new java.awt.Font("Segoe UI", 1, 11)); // NOI18N
         jLabel3.setForeground(new java.awt.Color(51, 51, 51));
@@ -204,14 +203,6 @@ public class FrmPuntoDeCompra extends javax.swing.JInternalFrame {
         btnRegistrarCompra.setFocusPainted(false);
         getContentPane().add(btnRegistrarCompra, new org.netbeans.lib.awtextra.AbsoluteConstraints(650, 480, 280, 40));
 
-        btnImprimirFactura.setBackground(new java.awt.Color(248, 249, 250));
-        btnImprimirFactura.setFont(new java.awt.Font("Segoe UI", 1, 13)); // NOI18N
-        btnImprimirFactura.setForeground(new java.awt.Color(43, 68, 122));
-        btnImprimirFactura.setText("Imprimir");
-        btnImprimirFactura.setCursor(new java.awt.Cursor(java.awt.Cursor.DEFAULT_CURSOR));
-        btnImprimirFactura.setFocusPainted(false);
-        getContentPane().add(btnImprimirFactura, new org.netbeans.lib.awtextra.AbsoluteConstraints(650, 530, 280, 40));
-
         jLabel13.setFont(new java.awt.Font("Segoe UI", 1, 11)); // NOI18N
         jLabel13.setForeground(new java.awt.Color(51, 51, 51));
         jLabel13.setText("CANTIDAD");
@@ -252,7 +243,6 @@ public class FrmPuntoDeCompra extends javax.swing.JInternalFrame {
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     public javax.swing.JButton btnAgregarProducto;
-    public javax.swing.JButton btnImprimirFactura;
     public javax.swing.JButton btnLimpiar;
     public javax.swing.JButton btnRegistrarCompra;
     public javax.swing.JComboBox<String> cmbDescuento;

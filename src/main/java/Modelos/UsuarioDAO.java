@@ -144,6 +144,7 @@ public Usuario login(String user, String pass) {
         if (rs.next()) {
             Usuario u = new Usuario();
             u.setIdUsuario(rs.getInt("id_usuario"));
+            u.setIdRol(rs.getInt("id_rol"));
             u.setNombre(rs.getString("nombre"));
             u.setApellido(rs.getString("apellido"));
             u.setUsuario(rs.getString("username"));
@@ -156,4 +157,24 @@ public Usuario login(String user, String pass) {
     return null;
 }
 
+    public ArrayList<String> obtenerPermisosDeRol(int idRol) {
+        ArrayList<String> permisos = new ArrayList<>();
+        String sql = "SELECT p.nombre_permiso FROM PERMISOS p " +
+                     "INNER JOIN ROL_PERMISO rp ON p.id_permiso = rp.id_permiso " +
+                     "WHERE rp.id_rol = ?";
+        Connection conexion = con.conectar();
+        try {
+            PreparedStatement ps = conexion.prepareStatement(sql);
+            ps.setInt(1, idRol);
+            ResultSet rs = ps.executeQuery();
+            while (rs.next()) {
+                permisos.add(rs.getString("nombre_permiso"));
+            }
+        } catch (SQLException e) {
+            System.out.println("Error al obtener permisos: " + e.getMessage());
+        }
+        return permisos;
+    }
+
 }
+

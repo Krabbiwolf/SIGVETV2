@@ -5,6 +5,7 @@
 package Controladores.CtrlUsuarios;
 
 import Modelos.Roles;
+import Modelos.SesionUsuario;
 import Modelos.Usuario;
 import Modelos.UsuarioDAO;
 import Vistas.FrmNuevoUsuario;
@@ -80,6 +81,18 @@ public class CtrlNuevoUsuario implements ActionListener{
         });
         
         cargarTabla();
+        
+        // Bloquear edición si no tiene permiso
+        if (!SesionUsuario.tienePermiso("EDICION_USUARIOS")) {
+            form.btnGuardarUsuario.setVisible(false);
+            form.btnActualizarUsuario.setVisible(false);
+            form.btnEliminarUsuario.setVisible(false);
+        }
+        
+        // Bloquear exportación
+        if (!SesionUsuario.tienePermiso("EXPORTAR_USUARIOS")) {
+            form.btnExportar.setVisible(false);
+        }
     }
     
     public void cargarTabla() {

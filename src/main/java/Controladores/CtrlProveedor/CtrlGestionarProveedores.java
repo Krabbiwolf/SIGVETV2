@@ -2,6 +2,7 @@ package Controladores.CtrlProveedor;
 
 import Modelos.Proveedor;
 import Modelos.ProveedorDAO;
+import Modelos.SesionUsuario;
 import Vistas.FrmGestionarProveedores;
 import servicios.CloudinaryService; // Igual que en productos
 
@@ -47,6 +48,16 @@ public class CtrlGestionarProveedores implements ActionListener {
         asignarListeners();
         form.btnVerDetalle.setEnabled(false); // Deshabilitado hasta que se seleccione una fila
         cargarTabla();
+        
+        if (!SesionUsuario.tienePermiso("EDICION_TERCEROS")) {
+            form.btnGuardar.setVisible(false);
+            form.btnActualizar.setVisible(false);
+            form.btnEliminar.setVisible(false);
+        }
+        if (!SesionUsuario.tienePermiso("EXPORTAR_TERCEROS")) {
+            // Asegúrate de que el nombre del botón sea correcto en tu vista
+            if (form.btnExportarCSV != null) form.btnExportarCSV.setVisible(false);
+        }
     }
 
     // ══════════════════════════════════════════════════════════════════════════
@@ -484,37 +495,51 @@ public class CtrlGestionarProveedores implements ActionListener {
 
         // ── EXPORTAR CSV ──────────────────────────────────────────────────────
         else if (e.getSource() == form.btnExportarCSV) {
-            if (form.tableProveedores.getRowCount() == 0) {
-                JOptionPane.showMessageDialog(form, "No hay datos para exportar.");
-                return;
+    if (form.tableProveedores.getRowCount() == 0) {
+        JOptionPane.showMessageDialog(form, "No hay datos para exportar.");
+        return;
+    }
+    
+    JFileChooser fc = new JFileChooser();
+    fc.setFileFilter(new FileNameExtensionFilter("Archivo CSV (*.csv)", "csv"));
+    
+    if (fc.showSaveDialog(form) == JFileChooser.APPROVE_OPTION) {
+        String ruta = fc.getSelectedFile().getAbsolutePath();
+        if (!ruta.toLowerCase().endsWith(".csv")) ruta += ".csv";
+        
+        // Agregamos StandardCharsets.UTF_8 para evitar problemas de codificación
+        try (FileWriter fw = new FileWriter(ruta, java.nio.charset.StandardCharsets.UTF_8)) {
+            
+            // Escribir el BOM (Byte Order Mark) para que Excel reconozca tildes y eñes
+            fw.write("\ufeff");
+            
+            DefaultTableModel m = (DefaultTableModel) form.tableProveedores.getModel();
+            
+            // Cabeceras (ahora usando PUNTO Y COMA como separador)
+            for (int i = 1; i < m.getColumnCount() - 1; i++) {
+                fw.write(m.getColumnName(i) + (i == m.getColumnCount() - 2 ? "" : ";"));
             }
-            JFileChooser fc = new JFileChooser();
-            fc.setFileFilter(new FileNameExtensionFilter("Archivo CSV (*.csv)", "csv"));
-            if (fc.showSaveDialog(form) == JFileChooser.APPROVE_OPTION) {
-                String ruta = fc.getSelectedFile().getAbsolutePath();
-                if (!ruta.toLowerCase().endsWith(".csv")) ruta += ".csv";
-                try (FileWriter fw = new FileWriter(ruta)) {
-                    DefaultTableModel m = (DefaultTableModel) form.tableProveedores.getModel();
-                    // Cabeceras (sin Sel ni RutaImagen)
-                    for (int i = 1; i < m.getColumnCount() - 1; i++) {
-                        fw.write(m.getColumnName(i) + (i == m.getColumnCount() - 2 ? "" : ","));
-                    }
-                    fw.write("\n");
-                    // Filas
-                    for (int i = 0; i < m.getRowCount(); i++) {
-                        for (int j = 1; j < m.getColumnCount() - 1; j++) {
-                            String dato = m.getValueAt(i, j) != null ? m.getValueAt(i, j).toString() : "";
-                            if (dato.contains(",")) dato = "\"" + dato + "\"";
-                            fw.write(dato + (j == m.getColumnCount() - 2 ? "" : ","));
-                        }
-                        fw.write("\n");
-                    }
-                    JOptionPane.showMessageDialog(form, "Datos exportados correctamente.");
-                } catch (Exception ex) {
-                    JOptionPane.showMessageDialog(form, "Error al exportar: " + ex.getMessage());
+            fw.write("\n");
+            
+            // Filas
+            for (int i = 0; i < m.getRowCount(); i++) {
+                for (int j = 1; j < m.getColumnCount() - 1; j++) {
+                    String dato = m.getValueAt(i, j) != null ? m.getValueAt(i, j).toString() : "";
+                    
+                    // Si el dato contiene un punto y coma, lo encerramos en comillas dobles
+                    if (dato.contains(";")) dato = "\"" + dato + "\"";
+                    
+                    // Separamos con PUNTO Y COMA
+                    fw.write(dato + (j == m.getColumnCount() - 2 ? "" : ";"));
                 }
+                fw.write("\n");
             }
+            JOptionPane.showMessageDialog(form, "Datos exportados correctamente.");
+        } catch (Exception ex) {
+            JOptionPane.showMessageDialog(form, "Error al exportar: " + ex.getMessage());
         }
+    }
+}
 
         // ── LIMPIAR ───────────────────────────────────────────────────────────
         else if (e.getSource() == form.btnLimpiar) {

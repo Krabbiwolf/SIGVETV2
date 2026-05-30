@@ -10,6 +10,7 @@ import java.util.ArrayList;
 public class CompraDAO {
 
     Conexion con = new Conexion();
+    private final ConfiguracionDAO configuracionDAO = new ConfiguracionDAO();
 
     // ============================
     // CARGAR PROVEEDORES
@@ -80,6 +81,14 @@ public class CompraDAO {
     }
 
     // ============================
+    // OBTENER IVA CONFIGURADO
+    // ============================
+    private double obtenerIvaDecimal() {
+        double ivaPorcentaje = configuracionDAO.obtenerValor("iva_predeterminado", 13.00);
+        return ivaPorcentaje / 100.0;
+    }
+
+    // ============================
     // GENERAR NÚMERO COMPROBANTE
     // ============================
     private String generarNumeroComprobante(Connection conexion) throws SQLException {
@@ -103,16 +112,10 @@ public class CompraDAO {
     }
 
     // ============================
-    // REGISTRAR COMPRA
-    // El trigger LoteKardexTrigger se encarga
-    // de crear el LOTE y el KARDEX automáticamente
+    // REGISTRAR COMPRA (CORREGIDO)
+    // Inserta una sola COMPRA y múltiples DETALLES_COMPRA
     // ============================
-    public boolean registrarCompra(
-            Compra compra,
-            int idProducto,
-            int cantidad,
-            double precioCompra
-    ) {
+    public boolean registrarCompra(Compra compra, java.util.List<Object[]> detalles) {
 
         String sqlCompra = """
             INSERT INTO COMPRAS
@@ -134,18 +137,15 @@ public class CompraDAO {
                 id_compra,
                 id_producto
             )
-            VALUES (?, ?, 0.13, ?, ?)
+            VALUES (?, ?, ?, ?, ?)
         """;
 
         Connection conexion = con.conectar();
 
         try {
-
             conexion.setAutoCommit(false);
 
-            // ============================
-            // INSERT COMPRAS
-            // ============================
+            // 1. Insertar la Cabecera (COMPRAS) UNA SOLA VEZ
             PreparedStatement psCompra = conexion.prepareStatement(
                 sqlCompra,
                 PreparedStatement.RETURN_GENERATED_KEYS
@@ -157,7 +157,6 @@ public class CompraDAO {
 
             psCompra.executeUpdate();
 
-            // OBTENER ID GENERADO
             ResultSet rsKeys = psCompra.getGeneratedKeys();
             int idCompraGenerada = 0;
 
@@ -167,37 +166,42 @@ public class CompraDAO {
                 throw new SQLException("No se pudo obtener el ID de la compra.");
             }
 
-            // ============================
-            // INSERT DETALLE
-            // (el trigger actúa aquí y crea
-            // el lote + kardex automáticamente)
-            // ============================
+            double ivaDecimal = obtenerIvaDecimal();
+
+            // 2. Insertar los múltiples detalles
             PreparedStatement psDetalle = conexion.prepareStatement(sqlDetalle);
 
-            psDetalle.setInt(1, cantidad);
-            psDetalle.setDouble(2, precioCompra);
-            psDetalle.setInt(3, idCompraGenerada);
-            psDetalle.setInt(4, idProducto);
+            for (Object[] detalle : detalles) {
+                int idProducto = (int) detalle[0];
+                int cantidad = (int) detalle[1];
+                double precioCompra = (double) detalle[2];
 
-            psDetalle.executeUpdate();
+                psDetalle.setInt(1, cantidad);
+                psDetalle.setDouble(2, precioCompra);
+                psDetalle.setDouble(3, ivaDecimal);
+                psDetalle.setInt(4, idCompraGenerada);
+                psDetalle.setInt(5, idProducto);
+                
+                // Agregar al batch para ejecutar todo junto
+                psDetalle.addBatch();
+            }
+
+            // Ejecutar todos los detalles de golpe
+            psDetalle.executeBatch();
 
             conexion.commit();
             return true;
 
         } catch (SQLException e) {
-
             System.out.println("Error al registrar compra: " + e.getMessage());
-
             try {
                 conexion.rollback();
             } catch (SQLException ex) {
                 System.out.println("Error rollback: " + ex.getMessage());
             }
-
             return false;
 
         } finally {
-
             try {
                 conexion.setAutoCommit(true);
                 conexion.close();

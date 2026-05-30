@@ -2,6 +2,7 @@ package Controladores;
 
 import Modelos.Categoria;
 import Modelos.CategoriaDAO;
+import Modelos.SesionUsuario;
 import Vistas.FrmGestionarCategorias;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -52,6 +53,16 @@ public class CtrlGestionarCategoria implements ActionListener {
         agregarValidacionesDeTeclado();
         estadoInicial();
         cargarTabla();
+        
+        if (!SesionUsuario.tienePermiso("EDICION_PRODUCTOS")) {
+            form.btnGuardar.setVisible(false);
+            form.btnActualizar.setVisible(false);
+            form.btnEliminar.setVisible(false);
+            // Si el form se llama "form" en categorías, cambia "vista" por "form"
+        }
+        if (!SesionUsuario.tienePermiso("EXPORTAR_PRODUCTOS")) {
+            if (form.btnExportarCategorias != null) form.btnExportarCategorias.setVisible(false);
+        }
     }
 
     private void estadoInicial() {
@@ -366,7 +377,7 @@ public class CtrlGestionarCategoria implements ActionListener {
         form.tblCategorias.setRowSorter(null);
     }
 
-    private void exportarCategoriasCSV() {
+private void exportarCategoriasCSV() {
         exportarTablaCSV(form.tblCategorias, "categorias");
     }
 
@@ -393,13 +404,17 @@ public class CtrlGestionarCategoria implements ActionListener {
             archivo = new File(archivo.getAbsolutePath() + ".csv");
         }
 
-        try (FileWriter fw = new FileWriter(archivo)) {
+        // Agregamos codificación UTF-8 para evitar problemas con tildes y eñes
+        try (java.io.FileWriter fw = new java.io.FileWriter(archivo, java.nio.charset.StandardCharsets.UTF_8)) {
+
+            // Escribir el BOM para que Excel detecte correctamente el UTF-8
+            fw.write("\ufeff");
 
             for (int i = 0; i < tabla.getColumnCount(); i++) {
                 fw.write(escaparCSV(tabla.getColumnName(i)));
 
                 if (i < tabla.getColumnCount() - 1) {
-                    fw.write(",");
+                    fw.write(";"); // Cambiado a PUNTO Y COMA
                 }
             }
 
@@ -413,7 +428,7 @@ public class CtrlGestionarCategoria implements ActionListener {
                     fw.write(escaparCSV(valor == null ? "" : valor.toString()));
 
                     if (col < tabla.getColumnCount() - 1) {
-                        fw.write(",");
+                        fw.write(";"); // Cambiado a PUNTO Y COMA
                     }
                 }
 
@@ -422,7 +437,7 @@ public class CtrlGestionarCategoria implements ActionListener {
 
             JOptionPane.showMessageDialog(form, "Archivo CSV exportado correctamente.");
 
-        } catch (IOException e) {
+        } catch (java.io.IOException e) {
             JOptionPane.showMessageDialog(form, "Error al exportar CSV: " + e.getMessage());
         }
     }
@@ -432,7 +447,8 @@ public class CtrlGestionarCategoria implements ActionListener {
             return "";
         }
 
-        if (texto.contains(",") || texto.contains("\"") || texto.contains("\n")) {
+        // Buscamos punto y coma (;) en lugar de coma (,)
+        if (texto.contains(";") || texto.contains("\"") || texto.contains("\n")) {
             texto = texto.replace("\"", "\"\"");
             return "\"" + texto + "\"";
         }
