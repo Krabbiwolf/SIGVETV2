@@ -2,6 +2,7 @@ package Controladores;
 
 import Modelos.Categoria;
 import Modelos.CategoriaDAO;
+import Modelos.SesionUsuario;
 import Vistas.FrmGestionarCategorias;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -52,6 +53,16 @@ public class CtrlGestionarCategoria implements ActionListener {
         agregarValidacionesDeTeclado();
         estadoInicial();
         cargarTabla();
+        
+        if (!SesionUsuario.tienePermiso("EDICION_PRODUCTOS")) {
+            form.btnGuardar.setVisible(false);
+            form.btnActualizar.setVisible(false);
+            form.btnEliminar.setVisible(false);
+            // Si el form se llama "form" en categorías, cambia "vista" por "form"
+        }
+        if (!SesionUsuario.tienePermiso("EXPORTAR_PRODUCTOS")) {
+            if (form.btnExportarCategorias != null) form.btnExportarCategorias.setVisible(false);
+        }
     }
 
     private void estadoInicial() {

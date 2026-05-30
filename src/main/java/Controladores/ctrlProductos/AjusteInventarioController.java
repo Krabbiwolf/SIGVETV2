@@ -38,8 +38,8 @@ public class AjusteInventarioController {
         agregarEventos();
         actualizarStockActual(); // este es rápido
         
-        if (!SesionUsuario.tienePermiso("EDICION_PRODUCTOS")) {
-            vista.btnRegistrarAjuste.setVisible(false);
+        if (!SesionUsuario.tienePermiso("EDICION_LOTES")) {
+            vista.btnRegistrarAjuste.setVisible(false); 
         }
 
         if (!SesionUsuario.tienePermiso("EXPORTAR_PRODUCTOS")) {

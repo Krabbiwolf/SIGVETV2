@@ -1,6 +1,7 @@
 package Controladores.CtrlPuntoVenta;
 
 import Modelos.ConsultarFacturasDAO;
+import Modelos.SesionUsuario;
 import Vistas.FrmFacturaConsultar;
 
 // Librerías para iText (PDF)
@@ -50,6 +51,10 @@ public class CtrlConsultarFactura implements ActionListener {
         
         // Cargar la tabla inicialmente sin filtros (todas las facturas)
         cargarTabla(null, null);
+        
+        if (!SesionUsuario.tienePermiso("EXPORTAR_VENTAS")) {
+            vista.btnExportar.setVisible(false);
+        }
     }
 
     // =========================================================================

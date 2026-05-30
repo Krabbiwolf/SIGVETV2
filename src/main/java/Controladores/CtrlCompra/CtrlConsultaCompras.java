@@ -1,6 +1,7 @@
 package Controladores.CtrlCompra;
 
 import Modelos.ConsultaComprasDAO;
+import Modelos.SesionUsuario;
 import Vistas.FrmConsultarCompras;
 
 // Librerías para iText (PDF)
@@ -49,6 +50,10 @@ public class CtrlConsultaCompras implements ActionListener {
         
         // Carga inicial asíncrona
         cargarTabla(null, null);
+        
+        if (!SesionUsuario.tienePermiso("EXPORTAR_COMPRAS")) {
+            vista.btnExportar.setVisible(false);
+        }
     }
 
     // =====================================================
