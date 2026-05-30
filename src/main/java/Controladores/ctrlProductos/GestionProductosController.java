@@ -719,18 +719,26 @@ public class GestionProductosController {
         }
 
         try (BufferedWriter bw = new BufferedWriter(new OutputStreamWriter(Files.newOutputStream(archivo.toPath()), StandardCharsets.UTF_8))) {
-            bw.write("ID,Codigo,Nombre,Descripcion,IVA,Estado,IdCategoria,Imagen");
+            
+            // 1. Escribir el BOM para que Excel detecte correctamente el UTF-8 (tildes, eñes)
+            bw.write("\ufeff");
+            
+            // 2. Cabeceras separadas por PUNTO Y COMA (;)
+            bw.write("ID;Codigo;Nombre;Descripcion;IVA;Estado;IdCategoria;Imagen");
             bw.newLine();
+            
             DefaultTableModel modelo = (DefaultTableModel) vista.tblProductos.getModel();
             for (int filaVista = 0; filaVista < vista.tblProductos.getRowCount(); filaVista++) {
                 int filaModelo = vista.tblProductos.convertRowIndexToModel(filaVista);
-                bw.write(csv(valorModelo(modelo, filaModelo, 1)) + ","
-                        + csv(valorModelo(modelo, filaModelo, 2)) + ","
-                        + csv(valorModelo(modelo, filaModelo, 3)) + ","
-                        + csv(valorModelo(modelo, filaModelo, 4)) + ","
-                        + csv(valorModelo(modelo, filaModelo, 5)) + ","
-                        + csv(valorModelo(modelo, filaModelo, 7)) + ","
-                        + csv(valorModelo(modelo, filaModelo, 8)) + ","
+                
+                // 3. Filas concatenadas con PUNTO Y COMA (;)
+                bw.write(csv(valorModelo(modelo, filaModelo, 1)) + ";"
+                        + csv(valorModelo(modelo, filaModelo, 2)) + ";"
+                        + csv(valorModelo(modelo, filaModelo, 3)) + ";"
+                        + csv(valorModelo(modelo, filaModelo, 4)) + ";"
+                        + csv(valorModelo(modelo, filaModelo, 5)) + ";"
+                        + csv(valorModelo(modelo, filaModelo, 7)) + ";"
+                        + csv(valorModelo(modelo, filaModelo, 8)) + ";"
                         + csv(valorModelo(modelo, filaModelo, 6)));
                 bw.newLine();
             }

@@ -25,7 +25,6 @@ public class FrmGestionarCategorias extends javax.swing.JInternalFrame {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
-        lblTitulo = new javax.swing.JLabel();
         txtBuscarCategorias = new javax.swing.JTextField();
         btnBuscarCategorias = new javax.swing.JButton();
         cbFiltroCategorias = new javax.swing.JComboBox<>();
@@ -47,19 +46,13 @@ public class FrmGestionarCategorias extends javax.swing.JInternalFrame {
         btnLimpiar = new javax.swing.JButton();
         btnRefrescar = new javax.swing.JButton();
         btnExportarCategorias = new javax.swing.JButton();
+        lblTitulo = new javax.swing.JLabel();
 
         setBackground(new java.awt.Color(244, 246, 249));
         setClosable(true);
-        setMaximizable(true);
-        setResizable(true);
         setTitle("Gestionar Categorías");
         setPreferredSize(new java.awt.Dimension(850, 520));
         getContentPane().setLayout(null);
-
-        lblTitulo.setFont(new java.awt.Font("Segoe UI", 1, 20)); // NOI18N
-        lblTitulo.setForeground(new java.awt.Color(32, 56, 100));
-        lblTitulo.setText("■ Gestión de Categorías");
-        getContentPane().add(lblTitulo, new org.netbeans.lib.awtextra.AbsoluteConstraints(25, 15, 300, 30));
 
         txtBuscarCategorias.setBackground(new java.awt.Color(255, 255, 255));
         txtBuscarCategorias.setFont(new java.awt.Font("Segoe UI", 0, 13)); // NOI18N
@@ -75,7 +68,7 @@ public class FrmGestionarCategorias extends javax.swing.JInternalFrame {
         btnBuscarCategorias.setForeground(new java.awt.Color(255, 255, 255));
         btnBuscarCategorias.setText("Buscar");
         btnBuscarCategorias.setBorderPainted(false);
-        btnBuscarCategorias.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
+        btnBuscarCategorias.setCursor(new java.awt.Cursor(java.awt.Cursor.DEFAULT_CURSOR));
         btnBuscarCategorias.setFocusPainted(false);
         getContentPane().add(btnBuscarCategorias);
         btnBuscarCategorias.setBounds(235, 55, 140, 35);
@@ -84,7 +77,8 @@ public class FrmGestionarCategorias extends javax.swing.JInternalFrame {
         cbFiltroCategorias.setForeground(new java.awt.Color(51, 51, 51));
         cbFiltroCategorias.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Todos", "ID", "Nombre", "Descripción", "Estado" }));
         cbFiltroCategorias.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(209, 217, 230)));
-        getContentPane().add(cbFiltroCategorias, new org.netbeans.lib.awtextra.AbsoluteConstraints(385, 55, 170, 35));
+        getContentPane().add(cbFiltroCategorias);
+        cbFiltroCategorias.setBounds(385, 55, 170, 35);
 
         btnLimpiarFiltroCategorias.setBackground(new java.awt.Color(248, 249, 250));
         btnLimpiarFiltroCategorias.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
@@ -162,8 +156,8 @@ public class FrmGestionarCategorias extends javax.swing.JInternalFrame {
         panelEdit.add(jLabel3, new org.netbeans.lib.awtextra.AbsoluteConstraints(445, 15, 70, 16));
 
         chkEstado.setBackground(new java.awt.Color(255, 255, 255));
-        chkEstado.setText("Activo");
         chkEstado.setForeground(new java.awt.Color(51, 51, 51));
+        chkEstado.setText("Activo");
         panelEdit.add(chkEstado, new org.netbeans.lib.awtextra.AbsoluteConstraints(445, 35, 70, 35));
 
         getContentPane().add(panelEdit);
@@ -174,7 +168,7 @@ public class FrmGestionarCategorias extends javax.swing.JInternalFrame {
         btnGuardar.setForeground(new java.awt.Color(255, 255, 255));
         btnGuardar.setText("Guardar Nueva Categoría");
         btnGuardar.setBorderPainted(false);
-        btnGuardar.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
+        btnGuardar.setCursor(new java.awt.Cursor(java.awt.Cursor.DEFAULT_CURSOR));
         btnGuardar.setFocusPainted(false);
         getContentPane().add(btnGuardar);
         btnGuardar.setBounds(580, 100, 230, 42);
@@ -227,6 +221,12 @@ public class FrmGestionarCategorias extends javax.swing.JInternalFrame {
         btnExportarCategorias.addActionListener(this::btnExportarCategoriasActionPerformed);
         getContentPane().add(btnExportarCategorias);
         btnExportarCategorias.setBounds(580, 413, 230, 42);
+
+        lblTitulo.setFont(new java.awt.Font("Segoe UI", 1, 22)); // NOI18N
+        lblTitulo.setForeground(new java.awt.Color(45, 74, 138));
+        lblTitulo.setText("Gestión de Categorias");
+        getContentPane().add(lblTitulo);
+        lblTitulo.setBounds(30, 15, 400, 30);
 
         pack();
     }// </editor-fold>//GEN-END:initComponents

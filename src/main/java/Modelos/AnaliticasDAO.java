@@ -51,9 +51,10 @@ public class AnaliticasDAO {
     public double getVentasDelDia() {
         double total = 0;
         String colFecha = getColumnaFechaVenta();
+        // Usamos TRIM y verificamos 'ANULADA'
         String sql = "SELECT SUM(d.cantidad * d.precio_unitario) FROM DETALLE_VENTAS d " +
                      "INNER JOIN VENTAS v ON d.id_venta = v.id_venta " +
-                     "WHERE DATE(v." + colFecha + ") = CURDATE() AND UPPER(v.estado) <> 'ANULADO'";
+                     "WHERE DATE(v." + colFecha + ") = CURDATE() AND UPPER(TRIM(v.estado)) <> 'ANULADA'";
         try (Connection con = conexion.conectar();
              PreparedStatement ps = con.prepareStatement(sql)) {
             ResultSet rs = ps.executeQuery();
@@ -93,9 +94,10 @@ public class AnaliticasDAO {
     public Map<String, Double> getVentasUltimos7Dias() {
         Map<String, Double> datos = new LinkedHashMap<>();
         String colFecha = getColumnaFechaVenta();
+        // Usamos TRIM y verificamos 'ANULADA'
         String sql = "SELECT DATE(v." + colFecha + ") as fecha, SUM(d.cantidad * d.precio_unitario) as total " +
                      "FROM VENTAS v INNER JOIN DETALLE_VENTAS d ON v.id_venta = d.id_venta " +
-                     "WHERE v." + colFecha + " >= DATE_SUB(CURDATE(), INTERVAL 7 DAY) AND UPPER(v.estado) <> 'ANULADO' " +
+                     "WHERE v." + colFecha + " >= DATE_SUB(CURDATE(), INTERVAL 7 DAY) AND UPPER(TRIM(v.estado)) <> 'ANULADA' " +
                      "GROUP BY DATE(v." + colFecha + ") ORDER BY fecha ASC";
         try (Connection con = conexion.conectar();
              PreparedStatement ps = con.prepareStatement(sql)) {
@@ -131,9 +133,10 @@ public class AnaliticasDAO {
 
     public Map<String, Double> getTopProductosMasVendidos() {
         Map<String, Double> datos = new LinkedHashMap<>();
+        // Usamos TRIM y verificamos 'ANULADA'
         String sql = "SELECT p.nombre, SUM(d.cantidad) as total FROM DETALLE_VENTAS d " +
                      "INNER JOIN PRODUCTOS p ON d.id_producto = p.id_producto " +
-                     "INNER JOIN VENTAS v ON d.id_venta = v.id_venta WHERE UPPER(v.estado) <> 'ANULADO' " +
+                     "INNER JOIN VENTAS v ON d.id_venta = v.id_venta WHERE UPPER(TRIM(v.estado)) <> 'ANULADA' " +
                      "GROUP BY p.id_producto, p.nombre ORDER BY total DESC LIMIT 5";
         try (Connection con = conexion.conectar();
              PreparedStatement ps = con.prepareStatement(sql)) {

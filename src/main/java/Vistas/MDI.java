@@ -1,5 +1,6 @@
 package Vistas;
 
+import Controladores.CtrlAnaliticas;
 import Controladores.CtrlCompra.CtrlConsultaCompras;
 import Controladores.CtrlCompra.CtrlPuntoCompra;
 import Controladores.CtrlProveedor.*;
@@ -25,7 +26,7 @@ public class MDI extends javax.swing.JFrame {
         configurarEstilo();
         initComponents();
         aplicarPermisos();
-        
+
         this.setExtendedState(MAXIMIZED_BOTH);
     }
 
@@ -37,7 +38,7 @@ public class MDI extends javax.swing.JFrame {
         aplicarPermisos();
         this.setExtendedState(MAXIMIZED_BOTH);
     }
-    
+
     private void aplicarPermisos() {
         // --- MÓDULO TERCEROS (Clientes y Proveedores) ---
         boolean leeTerceros = SesionUsuario.tienePermiso("LECTURA_TERCEROS");
@@ -46,7 +47,7 @@ public class MDI extends javax.swing.JFrame {
         // --- MÓDULO PRODUCTOS Y LOTES ---
         boolean leeProductos = SesionUsuario.tienePermiso("LECTURA_PRODUCTOS");
         boolean leeLotes = SesionUsuario.tienePermiso("LECTURA_LOTES");
-        
+
         menuProductos.setVisible(leeProductos || leeLotes); // Se ve si tiene alguno de los dos
         itemGestionarProductos.setVisible(leeProductos);
         itemGestionarCategorias.setVisible(leeProductos); // Si tienes este item
@@ -92,7 +93,7 @@ public class MDI extends javax.swing.JFrame {
             ventana.setSelected(true);
         } catch (Exception e) {
         }
-        
+
     }
 
     @SuppressWarnings("unchecked")
@@ -304,7 +305,7 @@ public class MDI extends javax.swing.JFrame {
     }//GEN-LAST:event_itemNuevoUsuarioActionPerformed
 
     private void itemGestionarUsuariosActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_itemGestionarUsuariosActionPerformed
-        
+
     }//GEN-LAST:event_itemGestionarUsuariosActionPerformed
 
     private void itemRolesActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_itemRolesActionPerformed
@@ -340,6 +341,7 @@ public class MDI extends javax.swing.JFrame {
 
     private void itemAnaliticasActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_itemAnaliticasActionPerformed
         FrmAnaliticas vista = new FrmAnaliticas();
+        CtrlAnaliticas ctrl = new CtrlAnaliticas(vista);
         abrirVentana(vista);
     }//GEN-LAST:event_itemAnaliticasActionPerformed
 

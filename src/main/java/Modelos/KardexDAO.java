@@ -109,7 +109,18 @@ public class KardexDAO {
                 String comprobanteCompra = rs.getString("comprobante_compra");
                 String motivoAjuste = rs.getString("motivo_ajuste");
 
-                if (idVenta != null) {
+                // --- NUEVA LÓGICA DE PRIORIDAD ---
+                // Si el registro tiene un motivo de ajuste (como la Anulación), le damos prioridad.
+                if (motivoAjuste != null && !motivoAjuste.trim().isEmpty()) {
+                    
+                    // Si además de ser una anulación, tiene el comprobante, lo agregamos para más contexto
+                    if (motivoAjuste.equals("Anulacion de Factura") && comprobanteVenta != null) {
+                        kardex.setRespaldoMotivo(motivoAjuste + " #" + comprobanteVenta);
+                    } else {
+                        kardex.setRespaldoMotivo(motivoAjuste);
+                    }
+
+                } else if (idVenta != null) {
                     if (comprobanteVenta != null) {
                         kardex.setRespaldoMotivo("Venta #" + comprobanteVenta);
                     } else {
@@ -121,8 +132,6 @@ public class KardexDAO {
                     } else {
                         kardex.setRespaldoMotivo("Compra ID #" + idCompra);
                     }
-                } else if (motivoAjuste != null && !motivoAjuste.trim().isEmpty()) {
-                    kardex.setRespaldoMotivo(motivoAjuste);
                 } else {
                     kardex.setRespaldoMotivo("Sin respaldo registrado");
                 }

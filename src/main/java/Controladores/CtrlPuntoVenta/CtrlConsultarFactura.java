@@ -188,10 +188,18 @@ public class CtrlConsultarFactura implements ActionListener {
                 ruta += ".csv";
             }
 
-            try (FileWriter fw = new FileWriter(ruta)) {
-                // Escribir cabeceras
+            // Usamos OutputStreamWriter con UTF-8 para que las tildes y ñ se guarden bien
+            try (java.io.OutputStreamWriter fw = new java.io.OutputStreamWriter(new java.io.FileOutputStream(ruta), java.nio.charset.StandardCharsets.UTF_8)) {
+                
+                // Escribir el BOM para que Excel detecte la codificación correctamente
+                fw.write("\ufeff");
+
+                // Escribir cabeceras separadas por PUNTO Y COMA (;)
                 for (int i = 0; i < vista.tblConsultaFacturas.getColumnCount(); i++) {
-                    fw.write(vista.tblConsultaFacturas.getColumnName(i) + ",");
+                    fw.write(vista.tblConsultaFacturas.getColumnName(i));
+                    if (i < vista.tblConsultaFacturas.getColumnCount() - 1) {
+                        fw.write(";");
+                    }
                 }
                 fw.write("\n");
 
@@ -199,7 +207,19 @@ public class CtrlConsultarFactura implements ActionListener {
                 for (int i = 0; i < vista.tblConsultaFacturas.getRowCount(); i++) {
                     for (int j = 0; j < vista.tblConsultaFacturas.getColumnCount(); j++) {
                         Object valor = vista.tblConsultaFacturas.getValueAt(i, j);
-                        fw.write((valor != null ? valor.toString() : "") + ",");
+                        String texto = (valor != null ? valor.toString() : "");
+                        
+                        // Si el texto tiene un punto y coma, comillas dobles o saltos de línea, lo encerramos entre comillas
+                        if (texto.contains(";") || texto.contains("\"") || texto.contains("\n") || texto.contains("\r")) {
+                            texto = "\"" + texto.replace("\"", "\"\"") + "\"";
+                        }
+                        
+                        fw.write(texto);
+                        
+                        // Separador de columnas: PUNTO Y COMA (;)
+                        if (j < vista.tblConsultaFacturas.getColumnCount() - 1) {
+                            fw.write(";");
+                        }
                     }
                     fw.write("\n");
                 }

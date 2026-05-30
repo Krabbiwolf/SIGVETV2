@@ -112,20 +112,10 @@ public class CompraDAO {
     }
 
     // ============================
-    // REGISTRAR COMPRA
-    // El trigger LoteKardexTrigger se encarga
-    // de crear el LOTE y el KARDEX automáticamente.
-    //
-    // IMPORTANTE:
-    // El porcentaje de ganancia para precio_venta debe aplicarse
-    // en el trigger de BD si ahí se calcula el precio de venta.
+    // REGISTRAR COMPRA (CORREGIDO)
+    // Inserta una sola COMPRA y múltiples DETALLES_COMPRA
     // ============================
-    public boolean registrarCompra(
-            Compra compra,
-            int idProducto,
-            int cantidad,
-            double precioCompra
-    ) {
+    public boolean registrarCompra(Compra compra, java.util.List<Object[]> detalles) {
 
         String sqlCompra = """
             INSERT INTO COMPRAS
@@ -153,9 +143,9 @@ public class CompraDAO {
         Connection conexion = con.conectar();
 
         try {
-
             conexion.setAutoCommit(false);
 
+            // 1. Insertar la Cabecera (COMPRAS) UNA SOLA VEZ
             PreparedStatement psCompra = conexion.prepareStatement(
                 sqlCompra,
                 PreparedStatement.RETURN_GENERATED_KEYS
@@ -178,33 +168,40 @@ public class CompraDAO {
 
             double ivaDecimal = obtenerIvaDecimal();
 
+            // 2. Insertar los múltiples detalles
             PreparedStatement psDetalle = conexion.prepareStatement(sqlDetalle);
 
-            psDetalle.setInt(1, cantidad);
-            psDetalle.setDouble(2, precioCompra);
-            psDetalle.setDouble(3, ivaDecimal);
-            psDetalle.setInt(4, idCompraGenerada);
-            psDetalle.setInt(5, idProducto);
+            for (Object[] detalle : detalles) {
+                int idProducto = (int) detalle[0];
+                int cantidad = (int) detalle[1];
+                double precioCompra = (double) detalle[2];
 
-            psDetalle.executeUpdate();
+                psDetalle.setInt(1, cantidad);
+                psDetalle.setDouble(2, precioCompra);
+                psDetalle.setDouble(3, ivaDecimal);
+                psDetalle.setInt(4, idCompraGenerada);
+                psDetalle.setInt(5, idProducto);
+                
+                // Agregar al batch para ejecutar todo junto
+                psDetalle.addBatch();
+            }
+
+            // Ejecutar todos los detalles de golpe
+            psDetalle.executeBatch();
 
             conexion.commit();
             return true;
 
         } catch (SQLException e) {
-
             System.out.println("Error al registrar compra: " + e.getMessage());
-
             try {
                 conexion.rollback();
             } catch (SQLException ex) {
                 System.out.println("Error rollback: " + ex.getMessage());
             }
-
             return false;
 
         } finally {
-
             try {
                 conexion.setAutoCommit(true);
                 conexion.close();

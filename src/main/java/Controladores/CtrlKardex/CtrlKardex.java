@@ -126,27 +126,44 @@ public class CtrlKardex {
             fileChooser.setDialogTitle("Guardar Kardex");
             int seleccion = fileChooser.showSaveDialog(vista);
             if (seleccion != JFileChooser.APPROVE_OPTION) return;
+            
             String ruta = fileChooser.getSelectedFile().getAbsolutePath();
             if (!ruta.toLowerCase().endsWith(".csv")) ruta += ".csv";
-            FileWriter writer = new FileWriter(ruta);
-            DefaultTableModel modelo = (DefaultTableModel) vista.tblKardex.getModel();
-            for (int i = 0; i < modelo.getColumnCount(); i++) {
-                writer.write(modelo.getColumnName(i));
-                if (i < modelo.getColumnCount() - 1) writer.write(",");
-            }
-            writer.write("\n");
-            for (int fila = 0; fila < modelo.getRowCount(); fila++) {
-                for (int columna = 0; columna < modelo.getColumnCount(); columna++) {
-                    Object valor = modelo.getValueAt(fila, columna);
-                    String texto = valor == null ? "" : valor.toString();
-                    texto = texto.replace(",", " ");
-                    writer.write(texto);
-                    if (columna < modelo.getColumnCount() - 1) writer.write(",");
+            
+            // Usamos OutputStreamWriter con UTF-8 para que las tildes y eñes se guarden bien
+            try (java.io.OutputStreamWriter writer = new java.io.OutputStreamWriter(new java.io.FileOutputStream(ruta), java.nio.charset.StandardCharsets.UTF_8)) {
+                
+                // Escribir el BOM para que Excel detecte la codificación correctamente
+                writer.write("\ufeff");
+                
+                DefaultTableModel modelo = (DefaultTableModel) vista.tblKardex.getModel();
+                
+                // Cabeceras
+                for (int i = 0; i < modelo.getColumnCount(); i++) {
+                    writer.write(modelo.getColumnName(i));
+                    if (i < modelo.getColumnCount() - 1) writer.write(";"); // Cambiado a punto y coma
                 }
                 writer.write("\n");
+                
+                // Filas
+                for (int fila = 0; fila < modelo.getRowCount(); fila++) {
+                    for (int columna = 0; columna < modelo.getColumnCount(); columna++) {
+                        Object valor = modelo.getValueAt(fila, columna);
+                        String texto = valor == null ? "" : valor.toString();
+                        
+                        // Si el texto tiene un punto y coma, comillas dobles o saltos de línea, lo encerramos entre comillas
+                        if (texto.contains(";") || texto.contains("\"") || texto.contains("\n") || texto.contains("\r")) {
+                            texto = "\"" + texto.replace("\"", "\"\"") + "\"";
+                        }
+                        
+                        writer.write(texto);
+                        if (columna < modelo.getColumnCount() - 1) writer.write(";"); // Cambiado a punto y coma
+                    }
+                    writer.write("\n");
+                }
             }
-            writer.close();
             JOptionPane.showMessageDialog(vista, "Kardex exportado correctamente.");
+            
         } catch (Exception e) {
             JOptionPane.showMessageDialog(vista, "Error al exportar: " + e.getMessage());
         }
