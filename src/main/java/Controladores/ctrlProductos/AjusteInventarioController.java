@@ -275,7 +275,7 @@ public class AjusteInventarioController {
         vista.dispose();
     }
 
-    private void exportarCSV() {
+private void exportarCSV() {
         if (vista.tblAjustes.getRowCount() == 0) {
             JOptionPane.showMessageDialog(vista, "No hay ajustes para exportar.");
             return;
@@ -309,10 +309,14 @@ public class AjusteInventarioController {
         TableModel modelo = vista.tblAjustes.getModel();
 
         try (OutputStreamWriter writer = new OutputStreamWriter(new FileOutputStream(archivo), StandardCharsets.UTF_8)) {
+            
+            // Escribir el BOM para que Excel detecte correctamente el UTF-8 (tildes, eñes)
+            writer.write("\ufeff");
+            
             for (int col = 0; col < modelo.getColumnCount(); col++) {
                 writer.write(escaparCSV(modelo.getColumnName(col)));
                 if (col < modelo.getColumnCount() - 1) {
-                    writer.write(",");
+                    writer.write(";"); // Separador cambiado a PUNTO Y COMA
                 }
             }
             writer.write(System.lineSeparator());
@@ -322,7 +326,7 @@ public class AjusteInventarioController {
                     Object valor = modelo.getValueAt(fila, col);
                     writer.write(escaparCSV(valor == null ? "" : valor.toString()));
                     if (col < modelo.getColumnCount() - 1) {
-                        writer.write(",");
+                        writer.write(";"); // Separador cambiado a PUNTO Y COMA
                     }
                 }
                 writer.write(System.lineSeparator());
@@ -335,7 +339,8 @@ public class AjusteInventarioController {
             return "";
         }
 
-        boolean requiereComillas = texto.contains(",") || texto.contains("\n") || texto.contains("\r") || texto.contains("\"");
+        // Buscamos punto y coma (;) en lugar de coma (,) para escapar el texto
+        boolean requiereComillas = texto.contains(";") || texto.contains("\n") || texto.contains("\r") || texto.contains("\"");
         String textoLimpio = texto.replace("\"", "\"\"");
 
         return requiereComillas ? "\"" + textoLimpio + "\"" : textoLimpio;

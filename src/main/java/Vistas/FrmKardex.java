@@ -102,9 +102,9 @@ public class FrmKardex extends javax.swing.JInternalFrame {
         panelFiltros.add(lblTipo);
         lblTipo.setBounds(460, 20, 200, 16);
 
-        cboTipoMovimiento.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Todos", "ENTRADA", "SALIDA", "AJUSTE" }));
         cboTipoMovimiento.setFont(new java.awt.Font("Segoe UI", 0, 13)); // NOI18N
         cboTipoMovimiento.setForeground(new java.awt.Color(51, 51, 51));
+        cboTipoMovimiento.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Todos", "ENTRADA", "SALIDA", "AJUSTE" }));
         cboTipoMovimiento.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(197, 216, 245)));
         panelFiltros.add(cboTipoMovimiento);
         cboTipoMovimiento.setBounds(460, 40, 200, 38);
@@ -118,8 +118,8 @@ public class FrmKardex extends javax.swing.JInternalFrame {
         txtBuscar.setFont(new java.awt.Font("Segoe UI", 0, 13)); // NOI18N
         txtBuscar.setForeground(new java.awt.Color(51, 51, 51));
         txtBuscar.setToolTipText("Buscar por código de barras o nombre del producto");
-        txtBuscar.setCaretColor(new java.awt.Color(45, 74, 138));
         txtBuscar.setBorder(javax.swing.BorderFactory.createCompoundBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(197, 216, 245)), javax.swing.BorderFactory.createEmptyBorder(6, 10, 6, 10)));
+        txtBuscar.setCaretColor(new java.awt.Color(45, 74, 138));
         panelFiltros.add(txtBuscar);
         txtBuscar.setBounds(680, 40, 310, 38);
 
@@ -146,7 +146,7 @@ public class FrmKardex extends javax.swing.JInternalFrame {
         btnExportar.setBackground(new java.awt.Color(40, 167, 69));
         btnExportar.setFont(new java.awt.Font("Segoe UI", 1, 13)); // NOI18N
         btnExportar.setForeground(new java.awt.Color(255, 255, 255));
-        btnExportar.setText("📊 Exportar a Excel");
+        btnExportar.setText("Exportar a Excel");
         btnExportar.setBorderPainted(false);
         btnExportar.setCursor(new java.awt.Cursor(java.awt.Cursor.DEFAULT_CURSOR));
         btnExportar.setFocusPainted(false);
@@ -164,7 +164,7 @@ public class FrmKardex extends javax.swing.JInternalFrame {
 
             },
             new String [] {
-
+                "Fecha/Hora", "Tipo Moviminetos", "Producto", "Codigo Barras", "Lote", "Cantidad", "Usuario", "Respaldo/Motivo"
             }
         ));
         tblKardex.setGridColor(new java.awt.Color(224, 224, 224));

@@ -45,9 +45,6 @@ public class CtrlPuntoCompra implements ActionListener {
         if (!SesionUsuario.tienePermiso("EDICION_COMPRAS")) {
             form.btnRegistrarCompra.setVisible(false); // O como se llame tu botón de registrar compra
         }
-        if (!SesionUsuario.tienePermiso("EXPORTAR_COMPRAS")) {
-            form.btnImprimirFactura.setVisible(false);
-        }
     }
 
     // ─────────────────────────────────────────────────────────
@@ -314,7 +311,7 @@ public class CtrlPuntoCompra implements ActionListener {
     }
 
     // ─────────────────────────────────────────────────────────
-    //  REGISTRAR COMPRA
+    //  REGISTRAR COMPRA (CORREGIDO)
     // ─────────────────────────────────────────────────────────
     private void registrarCompra() {
         DefaultTableModel modelo = (DefaultTableModel) form.tblDetalleCompra.getModel();
@@ -329,36 +326,39 @@ public class CtrlPuntoCompra implements ActionListener {
             return;
         }
 
-        int    idProveedor        = Integer.parseInt(
+        int idProveedor = Integer.parseInt(
             form.cmbProveedor.getSelectedItem().toString().split(" - ")[0]);
         double descuentoSeleccionado = obtenerDescuentoSeleccionado();
-        double factorDescuento    = 1 - (descuentoSeleccionado / 100.0);
-        boolean todoBien          = true;
+        double factorDescuento = 1 - (descuentoSeleccionado / 100.0);
 
+        // 1. Crear el objeto Compra principal
+        Compra compra = new Compra();
+        compra.setIdProveedor(idProveedor);
+        compra.setIdUsuario(SesionUsuario.getIdUsuarioActual());
+
+        // 2. Crear una lista para almacenar todos los detalles
+        java.util.List<Object[]> listaDetalles = new java.util.ArrayList<>();
+
+        // 3. Recopilar todos los productos de la tabla
         for (int i = 0; i < modelo.getRowCount(); i++) {
-            int    idProducto      = Integer.parseInt(modelo.getValueAt(i, 7).toString());
-            int    cantidad        = Integer.parseInt(modelo.getValueAt(i, 1).toString());
-            double precioOriginal  = Double.parseDouble(
+            int idProducto = Integer.parseInt(modelo.getValueAt(i, 7).toString());
+            int cantidad = Integer.parseInt(modelo.getValueAt(i, 1).toString());
+            double precioOriginal = Double.parseDouble(
                 modelo.getValueAt(i, 2).toString().replace(",", "."));
-            double precioConDesc   = precioOriginal * factorDescuento;
+            double precioConDesc = precioOriginal * factorDescuento;
 
-            Compra compra = new Compra();
-            compra.setIdProveedor(idProveedor);
-            compra.setIdUsuario(SesionUsuario.getIdUsuarioActual());
-
-            boolean resultado = dao.registrarCompra(compra, idProducto, cantidad, precioConDesc);
-
-            if (!resultado) {
-                todoBien = false;
-                JOptionPane.showMessageDialog(form,
-                    "Error al registrar: " + modelo.getValueAt(i, 0));
-                break;
-            }
+            // Guardamos: [idProducto, cantidad, precioConDesc]
+            listaDetalles.add(new Object[]{idProducto, cantidad, precioConDesc});
         }
 
-        if (todoBien) {
+        // 4. Enviar todo al DAO EN UNA SOLA LLAMADA
+        boolean resultado = dao.registrarCompra(compra, listaDetalles);
+
+        if (resultado) {
             JOptionPane.showMessageDialog(form, "Compra registrada correctamente.");
             limpiarTodo();
+        } else {
+            JOptionPane.showMessageDialog(form, "Error al registrar la compra en la base de datos.");
         }
     }
 

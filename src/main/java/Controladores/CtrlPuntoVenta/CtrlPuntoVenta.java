@@ -51,11 +51,6 @@ public class CtrlPuntoVenta implements ActionListener {
         if (!SesionUsuario.tienePermiso("EDICION_VENTAS")) {
             form.btnFacturar.setVisible(false); // O como se llame tu botón de realizar venta
         }
-        
-        // Bloquear exportación
-        if (!SesionUsuario.tienePermiso("EXPORTAR_VENTAS")) {
-            form.btnImprimirFactura.setVisible(false);
-        }
     }
 
     private void cargarConfiguracion() {
@@ -412,7 +407,7 @@ public class CtrlPuntoVenta implements ActionListener {
 
             nuevaVenta.setTipoComprobante("Ticket");
             nuevaVenta.setEstado("Completada");
-            nuevaVenta.setIdUsuario(3);
+            nuevaVenta.setIdUsuario(SesionUsuario.getIdUsuarioActual());
 
             for (int i = 0; i < modelo.getRowCount(); i++) {
 

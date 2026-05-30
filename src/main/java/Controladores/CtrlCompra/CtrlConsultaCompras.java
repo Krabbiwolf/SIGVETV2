@@ -186,21 +186,46 @@ public class CtrlConsultaCompras implements ActionListener {
                 ruta += ".csv";
             }
 
-            try (FileWriter fw = new FileWriter(ruta)) {
+            // Usamos OutputStreamWriter con UTF-8 para que las tildes y ñ se guarden bien
+            try (java.io.OutputStreamWriter fw = new java.io.OutputStreamWriter(new java.io.FileOutputStream(ruta), java.nio.charset.StandardCharsets.UTF_8)) {
+                
+                // Escribir el BOM para que Excel detecte la codificación correctamente
+                fw.write("\ufeff");
+
+                // Cabeceras separadas por PUNTO Y COMA (;)
                 for (int i = 0; i < vista.tblConsultaCompras.getColumnCount(); i++) {
-                    fw.write(vista.tblConsultaCompras.getColumnName(i) + ",");
+                    fw.write(vista.tblConsultaCompras.getColumnName(i));
+                    if (i < vista.tblConsultaCompras.getColumnCount() - 1) {
+                        fw.write(";");
+                    }
                 }
                 fw.write("\n");
 
+                // Filas
                 for (int i = 0; i < vista.tblConsultaCompras.getRowCount(); i++) {
                     for (int j = 0; j < vista.tblConsultaCompras.getColumnCount(); j++) {
                         Object valor = vista.tblConsultaCompras.getValueAt(i, j);
-                        fw.write((valor != null ? valor.toString() : "") + ",");
+                        String texto = (valor != null ? valor.toString() : "");
+                        
+                        // Si el texto tiene un punto y coma, comillas dobles o saltos de línea, lo encerramos entre comillas
+                        if (texto.contains(";") || texto.contains("\"") || texto.contains("\n") || texto.contains("\r")) {
+                            texto = "\"" + texto.replace("\"", "\"\"") + "\"";
+                        }
+                        
+                        fw.write(texto);
+                        
+                        // Separador de columnas: PUNTO Y COMA (;)
+                        if (j < vista.tblConsultaCompras.getColumnCount() - 1) {
+                            fw.write(";");
+                        }
                     }
                     fw.write("\n");
                 }
                 JOptionPane.showMessageDialog(vista, "Exportación exitosa.");
+                
+                // Abrir el archivo automáticamente al terminar
                 Desktop.getDesktop().open(new File(ruta));
+                
             } catch (Exception ex) {
                 JOptionPane.showMessageDialog(vista, "Error al exportar: " + ex.getMessage());
             }
