@@ -43,7 +43,7 @@ public class CtrlPuntoCompra implements ActionListener {
 
         // Permisos
         if (!SesionUsuario.tienePermiso("EDICION_COMPRAS")) {
-            form.btnRegistrarCompra.setVisible(false);
+            form.btnRegistrarCompra.setVisible(false); // O como se llame tu botón de registrar compra
         }
         if (!SesionUsuario.tienePermiso("EXPORTAR_COMPRAS")) {
             form.btnImprimirFactura.setVisible(false);

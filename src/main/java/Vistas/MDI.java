@@ -24,14 +24,7 @@ public class MDI extends javax.swing.JFrame {
     public MDI() {
         configurarEstilo();
         initComponents();
-        
-        menuUsuarios.setVisible(SesionUsuario.tienePermiso("LECTURA_USUARIOS"));
-        menuProductos.setVisible(SesionUsuario.tienePermiso("LECTURA_PRODUCTOS"));
-        menuFacturacion.setVisible(SesionUsuario.tienePermiso("LECTURA_VENTAS"));
-        menuCompras.setVisible(SesionUsuario.tienePermiso("LECTURA_COMPRAS"));
-        menuAnaliticas.setVisible(SesionUsuario.tienePermiso("LECTURA_REPORTES"));
-        menuProveedores.setVisible(SesionUsuario.tienePermiso("LECTURA_TERCEROS"));
-        jMenu3.setVisible(SesionUsuario.tienePermiso("LECTURA_LOTES"));
+        aplicarPermisos();
         
         this.setExtendedState(MAXIMIZED_BOTH);
     }
@@ -41,7 +34,40 @@ public class MDI extends javax.swing.JFrame {
         this.rolUsuario = rol;
         configurarEstilo();
         initComponents();
+        aplicarPermisos();
         this.setExtendedState(MAXIMIZED_BOTH);
+    }
+    
+    private void aplicarPermisos() {
+        // --- MÓDULO TERCEROS (Clientes y Proveedores) ---
+        boolean leeTerceros = SesionUsuario.tienePermiso("LECTURA_TERCEROS");
+        menuProveedores.setVisible(leeTerceros);
+
+        // --- MÓDULO PRODUCTOS Y LOTES ---
+        boolean leeProductos = SesionUsuario.tienePermiso("LECTURA_PRODUCTOS");
+        boolean leeLotes = SesionUsuario.tienePermiso("LECTURA_LOTES");
+        
+        menuProductos.setVisible(leeProductos || leeLotes); // Se ve si tiene alguno de los dos
+        itemGestionarProductos.setVisible(leeProductos);
+        itemGestionarCategorias.setVisible(leeProductos); // Si tienes este item
+        itemAjusteInventario.setVisible(leeLotes);
+        itemKardex.setVisible(leeProductos || leeLotes);
+
+        // --- MÓDULO VENTAS ---
+        boolean leeVentas = SesionUsuario.tienePermiso("LECTURA_VENTAS");
+        menuFacturacion.setVisible(leeVentas);
+
+        // --- MÓDULO COMPRAS ---
+        boolean leeCompras = SesionUsuario.tienePermiso("LECTURA_COMPRAS");
+        menuCompras.setVisible(leeCompras);
+
+        // --- MÓDULO REPORTES / ANALÍTICAS ---
+        boolean leeReportes = SesionUsuario.tienePermiso("LECTURA_REPORTES");
+        menuAnaliticas.setVisible(leeReportes);
+
+        // --- MÓDULO USUARIOS Y ROLES ---
+        boolean leeUsuarios = SesionUsuario.tienePermiso("LECTURA_USUARIOS");
+        menuUsuarios.setVisible(leeUsuarios);
     }
 
     private void configurarEstilo() {

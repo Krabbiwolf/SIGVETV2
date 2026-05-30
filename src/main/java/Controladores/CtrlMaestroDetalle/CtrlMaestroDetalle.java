@@ -1,6 +1,7 @@
 package Controladores.CtrlMaestroDetalle;
 
 import Modelos.MaestroDetalleDAO;
+import Modelos.SesionUsuario;
 import Vistas.MaestroDetalleVista;
 import java.awt.Component;
 import java.awt.event.ActionEvent;
@@ -35,6 +36,7 @@ public class CtrlMaestroDetalle {
         configurarTitulos();
         configurarEventos();
         cargarMaestro();
+        aplicarPermisos();
     }
 
     private void configurarTitulos() {
@@ -507,5 +509,99 @@ public class CtrlMaestroDetalle {
 
     private String normalizar(String texto) {
         return texto == null ? "" : texto.toLowerCase().trim();
+    }
+    
+    private void aplicarPermisos() {
+        String tipo = vista.getTipo();
+        boolean puedeExportar = false;
+
+        switch (tipo) {
+            case MaestroDetalleVista.CLIENTES_FACTURAS:
+                puedeExportar = SesionUsuario.tienePermiso("EXPORTAR_VENTAS"); 
+                break;
+            case MaestroDetalleVista.PROVEEDORES_COMPRAS:
+                puedeExportar = SesionUsuario.tienePermiso("EXPORTAR_COMPRAS");
+                break;
+            case MaestroDetalleVista.CATEGORIAS_PRODUCTOS:
+                puedeExportar = SesionUsuario.tienePermiso("EXPORTAR_PRODUCTOS");
+                break;
+            case MaestroDetalleVista.PRODUCTOS_LOTES:
+                puedeExportar = SesionUsuario.tienePermiso("EXPORTAR_LOTES");
+                break;
+        }
+
+        // Bloqueamos el botón con el método exacto de la interfaz
+        if (vista.getBtnExportarCSV() != null) {
+            vista.getBtnExportarCSV().setVisible(puedeExportar);
+        }
+    }
+    
+    private void exportarA_CSV() {
+        JFileChooser fileChooser = new JFileChooser();
+        fileChooser.setDialogTitle("Exportar Tablas a CSV");
+        fileChooser.setFileFilter(new FileNameExtensionFilter("Archivos CSV (*.csv)", "csv"));
+
+        int seleccion = fileChooser.showSaveDialog(obtenerComponenteVista());
+        if (seleccion == JFileChooser.APPROVE_OPTION) {
+            File archivo = fileChooser.getSelectedFile();
+            String rutaArchivo = archivo.getAbsolutePath();
+
+            if (!rutaArchivo.toLowerCase().endsWith(".csv")) {
+                rutaArchivo += ".csv";
+            }
+
+            try (BufferedWriter bw = new BufferedWriter(
+                    new OutputStreamWriter(new FileOutputStream(rutaArchivo), StandardCharsets.UTF_8))) {
+
+                // BOM para que Excel lea UTF-8 correctamente (tildes y ñ)
+                bw.write("\ufeff");
+
+                // Escribir Tabla Maestro
+                bw.write("--- DATOS DEL MAESTRO ---\n");
+                escribirTablaEnCSV(vista.getTblMaestro(), bw);
+
+                // Escribir Tabla Detalle si tiene datos
+                if (vista.getTblDetalle().getRowCount() > 0) {
+                    bw.newLine();
+                    bw.write("--- DATOS DEL DETALLE ASOCIADO ---\n");
+                    escribirTablaEnCSV(vista.getTblDetalle(), bw);
+                }
+
+                JOptionPane.showMessageDialog(obtenerComponenteVista(), "¡Reporte exportado exitosamente a CSV!");
+
+            } catch (Exception ex) {
+                JOptionPane.showMessageDialog(obtenerComponenteVista(), "Error al exportar el archivo: " + ex.getMessage());
+                System.out.println(ex);
+            }
+        }
+    }
+    
+    private void escribirTablaEnCSV(JTable tabla, BufferedWriter bw) throws Exception {
+        // Cabeceras
+        for (int i = 0; i < tabla.getColumnCount(); i++) {
+            bw.write(tabla.getColumnName(i));
+            if (i < tabla.getColumnCount() - 1) {
+                bw.write(";"); 
+            }
+        }
+        bw.newLine();
+
+        // Filas
+        for (int i = 0; i < tabla.getRowCount(); i++) {
+            for (int j = 0; j < tabla.getColumnCount(); j++) {
+                Object valorCelda = tabla.getValueAt(i, j);
+                String textoCelda = (valorCelda != null) ? valorCelda.toString() : "";
+
+                // Envolver en comillas si hay punto y coma
+                if (textoCelda.contains(";")) {
+                    textoCelda = "\"" + textoCelda + "\"";
+                }
+                bw.write(textoCelda);
+                if (j < tabla.getColumnCount() - 1) {
+                    bw.write(";");
+                }
+            }
+            bw.newLine();
+        }
     }
 }

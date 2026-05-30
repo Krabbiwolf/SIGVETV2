@@ -60,10 +60,10 @@ public class GestionProductosController {
             vista.btnGuardar.setVisible(false);
             vista.btnActualizar.setVisible(false);
             vista.btnEliminar.setVisible(false);
+            // Si el form se llama "form" en categorías, cambia "vista" por "form"
         }
-
         if (!SesionUsuario.tienePermiso("EXPORTAR_PRODUCTOS")) {
-            vista.btnExportarCSV.setVisible(false);
+            if (vista.btnExportarCSV != null) vista.btnExportarCSV.setVisible(false);
         }
     }
 

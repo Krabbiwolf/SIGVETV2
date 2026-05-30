@@ -55,16 +55,14 @@ public class CtrlGestionarClientes implements ActionListener {
         estadoInicial();
         cargarTabla();
         
-        // Bloquear edición si no tiene permiso
         if (!SesionUsuario.tienePermiso("EDICION_TERCEROS")) {
             form.btnGuardar.setVisible(false);
             form.btnActualizar.setVisible(false);
             form.btnEliminar.setVisible(false);
         }
-        
-        // Bloquear exportación
         if (!SesionUsuario.tienePermiso("EXPORTAR_TERCEROS")) {
-            form.btnExportarClientes.setVisible(false);
+            // Asegúrate de que el nombre del botón sea correcto en tu vista
+            if (form.btnExportarClientes != null) form.btnExportarClientes.setVisible(false);
         }
     }
 

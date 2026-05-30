@@ -49,7 +49,7 @@ public class CtrlPuntoVenta implements ActionListener {
         
         // Bloquear edición si no tiene permiso
         if (!SesionUsuario.tienePermiso("EDICION_VENTAS")) {
-            form.btnFacturar.setVisible(false);
+            form.btnFacturar.setVisible(false); // O como se llame tu botón de realizar venta
         }
         
         // Bloquear exportación
