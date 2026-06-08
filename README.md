@@ -196,9 +196,9 @@ Puedes descargar la última versión desde la sección de Releases:
 
 Para facilitar la evaluación del sistema:
 
-**Usuario:** admin
+**Usuario:** UserPrueba
 
-**Contraseña:** admin123
+**Contraseña:** prueba123
 
 > Estas credenciales son únicamente para demostración del proyecto.
 
