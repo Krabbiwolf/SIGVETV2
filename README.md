@@ -1,7 +1,7 @@
 # 🛒 SIGVET - Sistema de Gestión de Ventas
 
 <p align="center">
-  <a href="https://github.com/crisce-03/SIGVET/releases/latest">
+  <a href="https://github.com/Krabbiwolf/SIGVETV2/releases/tag/Instalador">
     <img src="https://img.shields.io/badge/⬇️_Descargar_SIGVET-28a745?style=for-the-badge" alt="Descargar SIGVET">
   </a>
 </p>
@@ -188,7 +188,7 @@ Puedes descargar la última versión desde la sección de Releases:
 
 ### 🔗 Descarga Directa
 
-[Descargar SIGVET](https://github.com/crisce-03/SIGVET/releases/latest)
+[Descargar SIGVET](https://github.com/Krabbiwolf/SIGVETV2/releases/tag/Instalador)
 
 ---
 
