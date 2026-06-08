@@ -41,6 +41,20 @@ Además, integra servicios en la nube para mejorar la disponibilidad de los dato
 * Actualización automática de existencias.
 * Historial de compras.
 
+### 📑 Gestión de Kardex
+
+* Registro detallado de movimientos de inventario.
+* Control de entradas y salidas de productos.
+* Consulta histórica de movimientos.
+* Trazabilidad completa del inventario.
+
+### 📦 Gestión de Lotes
+
+* Registro y control de lotes de productos.
+* Seguimiento de existencias por lote.
+* Identificación de productos según lote.
+* Mejor control y trazabilidad del inventario.
+
 ### 👥 Gestión de Clientes
 
 * Registro de clientes.
@@ -61,6 +75,8 @@ Además, integra servicios en la nube para mejorar la disponibilidad de los dato
 
 * Generación de reportes.
 * Visualización de información comercial.
+* Consulta de movimientos de inventario.
+* Reportes de ventas y compras.
 
 ---
 
