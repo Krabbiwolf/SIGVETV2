@@ -1,5 +1,11 @@
 # 🛒 SIGVET - Sistema de Gestión de Ventas
 
+<p align="center">
+  <a href="https://github.com/crisce-03/SIGVET/releases/latest">
+    <img src="https://img.shields.io/badge/⬇️_Descargar_SIGVET-28a745?style=for-the-badge" alt="Descargar SIGVET">
+  </a>
+</p>
+
 ![Java](https://img.shields.io/badge/Java-ED8B00?style=for-the-badge\&logo=openjdk\&logoColor=white)
 ![MySQL](https://img.shields.io/badge/MySQL-005C84?style=for-the-badge\&logo=mysql\&logoColor=white)
 ![MVC](https://img.shields.io/badge/Arquitectura-MVC-blue?style=for-the-badge)
@@ -8,14 +14,14 @@
 
 ## 📋 Descripción
 
-SIGVET es un sistema de gestión de ventas desarrollado en **Java Swing** con **MySQL**, diseñado para optimizar la administración de negocios mediante el control de ventas, inventario, productos, clientes, proveedores y compras.
+SIGVET es un sistema integral de gestión de ventas e inventario desarrollado en Java Swing y MySQL, diseñado para optimizar la administración de negocios mediante el control de ventas, compras, productos, clientes, proveedores, kardex y lotes.
 
-El sistema implementa el patrón de diseño **MVC (Model - View - Controller)** para mantener una arquitectura organizada, escalable y fácil de mantener.
+El sistema implementa el patrón de diseño MVC (Model - View - Controller), permitiendo una arquitectura organizada, escalable y fácil de mantener.
 
 Además, integra servicios en la nube para mejorar la disponibilidad de los datos y la gestión de imágenes:
 
-* ☁️ **Railway** para el alojamiento de la base de datos MySQL.
-* 🖼️ **Cloudinary** para el almacenamiento y gestión de imágenes de productos.
+* ☁️ Railway para el alojamiento de la base de datos MySQL.
+* 🖼️ Cloudinary para el almacenamiento y gestión de imágenes de productos.
 
 ---
 
@@ -44,26 +50,26 @@ Además, integra servicios en la nube para mejorar la disponibilidad de los dato
 ### 📑 Gestión de Kardex
 
 * Registro detallado de movimientos de inventario.
-* Control de entradas y salidas de productos.
-* Consulta histórica de movimientos.
+* Control de entradas y salidas.
+* Historial de movimientos.
 * Trazabilidad completa del inventario.
 
 ### 📦 Gestión de Lotes
 
-* Registro y control de lotes de productos.
+* Registro y control de lotes.
 * Seguimiento de existencias por lote.
 * Identificación de productos según lote.
-* Mejor control y trazabilidad del inventario.
+* Mejor control y trazabilidad.
 
 ### 👥 Gestión de Clientes
 
-* Registro de clientes.
+* Registro y administración de clientes.
 * Consulta y actualización de información.
 
 ### 🏢 Gestión de Proveedores
 
 * Registro y administración de proveedores.
-* Control de compras realizadas.
+* Historial de compras realizadas.
 
 ### 🔐 Gestión de Usuarios
 
@@ -73,35 +79,29 @@ Además, integra servicios en la nube para mejorar la disponibilidad de los dato
 
 ### 📊 Reportes
 
-* Generación de reportes.
-* Visualización de información comercial.
-* Consulta de movimientos de inventario.
-* Reportes de ventas y compras.
+* Reportes de ventas.
+* Reportes de compras.
+* Reportes de inventario.
+* Consulta de movimientos de Kardex.
 
 ---
 
 ## 🏗️ Arquitectura del Proyecto
 
-El sistema está desarrollado utilizando el patrón de diseño MVC:
+El sistema está desarrollado utilizando el patrón MVC.
 
-### Modelo (Model)
-
-Encargado de:
+### Model
 
 * Acceso a datos.
 * Consultas SQL.
 * Reglas de negocio.
 
-### Vista (View)
-
-Encargada de:
+### View
 
 * Interfaces gráficas desarrolladas con Java Swing.
 * Interacción con el usuario.
 
-### Controlador (Controller)
-
-Encargado de:
+### Controller
 
 * Procesamiento de eventos.
 * Comunicación entre vistas y modelos.
@@ -152,35 +152,43 @@ Las imágenes de productos son almacenadas en Cloudinary para evitar almacenamie
 
 ## 📸 Capturas del Sistema
 
-### Inicio de Sesión
+### 🔐 Inicio de Sesión
 
-*(Agregar captura aquí)*
+![Login](screenshots/login.png)
 
-### Dashboard Principal
+### 📊 Dashboard Principal
 
-*(Agregar captura aquí)*
+![Dashboard](screenshots/dashboard.png)
 
-### Gestión de Productos
+### 📦 Gestión de Productos
 
-*(Agregar captura aquí)*
+![Productos](screenshots/productos.png)
 
-### Gestión de Ventas
+### 💰 Gestión de Ventas
 
-*(Agregar captura aquí)*
+![Ventas](screenshots/ventas.png)
 
-### Gestión de Compras
+### 🛒 Gestión de Compras
 
-*(Agregar captura aquí)*
+![Compras](screenshots/compras.png)
+
+### 📑 Kardex
+
+![Kardex](screenshots/kardex.png)
+
+### 📦 Gestión de Lotes
+
+![Lotes](screenshots/lotes.png)
 
 ---
 
 ## 📥 Descarga
 
-Puedes descargar la versión ejecutable desde la sección de Releases:
+Puedes descargar la última versión desde la sección de Releases:
 
-**Descargar SIGVET.exe**
+### 🔗 Descarga Directa
 
-*(Agregar enlace cuando publiques la release)*
+[Descargar SIGVET](https://github.com/crisce-03/SIGVET/releases/latest)
 
 ---
 
@@ -218,3 +226,5 @@ Estudiante de Ingeniería en Desarrollo de Software
 📧 Correo: [cristophercerritos0@gmail.com](mailto:cristophercerritos0@gmail.com)
 
 🐙 GitHub: https://github.com/crisce-03
+
+⭐ Si te gusta este proyecto, considera dejar una estrella en el repositorio.
